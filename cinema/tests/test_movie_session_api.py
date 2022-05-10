@@ -12,15 +12,12 @@ class MovieSessionApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         drama = Genre.objects.create(
-           name="Drama",
+            name="Drama",
         )
         comedy = Genre.objects.create(
             name="Comedy",
         )
-        actress = Actor.objects.create(
-            first_name="Kate",
-            last_name="Winslet"
-        )
+        actress = Actor.objects.create(first_name="Kate", last_name="Winslet")
         movie = Movie.objects.create(
             title="Titanic",
             description="Titanic description",
@@ -34,9 +31,7 @@ class MovieSessionApiTests(TestCase):
             seats_in_row=14,
         )
         MovieSession.objects.create(
-            movie=movie,
-            cinema_hall=cinema_hall,
-            show_time=datetime.datetime.now()
+            movie=movie, cinema_hall=cinema_hall, show_time=datetime.datetime.now()
         )
 
     def test_get_movies(self):
@@ -53,11 +48,7 @@ class MovieSessionApiTests(TestCase):
     def test_post_movies(self):
         movies = self.client.post(
             "/api/cinema/movie_sessions/",
-            {
-                "movie": 1,
-                "cinema_hall": 1,
-                "show_time": datetime.datetime.now()
-            },
+            {"movie": 1, "cinema_hall": 1, "show_time": datetime.datetime.now()},
         )
         movie_sessions = MovieSession.objects.all()
         self.assertEqual(movies.status_code, status.HTTP_201_CREATED)

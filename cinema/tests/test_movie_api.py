@@ -10,15 +10,12 @@ class MovieApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         drama = Genre.objects.create(
-           name="Drama",
+            name="Drama",
         )
         comedy = Genre.objects.create(
             name="Comedy",
         )
-        actress = Actor.objects.create(
-            first_name="Kate",
-            last_name="Winslet"
-        )
+        actress = Actor.objects.create(first_name="Kate", last_name="Winslet")
         movie = Movie.objects.create(
             title="Titanic",
             description="Titanic description",
@@ -47,7 +44,7 @@ class MovieApiTests(TestCase):
                 "title": "Superman",
                 "description": "Superman description",
                 "actors": [1],
-                "genres": [1, 2]
+                "genres": [1, 2],
             },
         )
         db_movies = Movie.objects.all()
@@ -65,7 +62,7 @@ class MovieApiTests(TestCase):
                     {
                         "id": 3,
                     }
-                ]
+                ],
             },
         )
         superman_movies = Movie.objects.filter(title="Superman")
