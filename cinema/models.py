@@ -5,12 +5,12 @@ from django.conf import settings
 
 class CinemaHall(models.Model):
     name = models.CharField(max_length=255)
-    count_rows = models.IntegerField()
-    count_seats_in_row = models.IntegerField()
+    rows = models.IntegerField()
+    seats_in_row = models.IntegerField()
 
     @property
     def capacity(self) -> int:
-        return self.count_rows * self.count_seats_in_row
+        return self.rows * self.seats_in_row
 
     def __str__(self):
         return self.name
@@ -72,7 +72,9 @@ class Order(models.Model):
 
 
 class Ticket(models.Model):
-    movie_session = models.ForeignKey(MovieSession, on_delete=models.CASCADE, related_name="tickets")
+    movie_session = models.ForeignKey(
+        MovieSession, on_delete=models.CASCADE, related_name="tickets"
+    )
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="tickets")
     row = models.IntegerField()
     seat = models.IntegerField()
