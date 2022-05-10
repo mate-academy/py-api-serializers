@@ -3,7 +3,6 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from cinema.serializers import ActorSerializer
 from cinema.models import Actor
 
 
@@ -31,14 +30,6 @@ class ActorApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(db_actors.count(), 3)
         self.assertEqual(db_actors.filter(first_name="Scarlett").count(), 1)
-
-    def test_get_actor(self):
-        response = self.client.get("/api/cinema/actors/2/")
-        serializer = ActorSerializer(
-            Actor(id=2, first_name="Keanu", last_name="Reeves")
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, serializer.data)
 
     def test_get_invalid_actor(self):
         response = self.client.get("/api/cinema/actors/1001/")

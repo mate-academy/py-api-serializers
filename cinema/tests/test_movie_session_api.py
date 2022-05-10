@@ -18,24 +18,24 @@ class MovieSessionApiTests(TestCase):
             name="Comedy",
         )
         actress = Actor.objects.create(first_name="Kate", last_name="Winslet")
-        movie = Movie.objects.create(
+        self.movie = Movie.objects.create(
             title="Titanic",
             description="Titanic description",
             duration=123,
         )
-        movie.genres.add(drama)
-        movie.genres.add(comedy)
-        movie.actors.add(actress)
-        cinema_hall = CinemaHall.objects.create(
+        self.movie.genres.add(drama)
+        self.movie.genres.add(comedy)
+        self.movie.actors.add(actress)
+        self.cinema_hall = CinemaHall.objects.create(
             name="White",
             rows=10,
             seats_in_row=14,
         )
-        MovieSession.objects.create(
-            movie=movie, cinema_hall=cinema_hall, show_time=datetime.datetime.now()
+        self.movie_session = MovieSession.objects.create(
+            movie=self.movie, cinema_hall=self.cinema_hall, show_time=datetime.datetime.now()
         )
 
-    def test_get_movies(self):
+    def test_get_movie_sessions(self):
         movie_sessions = self.client.get("/api/cinema/movie_sessions/")
         movie_session = {
             "movie_title": "Titanic",
@@ -46,7 +46,7 @@ class MovieSessionApiTests(TestCase):
         for field in movie_session:
             self.assertEqual(movie_sessions.data[0][field], movie_session[field])
 
-    def test_post_movies(self):
+    def test_post_movie_session(self):
         movies = self.client.post(
             "/api/cinema/movie_sessions/",
             {"movie": 1, "cinema_hall": 1, "show_time": datetime.datetime.now()},
@@ -55,7 +55,7 @@ class MovieSessionApiTests(TestCase):
         self.assertEqual(movies.status_code, status.HTTP_201_CREATED)
         self.assertEqual(movie_sessions.count(), 2)
 
-    def test_get_movie(self):
+    def test_get_movie_session(self):
         response = self.client.get("/api/cinema/movie_sessions/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["movie"]["title"], "Titanic")
