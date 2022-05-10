@@ -21,6 +21,7 @@ class MovieSessionApiTests(TestCase):
         movie = Movie.objects.create(
             title="Titanic",
             description="Titanic description",
+            duration=123,
         )
         movie.genres.add(drama)
         movie.genres.add(comedy)
@@ -59,6 +60,7 @@ class MovieSessionApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["movie"]["title"], "Titanic")
         self.assertEqual(response.data["movie"]["description"], "Titanic description")
+        self.assertEqual(response.data["movie"]["duration"], 123)
         self.assertEqual(response.data["movie"]["genres"], ["Drama", "Comedy"])
         self.assertEqual(response.data["movie"]["actors"], ["Kate Winslet"])
         self.assertEqual(response.data["cinema_hall"]["capacity"], 140)

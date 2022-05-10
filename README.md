@@ -10,7 +10,7 @@ In this task you will implement serializers and views for the following models:
 4. `Movie`
 5. `MovieSession`
 
-For every `<entity>` from `actors`, `genres`, `cinema_halls`, `movies`, `movie`, `movie_sessions` such
+For every `<entity>` from `actors`, `genres`, `cinema_halls`, `movies`, `movie_sessions` such
 endpoints should be implemented:
 * `GET api/cinema/<entity>/` - should return a list of the all entity items
 * `POST api/cinema/<entity>/` - should create a new entity based on passed data
@@ -37,6 +37,7 @@ Vary: Accept
         "id": 1,
         "title": "Harry Potter and the Philosopher's Stone",
         "description": "The first movie about Harry Potter",
+        "duration": 210,
         "genres": [
             "drama"
         ],
@@ -64,6 +65,7 @@ Vary: Accept
     "id": 1,
     "title": "Harry Potter and the Philosopher's Stone",
     "description": "The first movie about Harry Potter",
+    "duration": 210,
     "genres": [
         {
             "id": 1,
@@ -141,6 +143,7 @@ Vary: Accept
         "id": 1,
         "title": "Harry Potter and the Philosopher's Stone",
         "description": "The first movie about Harry Potter",
+        "duration": 210,
         "genres": [
             "drama"
         ],

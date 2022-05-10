@@ -19,6 +19,7 @@ class MovieApiTests(TestCase):
         movie = Movie.objects.create(
             title="Titanic",
             description="Titanic description",
+            duration=123,
         )
         movie.genres.add(drama)
         movie.genres.add(comedy)
@@ -29,6 +30,7 @@ class MovieApiTests(TestCase):
         titanic = {
             "title": "Titanic",
             "description": "Titanic description",
+            "duration": 123,
             "genres": ["Drama", "Comedy"],
             "actors": ["Kate Winslet"],
         }
@@ -43,6 +45,7 @@ class MovieApiTests(TestCase):
             {
                 "title": "Superman",
                 "description": "Superman description",
+                "duration": 123,
                 "actors": [1],
                 "genres": [1, 2],
             },
@@ -58,6 +61,7 @@ class MovieApiTests(TestCase):
             {
                 "title": "Superman",
                 "description": "Superman description",
+                "duration": 123,
                 "actors": [
                     {
                         "id": 3,
@@ -74,6 +78,7 @@ class MovieApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], "Titanic")
         self.assertEqual(response.data["description"], "Titanic description")
+        self.assertEqual(response.data["duration"], 123)
         self.assertEqual(response.data["genres"][0]["name"], "Drama")
         self.assertEqual(response.data["genres"][1]["name"], "Comedy")
         self.assertEqual(response.data["actors"][0]["first_name"], "Kate")
@@ -90,6 +95,7 @@ class MovieApiTests(TestCase):
             {
                 "title": "Watchman",
                 "description": "Watchman description",
+                "duration": 321,
                 "genres": [1, 2],
                 "actors": [1],
             },
