@@ -76,12 +76,14 @@ Vary: Accept
         {
             "id": 1,
             "first_name": "Emma",
-            "last_name": "Watson"
+            "last_name": "Watson",
+            "full_name": "Emma Watson"
         },
         {
             "id": 2,
             "first_name": "Daniel",
-            "last_name": "Radcliffe"
+            "last_name": "Radcliffe",
+            "full_name": "Daniel Radcliffe"
         }
     ]
 }
