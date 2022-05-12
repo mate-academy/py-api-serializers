@@ -76,24 +76,20 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    @staticmethod
-    def validate_row_seat(row, seat, movie_session, error_to_raise):
+    def clean(self):
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
-            (row, "row", "count_rows"),
-            (seat, "seat", "count_seats_in_row"),
+            (self.row, "row", "count_rows"),
+            (self.seat, "seat", "count_seats_in_row"),
         ]:
-            count_attrs = getattr(movie_session.cinema_hall, cinema_hall_attr_name)
+            count_attrs = getattr(self.movie_session.cinema_hall, cinema_hall_attr_name)
             if not (1 <= ticket_attr_value <= count_attrs):
-                raise error_to_raise(
+                raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number must be in available range: "
                         f"(1, {cinema_hall_attr_name}): "
                         f"(1, {count_attrs})"
                     }
                 )
-
-    def clean(self):
-        self.validate_row_seat(self.row, self.seat, self.movie_session, ValidationError)
 
     def __str__(self):
         return f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
