@@ -3,7 +3,6 @@ atomicwrites==1.4.0
 attrs==21.4.0
 colorama==0.4.4
 Django==4.0.4
-django-debug-toolbar==3.4.0
 djangorestframework==3.13.1
 flake8==4.0.1
 iniconfig==1.1.1
