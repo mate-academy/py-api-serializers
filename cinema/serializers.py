@@ -39,13 +39,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = serializers.StringRelatedField(
-        read_only=True,
-        many=True
-    )
-    actors = serializers.StringRelatedField(
-        many=True
-    )
+    genres = serializers.StringRelatedField(read_only=True, many=True)
+    actors = serializers.StringRelatedField(read_only=True, many=True)
 
 
 class MovieDetailSerializer(MovieSerializer):
