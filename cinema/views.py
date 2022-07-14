@@ -32,7 +32,6 @@ class MovieViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
                    mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Movie.objects.prefetch_related("actors", "genres")
-    serializer_class = MovieSerializer
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -46,7 +45,6 @@ class MovieSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
                           mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = MovieSession.objects.select_related("movie", "cinema_hall")
-    serializer_class = MovieSessionSerializer
 
     def get_serializer_class(self):
         if self.action == "list":
