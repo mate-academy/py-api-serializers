@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 class CinemaHall(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=63)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
@@ -13,19 +13,19 @@ class CinemaHall(models.Model):
         return self.rows * self.seats_in_row
 
     def __str__(self):
-        return self.name
+        return f"{self.name} {self.rows}"
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=63, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Actor(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=63)
+    last_name = models.CharField(max_length=63)
 
     @property
     def full_name(self):
@@ -36,7 +36,7 @@ class Actor(models.Model):
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=63)
     description = models.TextField()
     duration = models.IntegerField()
     genres = models.ManyToManyField(Genre)
@@ -90,8 +90,8 @@ class Ticket(models.Model):
                 raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                                          f"(1, {cinema_hall_attr_name}): "
+                                          f"(1, {count_attrs})"
                     }
                 )
 
