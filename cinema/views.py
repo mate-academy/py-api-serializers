@@ -7,30 +7,22 @@ from cinema.serializers import GenreSerializer, CinemaHallSerializer, \
     MovieSessionDetailSerializer
 
 
-class GenreViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
 
-class ActorViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
 
 
-class CinemaHallViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class CinemaHallViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
 
 
-class MovieViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.prefetch_related("actors", "genres")
 
     def get_serializer_class(self):
@@ -41,9 +33,7 @@ class MovieViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
         return MovieSerializer
 
 
-class MovieSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                          mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
-                          mixins.DestroyModelMixin, viewsets.GenericViewSet):
+class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.select_related("movie", "cinema_hall")
 
     def get_serializer_class(self):
