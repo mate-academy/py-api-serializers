@@ -4,35 +4,39 @@ from django.conf import settings
 
 
 class CinemaHall(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=63)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
     @property
-    def capacity(self) -> int:
+    def capacity(self):
         return self.rows * self.seats_in_row
 
     def __str__(self):
-        return self.name
+        return f"{self.name} {self.rows}"
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=63, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Actor(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=63)
+    last_name = models.CharField(max_length=63)
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return f"{self.first_name} {self.last_name}"
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=63)
     description = models.TextField()
     duration = models.IntegerField()
     genres = models.ManyToManyField(Genre)
@@ -54,7 +58,7 @@ class MovieSession(models.Model):
         ordering = ["-show_time"]
 
     def __str__(self):
-        return self.movie.title + " " + str(self.show_time)
+        return f"{self.movie.title} {str(self.show_time)}"
 
 
 class Order(models.Model):
@@ -86,8 +90,8 @@ class Ticket(models.Model):
                 raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                                          f"(1, {cinema_hall_attr_name}): "
+                                          f"(1, {count_attrs})"
                     }
                 )
 
