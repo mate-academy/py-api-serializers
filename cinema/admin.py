@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from .models import CinemaHall, Genre, Actor, Movie, MovieSession, Order, Ticket
+from .models import (
+    CinemaHall,
+    Genre,
+    Actor,
+    Movie,
+    MovieSession,
+    Order,
+    Ticket
+)
 
 
 class TicketInline(admin.TabularInline):
@@ -19,4 +27,3 @@ admin.site.register(Actor)
 admin.site.register(Movie)
 admin.site.register(MovieSession)
 admin.site.register(Ticket)
-
