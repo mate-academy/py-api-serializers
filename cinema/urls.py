@@ -10,10 +10,10 @@ from cinema.views import (MovieViewSet,
 
 router = routers.DefaultRouter()
 router.register("movies", MovieViewSet)
-router.register("movie-sessions", MovieSessionViewSet)
+router.register("movie_sessions", MovieSessionViewSet)
 router.register("genres", GenreViewSet)
 router.register("actors", ActorViewSet)
-router.register("cinema-hall", CinemaHallViewSet)
+router.register("cinema_halls", CinemaHallViewSet)
 
 
 urlpatterns = [
