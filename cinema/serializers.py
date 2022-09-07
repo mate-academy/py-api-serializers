@@ -51,9 +51,6 @@ class MovieDetailSerializer(MovieSerializer):
     actors = ActorSerializer(many=True, read_only=True)
 
 
-# actors = serializers.SlugRelatedField(slug_field="full_name", many=True, read_only=True)
-# genres = serializers.SlugRelatedField(slug_field="name", many=True, read_only=True)
-
 # ----------------------------------------------------------------------------
 
 
