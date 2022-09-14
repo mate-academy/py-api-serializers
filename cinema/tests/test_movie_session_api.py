@@ -32,7 +32,9 @@ class MovieSessionApiTests(TestCase):
             seats_in_row=14,
         )
         self.movie_session = MovieSession.objects.create(
-            movie=self.movie, cinema_hall=self.cinema_hall, show_time=datetime.datetime.now()
+            movie=self.movie,
+            cinema_hall=self.cinema_hall,
+            show_time=datetime.datetime.now(),
         )
 
     def test_get_movie_sessions(self):
