@@ -32,7 +32,9 @@ class MovieSessionApiTests(TestCase):
             seats_in_row=14,
         )
         self.movie_session = MovieSession.objects.create(
-            movie=self.movie, cinema_hall=self.cinema_hall, show_time=datetime.datetime.now()
+            movie=self.movie,
+            cinema_hall=self.cinema_hall,
+            show_time=datetime.datetime.now(),
         )
 
     def test_get_movie_sessions(self):
@@ -44,12 +46,18 @@ class MovieSessionApiTests(TestCase):
         }
         self.assertEqual(movie_sessions.status_code, status.HTTP_200_OK)
         for field in movie_session:
-            self.assertEqual(movie_sessions.data[0][field], movie_session[field])
+            self.assertEqual(
+                movie_sessions.data[0][field], movie_session[field]
+            )
 
     def test_post_movie_session(self):
         movies = self.client.post(
             "/api/cinema/movie_sessions/",
-            {"movie": 1, "cinema_hall": 1, "show_time": datetime.datetime.now()},
+            {
+                "movie": 1,
+                "cinema_hall": 1,
+                "show_time": datetime.datetime.now(),
+            },
         )
         movie_sessions = MovieSession.objects.all()
         self.assertEqual(movies.status_code, status.HTTP_201_CREATED)
@@ -59,7 +67,9 @@ class MovieSessionApiTests(TestCase):
         response = self.client.get("/api/cinema/movie_sessions/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["movie"]["title"], "Titanic")
-        self.assertEqual(response.data["movie"]["description"], "Titanic description")
+        self.assertEqual(
+            response.data["movie"]["description"], "Titanic description"
+        )
         self.assertEqual(response.data["movie"]["duration"], 123)
         self.assertEqual(response.data["movie"]["genres"], ["Drama", "Comedy"])
         self.assertEqual(response.data["movie"]["actors"], ["Kate Winslet"])
