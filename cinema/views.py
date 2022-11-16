@@ -53,7 +53,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             self.serializer_class = MovieSessionRetrieveSerializer
 
-        if self.action == "update":
+        if self.action in ("update", "create"):
             self.serializer_class = MovieSessionUpdateSerializer
 
         return self.serializer_class

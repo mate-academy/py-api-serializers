@@ -21,7 +21,7 @@ router.register(
 )
 
 urlpatterns = [
-    path("", include(router.urls))
+    path("cinema/", include(router.urls))
 ]
 
 app_name = "cinema"
