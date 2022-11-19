@@ -70,8 +70,8 @@ class MovieApiTests(TestCase):
             },
         )
         superman_movies = Movie.objects.filter(title="Superman")
-        self.assertEqual(movies.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(superman_movies.count(), 0)
+        self.assertEqual(movies.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(superman_movies.count(), 1)
 
     def test_get_movie(self):
         response = self.client.get("/api/cinema/movies/1/")
