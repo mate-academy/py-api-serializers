@@ -41,3 +41,9 @@ class MovieSerializer(serializers.ModelSerializer):
             "genres",
             "actors"
         )
+
+
+class MovieListSerializer(MovieSerializer):
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+
