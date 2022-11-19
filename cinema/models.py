@@ -44,7 +44,7 @@ class Movie(models.Model):
     class Meta:
         ordering = ["title"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
@@ -101,7 +101,7 @@ class Ticket(models.Model):
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
         )
