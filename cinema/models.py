@@ -31,7 +31,7 @@ class Actor(models.Model):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
-    # probably __str__ should return self.full_name, so both methods don't do exact same thing
+    # probably __str__ should return self.full_name
     def __str__(self):
         return self.first_name + " " + self.last_name
 
