@@ -27,8 +27,12 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    def __str__(self):
+    @property
+    def full_name(self):
         return self.first_name + " " + self.last_name
+
+    def __str__(self):
+        return self.full_name
 
 
 class Movie(models.Model):
@@ -37,6 +41,13 @@ class Movie(models.Model):
     duration = models.IntegerField()
     genres = models.ManyToManyField(Genre)
     actors = models.ManyToManyField(Actor)
+
+    @property
+    def description_preview(self):
+        if len(self.description) > 80:
+            return self.description[:79] + "..."
+
+        return self.description
 
     class Meta:
         ordering = ["title"]
