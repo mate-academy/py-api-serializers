@@ -19,7 +19,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        if self.action == ("list", "retrieve"):
+        if self.action == ("list", "retrieve")  :
             queryset = queryset.prefetch_related("genres").prefetch_related(
                 "actors"
             )
