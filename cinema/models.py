@@ -27,6 +27,11 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    # probably __str__ should return self.full_name, so both methods don't do exact same thing
     def __str__(self):
         return self.first_name + " " + self.last_name
 
