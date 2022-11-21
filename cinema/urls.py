@@ -1,11 +1,13 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from cinema.views import (CinemaHallViewSet,
-                          GenreViewSet,
-                          ActorViewSet,
-                          MovieSessionViewSet,
-                          MovieViewSet)
+from cinema.views import (
+    CinemaHallViewSet,
+    GenreViewSet,
+    ActorViewSet,
+    MovieSessionViewSet,
+    MovieViewSet
+)
 
 router = routers.DefaultRouter()
 router.register("cinema_halls", CinemaHallViewSet)
