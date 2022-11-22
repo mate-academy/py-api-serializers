@@ -1,6 +1,6 @@
 # API Serializers
 
-- Read [the guideline](https://github.com/mate-academy/py-task-guideline/blob/main/README.md) before start
+- Read [the guideline](https://github.com/mate-academy/py-task-guideline/blob/main/README.md) before starting.
 - Use the following command to load prepared data from fixture to test and debug your code:
 
   `python manage.py loaddata cinema_serviсe_db_data.json`
@@ -169,3 +169,5 @@ Vary: Accept
 
 
 Hint: Use `ModelViewSet` to create views.
+
+### Note: Check your code using this [checklist](checklist.md) before pushing your solution.
