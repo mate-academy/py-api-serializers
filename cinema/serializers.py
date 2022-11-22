@@ -33,13 +33,6 @@ class ActorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Actor
-        fields = ("id", "first_name", "last_name")
-
-
-class ActorDetailSerializer(ActorSerializer):
-
-    class Meta:
-        model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
 
@@ -56,7 +49,7 @@ class MovieListSerializer(MovieSerializer):
 
 class MovieDetailSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
-    actors = ActorDetailSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
