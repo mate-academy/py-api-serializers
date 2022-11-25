@@ -19,14 +19,16 @@ class Migration(migrations.Migration):
             model_name="order",
             name="user",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
             ),
         ),
         migrations.AddField(
             model_name="moviesession",
             name="cinema_hall",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, to="cinema.cinemahall"
+                on_delete=django.db.models.deletion.CASCADE,
+                to="cinema.cinemahall",
             ),
         ),
         migrations.AddField(
