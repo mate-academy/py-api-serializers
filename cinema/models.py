@@ -28,7 +28,8 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=255)
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
+        """Return actor's name and surname in one string"""
         return self.first_name + " " + self.last_name
 
     def __str__(self):
