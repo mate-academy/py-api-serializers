@@ -12,7 +12,7 @@ from cinema.models import (
 class CinemaHallSerializer(serializers.ModelSerializer):
     class Meta:
         model = CinemaHall
-        fields = ("id", "name", "rows", "seats_in_row")
+        fields = ("id", "name", "rows", "seats_in_row", "capacity")
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -48,6 +48,18 @@ class MovieDetailSerializer(MovieSerializer):
     actors = ActorSerializer(many=True, read_only=True)
 
 
+class MovieMovieSessionSerializer(MovieDetailSerializer):
+    genres = serializers.SlugRelatedField(many=True,
+                                          read_only=True,
+                                          slug_field="name")
+    actors = serializers.StringRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Movie
+        fields = ("id", "title", "description",
+                  "duration", "genres", "actors")
+
+
 class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
@@ -71,5 +83,5 @@ class MovieSessionListSerializer(MovieSessionSerializer):
 
 
 class MovieSessionDetailSerializer(MovieSessionSerializer):
-    movie = MovieSerializer(many=False, read_only=True)
+    movie = MovieMovieSessionSerializer(many=False, read_only=True)
     cinema_hall = CinemaHallSerializer(many=False, read_only=True)
