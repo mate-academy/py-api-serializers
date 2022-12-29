@@ -15,10 +15,22 @@ class ActorSerializer(serializers.ModelSerializer):
         fields = ("id", "first_name", "last_name", "full_name")
 
 
+class ActorListSerializer(ActorSerializer):
+    class Meta:
+        model = Actor
+        fields = ("full_name",)
+
+
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = "__all__"
+
+
+class GenreListSerializer(GenreSerializer):
+    class Meta:
+        model = Genre
+        fields = ("name",)
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
