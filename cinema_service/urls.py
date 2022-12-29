@@ -5,5 +5,5 @@ import cinema
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("cinema.urls", namespace="cinema")),
+    path("api/cinema/", include("cinema.urls", namespace="cinema"))
 ]
