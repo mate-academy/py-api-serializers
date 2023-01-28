@@ -36,14 +36,13 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    serializers = {
+        "list": MovieListSerializer,
+        "retrieve": MovieDetailSerializer
+    }
+
     def get_serializer_class(self):
-        if self.action == "list":
-            return MovieListSerializer
-
-        if self.action == "retrieve":
-            return MovieDetailSerializer
-
-        return MovieSerializer
+        return self.serializers.get(self.action, MovieSerializer)
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
@@ -57,14 +56,13 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    serializers = {
+        "list": MovieSessionListSerializer,
+        "retrieve": MovieSessionDetailSerializer
+    }
+
     def get_serializer_class(self):
-        if self.action == "list":
-            return MovieSessionListSerializer
-
-        if self.action == "retrieve":
-            return MovieSessionDetailSerializer
-
-        return MovieSessionSerializer
+        return self.serializers.get(self.action, MovieSessionSerializer)
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
