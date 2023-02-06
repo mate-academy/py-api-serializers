@@ -89,6 +89,7 @@ class MovieSessionListSerializer(MovieSessionSerializer):
     )
     cinema_hall_capacity = serializers.IntegerField()
 
+
 class MovieSessionDetailSerializer(MovieSessionSerializer):
     movie = MovieListSerializer(many=False, read_only=True)
     cinema_hall = CinemaHallSerializer(many=False, read_only=True)
