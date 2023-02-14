@@ -1,5 +1,3 @@
-from django.urls import path, include
-
 from cinema.views import (
     GenreViewSet,
     ActorViewSet,
@@ -18,9 +16,6 @@ router.register("cinema_halls", CinemaHallViewSet)
 router.register("movies", MovieViewSet)
 router.register("movie_sessions", MovieSessionViewSet)
 
-urlpatterns = [
-    path("", include(router.urls)),
-
-]
+urlpatterns = router.urls
 
 app_name = "cinema"
