@@ -12,48 +12,48 @@ from cinema.models import (
 class CinemaHallSerializer(serializers.ModelSerializer):
     class Meta:
         model = CinemaHall
-        fields = (
+        fields = [
             "id",
             "name",
             "rows",
             "seats_in_row",
             "capacity"
-        )
+        ]
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = "__all__"
+        fields = ["id", "name"]
 
 
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = ("id", "first_name", "last_name", "full_name")
+        fields = ["id", "first_name", "last_name", "full_name"]
 
 
 class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = (
+        fields = [
             "id",
             "title",
             "description",
             "duration",
             "genres",
             "actors"
-        )
+        ]
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = serializers.StringRelatedField(
-        many=True, read_only=True
+    genres = serializers.SlugRelatedField(
+        slug_field="name",
+        many=True,
+        read_only=True
     )
-    actors = serializers.StringRelatedField(
-        many=True, read_only=True
-    )
+    actors = serializers.StringRelatedField(many=True, read_only=True)
 
 
 class MovieDetailSerializer(MovieSerializer):
@@ -64,12 +64,12 @@ class MovieDetailSerializer(MovieSerializer):
 class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
-        fields = (
+        fields = [
             "id",
             "show_time",
             "movie",
             "cinema_hall",
-        )
+        ]
 
 
 class MovieSessionListSerializer(MovieSessionSerializer):
@@ -88,13 +88,13 @@ class MovieSessionListSerializer(MovieSessionSerializer):
 
     class Meta:
         model = MovieSession
-        fields = (
+        fields = [
             "id",
             "show_time",
             "movie_title",
             "cinema_hall_name",
             "cinema_hall_capacity"
-        )
+        ]
 
 
 class MovieSessionDetailSerializer(MovieSessionSerializer):
