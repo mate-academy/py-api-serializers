@@ -32,7 +32,7 @@ class Actor(models.Model):
         return self.first_name + " " + self.last_name
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.full_name
 
 
 class Movie(models.Model):
@@ -103,8 +103,9 @@ class Ticket(models.Model):
                 )
 
     def __str__(self):
-        return \
+        return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
+        )
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
