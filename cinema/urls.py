@@ -1,1 +1,3 @@
-# write urls here
+urlpatterns = []
+
+app_name = "cinema"
