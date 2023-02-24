@@ -4,7 +4,8 @@ from cinema.models import (
     Genre,
     Actor,
     CinemaHall,
-    MovieSession
+    MovieSession,
+    Movie
 )
 
 
@@ -33,4 +34,11 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MovieSession
+        fields = "__all__"
+
+
+class MovieSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Movie
         fields = "__all__"
