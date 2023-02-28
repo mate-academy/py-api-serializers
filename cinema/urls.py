@@ -13,4 +13,4 @@ router.register("actors", ActorViewSet)
 router.register("movies", MovieViewSet)
 router.register("movie_sessions", MovieSessionViewSet)
 
-urlpatterns = include(router.urls)
+urlpatterns = router.urls
