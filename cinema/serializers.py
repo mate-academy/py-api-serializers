@@ -4,6 +4,7 @@ from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
+    capacity = serializers.IntegerField()
 
     class Meta:
         model = CinemaHall
