@@ -4,11 +4,14 @@ from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
-    capacity = serializers.IntegerField()
 
     class Meta:
         model = CinemaHall
         fields = "__all__"
+
+
+class CinemaHallListSerializer(CinemaHallSerializer):
+    capacity = serializers.IntegerField(read_only=True)
 
 
 class GenreSerializer(serializers.ModelSerializer):
