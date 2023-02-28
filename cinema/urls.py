@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import include
 from rest_framework import routers
 
 from cinema.views import CinemaHallViewSet, GenreViewSet, ActorViewSet, \
@@ -13,6 +13,4 @@ router.register("actors", ActorViewSet)
 router.register("movies", MovieViewSet)
 router.register("movie_sessions", MovieSessionViewSet)
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = include(router.urls)
