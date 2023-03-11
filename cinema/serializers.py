@@ -2,14 +2,17 @@ from rest_framework import serializers
 
 from cinema.models import (
     CinemaHall,
-    Genre, Actor, MovieSession, Movie
+    Genre,
+    Actor,
+    MovieSession,
+    Movie
 )
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
     class Meta:
         model = CinemaHall
-        fields = "__all__"
+        fields = ("id", "name", "rows", "seats_in_row", "capacity")
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -22,17 +25,6 @@ class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
         fields = "__all__"
-
-
-class MovieSessionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MovieSession
-        fields = (
-            "id",
-            "show_time",
-            "movie",
-            "cinema_hall",
-        )
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -58,8 +50,20 @@ class MovieDetailSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
 
 
-class MovieSessionDetailSerializer(serializers.ModelSerializer):
-    pass
+class MovieSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieSession
+        fields = (
+            "id",
+            "show_time",
+            "movie",
+            "cinema_hall",
+        )
+
+
+class MovieSessionDetailSerializer(MovieSessionSerializer):
+    cinema_hall = CinemaHallSerializer(many=False, read_only=True)
+    movie = MovieDetailSerializer(many=False, read_only=True)
 
 
 class MovieSessionListSerializer(
@@ -77,4 +81,3 @@ class MovieSessionListSerializer(
             "cinema_hall_name",
             "cinema_hall_capacity"
         )
-
