@@ -2,11 +2,13 @@ from rest_framework import viewsets
 
 from cinema.models import (
     CinemaHall,
-    Genre
+    Genre,
+    Actor
 )
 from cinema.serializers import (
     CinemaHallSerializer,
-    GenreSerializer
+    GenreSerializer,
+    ActorSerializer
 )
 
 
@@ -18,3 +20,8 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+
+
+class ActorViewSet(viewsets.ModelViewSet):
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
