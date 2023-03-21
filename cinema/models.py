@@ -29,8 +29,7 @@ class Actor(models.Model):
 
     @property
     def full_name(self) -> str:
-        full_name = self.first_name + " " + self.last_name
-        return full_name
+        return self.first_name + " " + self.last_name
 
     def __str__(self) -> str:
         return self.first_name + " " + self.last_name
