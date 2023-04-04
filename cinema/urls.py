@@ -12,7 +12,7 @@ from cinema.views import (
 router = routers.DefaultRouter()
 router.register("genres", GenreViewSet)
 router.register("movies", MovieViewSet)
-router.register("movie_session", MovieSessionViewSet)
+router.register("movie_sessions", MovieSessionViewSet)
 router.register("cinema_halls", CinemaHallViewSet)
 router.register("actors", ActorViewSet)
 
