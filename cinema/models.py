@@ -28,11 +28,11 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=255)
 
     @property
-    def full_name(self) -> int:
+    def full_name(self) -> str:
         return self.first_name + " " + self.last_name
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.full_name
 
 
 class Movie(models.Model):
