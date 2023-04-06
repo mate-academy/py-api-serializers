@@ -34,6 +34,7 @@ class Actor(models.Model):
     def __str__(self):
         return self.full_name
 
+
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
