@@ -30,6 +30,10 @@ class Actor(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    @property
+    def full_name(self):
+        return self.__str__()
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -55,6 +59,18 @@ class MovieSession(models.Model):
 
     def __str__(self):
         return self.movie.title + " " + str(self.show_time)
+
+    @property
+    def cinema_hall_name(self):
+        return self.cinema_hall.name
+
+    @property
+    def cinema_hall_capacity(self):
+        return self.cinema_hall.rows * self.cinema_hall.seats_in_row
+
+    @property
+    def movie_title(self):
+        return self.movie.title
 
 
 class Order(models.Model):
@@ -92,9 +108,9 @@ class Ticket(models.Model):
                 raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                                          f"must be in available range: "
+                                          f"(1, {cinema_hall_attr_name}): "
+                                          f"(1, {count_attrs})"
                     }
                 )
 
