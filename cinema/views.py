@@ -1,4 +1,4 @@
-from typing import Type, Union
+from typing import Type
 from django.db.models import QuerySet
 from rest_framework import viewsets
 from rest_framework.serializers import Serializer
