@@ -12,7 +12,7 @@ router = routers.DefaultRouter()
 router.register("genres", GenreViewSet)
 router.register("actors", ActorViewSet)
 router.register("cinema_halls", CinemaHallViewSet)
-router.register("movies", MovieViewSet)
+router.register("movies", MovieViewSet, basename="movie")
 router.register("movie_sessions", MovieSessionViewSet)
 
 urlpatterns = router.urls

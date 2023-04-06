@@ -86,13 +86,13 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
 class MovieSessionListSerializer(MovieSessionSerializer):
     movie_title = serializers.CharField(
-        source="movie.title", max_length=255, read_only=True
+        source="movie.title", max_length=255
     )
     cinema_hall_name = serializers.CharField(
-        source="cinema_hall.name", max_length=255, read_only=True
+        source="cinema_hall.name", max_length=255
     )
     cinema_hall_capacity = serializers.IntegerField(
-        source="cinema_hall.capacity", read_only=True
+        source="cinema_hall.capacity"
     )
 
     class Meta(MovieSessionSerializer.Meta):
@@ -103,6 +103,11 @@ class MovieSessionListSerializer(MovieSessionSerializer):
             "cinema_hall_name",
             "cinema_hall_capacity",
         )
+        read_only_fields = [
+            "movie_title",
+            "cinema_hall_name",
+            "cinema_hall_capacity"
+        ]
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
