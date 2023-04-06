@@ -1,6 +1,7 @@
 from typing import Type, Union
 from django.db.models import QuerySet
 from rest_framework import viewsets
+from rest_framework.serializers import Serializer
 
 from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
 from cinema.serializers import (
@@ -42,11 +43,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    def get_serializer_class(self) -> Union[
-        Type[MovieSerializer],
-        Type[MovieListSerializer],
-        Type[MovieDetailSerializer],
-    ]:
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return MovieListSerializer
 
@@ -68,11 +65,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    def get_serializer_class(self) -> Union[
-        Type[MovieSessionSerializer],
-        Type[MovieSessionListSerializer],
-        Type[MovieSessionDetailSerializer],
-    ]:
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return MovieSessionListSerializer
 
