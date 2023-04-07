@@ -35,13 +35,13 @@ class Actor(models.Model):
 
     @property
     def full_name(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+        return str(self)
 
     class Meta:
         default_related_name = "actors"
 
     def __str__(self) -> str:
-        return self.first_name + " " + self.last_name
+        return f"{self.first_name} {self.last_name}"
 
 
 class Movie(models.Model):
