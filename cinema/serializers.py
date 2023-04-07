@@ -16,7 +16,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(source="*", read_only=True)
+    full_name = serializers.CharField(source="__str__", read_only=True)
 
     class Meta:
         model = Actor
