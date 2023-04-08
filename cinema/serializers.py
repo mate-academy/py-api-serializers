@@ -3,10 +3,7 @@ from .models import Genre, Movie, Actor, MovieSession, CinemaHall
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(
-        max_length=65,
-        read_only=True
-    )
+    full_name = serializers.CharField(max_length=514)
 
     class Meta:
         model = Actor
