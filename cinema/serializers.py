@@ -3,13 +3,11 @@ from .models import Genre, Movie, Actor, MovieSession, CinemaHall
 
 
 class ActorSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(max_length=514, read_only=True)
+
     class Meta:
         model = Actor
         fields = "__all__"
-
-
-class ActorsInMovieSerializer(ActorSerializer):
-    full_name = serializers.CharField(max_length=514)
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -50,7 +48,7 @@ class MovieListSerializer(MovieSerializer):
 
 class MovieDetailSerializer(MovieSerializer):
     genres = GenreSerializer(many=True)
-    actors = ActorsInMovieSerializer(many=True)
+    actors = ActorSerializer(many=True)
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
