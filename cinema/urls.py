@@ -15,8 +15,6 @@ router.register("genres", GenreSessionViewSet)
 router.register("cinema_halls", CinemaHallSessionViewSet)
 
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = router.urls
 
 app_name = "cinema"
