@@ -28,15 +28,15 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    genres = GenreSerializer(many=True)
-    actors = ActorSerializer(many=True)
-
     class Meta:
         model = Movie
         fields = ("title", "description", "duration", "actors", "genres")
 
 
-class MovieCreateSerializer(serializers.ModelSerializer):
+class MovieRetrieveSerializer(serializers.ModelSerializer):
+    genres = GenreSerializer(many=True)
+    actors = ActorSerializer(many=True)
+
     class Meta:
         model = Movie
         fields = ("title", "description", "duration", "actors", "genres")
@@ -56,18 +56,18 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieSession
+        fields = ("id", "show_time", "movie", "cinema_hall")
+
+
+class MovieSessionRetrieveSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(many=False)
     cinema_hall = CinemaHallSerializer(many=False)
 
     class Meta:
         model = MovieSession
         fields = "__all__"
-
-
-class MovieSessionCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MovieSession
-        fields = ("id", "show_time", "movie", "cinema_hall")
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
