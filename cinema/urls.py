@@ -19,8 +19,6 @@ router.register("movie_sessions",
                 basename="movie-sessions")
 
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = router.urls
 
 app_name = "cinema"
