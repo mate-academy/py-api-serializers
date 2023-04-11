@@ -13,7 +13,7 @@ router.register("genres", GenreViewSet)
 router.register("actors", ActorViewSet)
 router.register("cinema_halls", CinemaHallViewSet)
 router.register("movies", MovieViewSet, basename="movie")
-router.register("movie_sessions", MovieSessionViewSet)
+router.register("movie_sessions", MovieSessionViewSet, basename="movie_session")
 
 
 urlpatterns = router.urls
