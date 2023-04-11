@@ -49,7 +49,7 @@ class MovieViewSet(ModelViewSet):
             return MovieListSerializer
         if self.action == "retrieve":
             return MovieDetailSerializer
-        return MovieSerializer
+        return self.serializer_class
 
 
 class MovieSessionViewSet(ModelViewSet):
@@ -64,4 +64,4 @@ class MovieSessionViewSet(ModelViewSet):
         elif self.action == "retrieve":
             return MovieSessionDetailSerializer
 
-        return MovieSessionSerializer
+        return self.serializer_class
