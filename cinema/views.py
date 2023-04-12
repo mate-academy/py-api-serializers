@@ -54,7 +54,9 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.action not in ("list", "retrieve"):
-            self.queryset = self.queryset.select_related("movie", "cinema_hall")
+            self.queryset = self.queryset.select_related(
+                "movie", "cinema_hall"
+            )
         return self.queryset
 
     def get_serializer_class(self):
