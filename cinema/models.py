@@ -12,6 +12,9 @@ class CinemaHall(models.Model):
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
 
+    class Meta:
+        verbose_name = "cinema_hall"
+
     def __str__(self):
         return self.name
 
@@ -27,8 +30,12 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    def __str__(self):
+    @property
+    def full_name(self) -> str:
         return self.first_name + " " + self.last_name
+
+    def __str__(self):
+        return self.full_name
 
 
 class Movie(models.Model):
@@ -52,6 +59,7 @@ class MovieSession(models.Model):
 
     class Meta:
         ordering = ["-show_time"]
+        verbose_name = "movie_session"
 
     def __str__(self):
         return self.movie.title + " " + str(self.show_time)
