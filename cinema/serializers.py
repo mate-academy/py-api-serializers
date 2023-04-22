@@ -10,9 +10,6 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
-    def get_full_name(self, obj):
-        return str(obj)
-
 
 class CinemaHallSerializer(serializers.ModelSerializer):
     class Meta:
