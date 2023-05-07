@@ -33,6 +33,7 @@ class MovieSerializer(serializers.ModelSerializer):
         slug_field="name"
     )
 
+
     class Meta:
         model = Movie
         fields = "__all__"
@@ -66,17 +67,21 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         return obj.cinema_hall.capacity
 
     def create(self, validated_data):
-        if "cinema_hall_id" in validated_data:
-            cinema_hall_id = validated_data.pop("cinema_hall_id")
-        else:
-            raise serializers.ValidationError("cinema_hall_id is required.")
+        movie_data = validated_data.pop("movie")
+        cinema_hall_data = validated_data.pop("cinema_hall")
+
         try:
-            cinema_hall = CinemaHall.objects.get(id=cinema_hall_id)
+            movie = Movie.objects.get(id=movie_data.id)
+        except Movie.DoesNotExist:
+            raise serializers.ValidationError("Invalid movie.")
+
+        try:
+            cinema_hall = CinemaHall.objects.get(id=cinema_hall_data.id)
         except CinemaHall.DoesNotExist:
             raise serializers.ValidationError("Invalid cinema hall.")
 
         movie_session = MovieSession.objects.create(
-            cinema_hall=cinema_hall, **validated_data
+            movie=movie, cinema_hall=cinema_hall, **validated_data
         )
 
         return movie_session
@@ -86,10 +91,14 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "show_time",
+            "movie",
             "movie_title",
+            "cinema_hall",
             "cinema_hall_name",
-            "cinema_hall_capacity"
+            "cinema_hall_capacity",
         ]
+
+
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
