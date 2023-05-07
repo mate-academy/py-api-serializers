@@ -26,65 +26,51 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    actors = serializers.StringRelatedField(many=True, read_only=True)
+    class Meta:
+        model = Movie
+        fields = (
+            "id",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors"
+        )
+
+
+class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field="name"
+        slug_field="name",
     )
-
-
-    class Meta:
-        model = Movie
-        fields = "__all__"
-
-
-class MovieDetailSerializer(serializers.ModelSerializer):
-    actors = serializers.StringRelatedField(many=True, read_only=True)
-    genres = serializers.SlugRelatedField(
+    actors = serializers.StringRelatedField(
         many=True,
         read_only=True,
-        slug_field="name"
     )
 
-    class Meta:
-        model = Movie
-        fields = "__all__"
+
+class MovieDetailSerializer(MovieSerializer):
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-    movie_title = serializers.SerializerMethodField()
-    cinema_hall_name = serializers.SerializerMethodField()
-    cinema_hall_capacity = serializers.SerializerMethodField()
+    class Meta:
+        model = MovieSession
+        fields = ("id", "show_time", "movie", "cinema_hall")
 
-    def get_movie_title(self, obj):
-        return obj.movie.title
 
-    def get_cinema_hall_name(self, obj):
-        return obj.cinema_hall.name
-
-    def get_cinema_hall_capacity(self, obj):
-        return obj.cinema_hall.capacity
-
-    def create(self, validated_data):
-        movie_data = validated_data.pop("movie")
-        cinema_hall_data = validated_data.pop("cinema_hall")
-
-        try:
-            movie = Movie.objects.get(id=movie_data.id)
-        except Movie.DoesNotExist:
-            raise serializers.ValidationError("Invalid movie.")
-
-        try:
-            cinema_hall = CinemaHall.objects.get(id=cinema_hall_data.id)
-        except CinemaHall.DoesNotExist:
-            raise serializers.ValidationError("Invalid cinema hall.")
-
-        movie_session = MovieSession.objects.create(
-            movie=movie, cinema_hall=cinema_hall, **validated_data
-        )
-
-        return movie_session
+class MovieSessionListSerializer(MovieSessionSerializer):
+    movie_title = serializers.CharField(
+        source="movie.title", read_only=True
+    )
+    cinema_hall_name = serializers.CharField(
+        source="cinema_hall.name", read_only=True
+    )
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity", read_only=True
+    )
 
     class Meta:
         model = MovieSession
@@ -99,12 +85,6 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         ]
 
 
-
-
-class MovieSessionDetailSerializer(serializers.ModelSerializer):
-    movie = MovieDetailSerializer()
-    cinema_hall = CinemaHallSerializer()
-
-    class Meta:
-        model = MovieSession
-        fields = "__all__"
+class MovieSessionDetailSerializer(MovieSessionSerializer):
+    cinema_hall = CinemaHallSerializer(many=False, read_only=True)
+    movie = MovieListSerializer(many=False, read_only=True)
