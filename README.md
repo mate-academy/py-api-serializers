@@ -170,4 +170,6 @@ Vary: Accept
 
 Hint: Use `ModelViewSet` to create views.
 
+Run tests through the terminal using `pytest`
+
 ### Note: Check your code using this [checklist](checklist.md) before pushing your solution.
