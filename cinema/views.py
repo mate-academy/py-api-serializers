@@ -27,18 +27,20 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all().prefetch_related('genres', 'actors')
+    queryset = Movie.objects.all().prefetch_related("genres", "actors")
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return MovieListSerializer
         return MovieDetailSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all().prefetch_related('movie', 'cinema_hall', 'movie__genres', 'movie__actors')
+    queryset = MovieSession.objects.all().prefetch_related(
+        "movie", "cinema_hall", "movie__genres", "movie__actors"
+    )
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return MovieSessionListSerializer
         return MovieSessionDetailSerializer
