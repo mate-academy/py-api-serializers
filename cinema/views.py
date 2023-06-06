@@ -23,7 +23,7 @@ class MovieViewSet(viewsets.ModelViewSet):
             return MovieListSerializer
         if self.action == "retrieve":
             return MovieDetailSerializer
-        return MovieSerializer
+        return super().get_serializer_class()
 
 
 class GenreViewSet(viewsets.ModelViewSet):
@@ -54,4 +54,4 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
         if self.action == "retrieve":
             return MovieSessionDetailSerializer
-        return MovieSessionSerializer
+        return super().get_serializer_class()
