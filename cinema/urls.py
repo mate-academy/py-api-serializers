@@ -1,4 +1,3 @@
-from django.urls import path, include
 from rest_framework import routers
 
 from cinema.views import (
@@ -18,7 +17,4 @@ router.register("actors", ActorViewSet)
 
 app_name = "cinema"
 
-
-urlpatterns = [
-    path("", include(router.urls)),
-]
+urlpatterns = router.urls
