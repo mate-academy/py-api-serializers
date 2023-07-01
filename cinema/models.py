@@ -28,11 +28,11 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=255)
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
 
-    def __str__(self):
-        return self.first_name + " " + self.last_name
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
 
 
 class Movie(models.Model):
@@ -58,7 +58,7 @@ class MovieSession(models.Model):
         ordering = ["-show_time"]
 
     def __str__(self):
-        return self.movie.title + " " + str(self.show_time)
+        return f"{self.movie.title} {str(self.show_time)}"
 
 
 class Order(models.Model):
@@ -67,7 +67,7 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.created_at)
 
     class Meta:
@@ -84,7 +84,7 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    def clean(self):
+    def clean(self) -> None:
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
             (self.row, "row", "count_rows"),
             (self.seat, "seat", "count_seats_in_row"),
@@ -102,7 +102,7 @@ class Ticket(models.Model):
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
         )
