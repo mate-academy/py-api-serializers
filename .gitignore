@@ -2,6 +2,7 @@
 .vscode/
 *.iml
 .env
+db.sqlite3
 .DS_Store
 venv/
 .pytest_cache/
