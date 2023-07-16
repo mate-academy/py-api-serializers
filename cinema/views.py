@@ -11,7 +11,6 @@ from cinema.serializers import (
     MovieDetailSerializer,
     MovieSessionListSerializer,
     MovieSessionDetailSerializer,
-    MovieCreateSerializer
 )
 
 
@@ -25,8 +24,6 @@ class MovieViewSet(viewsets.ModelViewSet):
             return MovieListSerializer
         if self.action == "retrieve":
             return MovieDetailSerializer
-        if self.action == "create":
-            return MovieCreateSerializer
         return MovieSerializer
 
 

@@ -32,13 +32,6 @@ class MovieDetailSerializer(MovieSerializer):
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
-class MovieCreateSerializer(MovieSerializer):
-
-    class Meta:
-        model = Movie
-        fields = "__all__"
-
-
 class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="name"
