@@ -1,6 +1,7 @@
 from typing import Type
 
 from rest_framework import viewsets
+from rest_framework.serializers import Serializer
 
 from cinema.models import Movie, MovieSession, Actor, Genre, CinemaHall
 from cinema.serializers import (
@@ -21,11 +22,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     model = Movie
     serializer_class = MovieSerializer
 
-    def get_serializer_class(self) -> Type[
-        MovieListSerializer
-        | MovieDetailSerializer
-        | MovieSerializer
-    ]:
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return MovieListSerializer
 
@@ -44,11 +41,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
     model = MovieSession
     serializer_class = MovieSessionSerializer
 
-    def get_serializer_class(self) -> Type[
-        MovieSessionListSerializer
-        | MovieSessionDetailSerializer
-        | MovieSessionSerializer
-    ]:
+    def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return MovieSessionListSerializer
 
