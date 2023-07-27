@@ -58,7 +58,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
         source="cinema_hall.name",
         read_only=True
     )
-    cinema_hall_capacity = serializers.CharField(
+    cinema_hall_capacity = serializers.IntegerField(
         source="cinema_hall.capacity",
         read_only=True
     )
