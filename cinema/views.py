@@ -21,5 +21,7 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie
+    queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+
