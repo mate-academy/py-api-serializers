@@ -8,7 +8,7 @@ router.register("genres", GenreViewSet, basename="genres")
 router.register("actors", ActorViewSet, basename="actors")
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("cinema/", include(router.urls)),
 
 ]
 
