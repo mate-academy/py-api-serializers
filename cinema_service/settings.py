@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "debug_toolbar",
-    
+
     "rest_framework",
     "cinema",
     "user",
@@ -139,4 +139,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 INTERNAL_IPS = [
     "127.0.0.1",
- ]
+]

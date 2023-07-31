@@ -17,7 +17,12 @@ router.register(
     basename="cinema-halls"
 )
 router.register("movies", MovieViewSet, basename="movies")
-router.register("movie_sessions", MovieSessionViewSet, basename="movie-sessions")
+router.register(
+
+    "movie_sessions",
+    MovieSessionViewSet,
+    basename="movie-sessions"
+)
 
 urlpatterns = [
     path("cinema/", include(router.urls)),
