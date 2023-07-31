@@ -3,7 +3,8 @@ from rest_framework import routers
 
 from cinema.views import (
     GenreViewSet, ActorViewSet,
-    CinemaHallViewSet, MovieViewSet
+    CinemaHallViewSet, MovieViewSet,
+    MovieSessionViewSet
 )
 
 
@@ -16,6 +17,7 @@ router.register(
     basename="cinema-halls"
 )
 router.register("movies", MovieViewSet, basename="movies")
+router.register("movie_sessions", MovieSessionViewSet, basename="movie-sessions")
 
 urlpatterns = [
     path("cinema/", include(router.urls)),
