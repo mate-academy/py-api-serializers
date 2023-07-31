@@ -1,8 +1,8 @@
 # write serializers here
 from rest_framework import viewsets
 
-from cinema.models import Actor, Genre, CinemaHall
-from cinema.serializers import ActorSerializer, GenreSerializer, CinemaHallSerializer
+from cinema.models import Actor, Genre, CinemaHall, Movie
+from cinema.serializers import ActorSerializer, GenreSerializer, CinemaHallSerializer, MovieSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):
@@ -20,4 +20,6 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
     serializer_class = CinemaHallSerializer
 
 
-
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie
+    serializer_class = MovieSerializer
