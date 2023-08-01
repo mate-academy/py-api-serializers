@@ -1,8 +1,6 @@
-
-
 from rest_framework import serializers
 
-from cinema.models import Actor, Genre, CinemaHall, Movie
+from cinema.models import Actor, Genre, CinemaHall, Movie, MovieSession
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -14,13 +12,7 @@ class ActorSerializer(serializers.ModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ("id", "name")
-
-
-class GenreListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Genre
-        fields = ("name",)
+        fields = "__all__"
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -32,7 +24,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ("id", "title", "description", "duration")
+        fields = "__all__"
 
 
 class MovieListSerializer(MovieSerializer):
@@ -55,3 +47,37 @@ class MovieDetailSerializer(MovieSerializer):
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
+class MovieSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieSession
+        fields = "__all__"
+
+
+class MovieSessionListSerializer(serializers.ModelSerializer):
+    movie_title = serializers.CharField(
+        source="movie.title",
+        read_only=True
+    )
+    cinema_hall_name = serializers.CharField(
+        source="cinema_hall.name",
+        read_only=True
+    )
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity",
+        read_only=True
+    )
+
+    class Meta:
+        model = MovieSession
+        fields = [
+            "id",
+            "show_time",
+            "movie_title",
+            "cinema_hall_name",
+            "cinema_hall_capacity",
+        ]
+
+
+class MovieDetailDetailSerializer(MovieSessionSerializer):
+    movie = MovieListSerializer(many=False, read_only=True)
+    cinema_hall = CinemaHallSerializer(many=False, read_only=True)
