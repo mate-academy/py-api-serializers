@@ -54,7 +54,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all().prefetch_related(
+    queryset = MovieSession.objects.select_related(
         "movie",
         "cinema_hall"
     )
