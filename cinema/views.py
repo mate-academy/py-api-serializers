@@ -29,7 +29,7 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all().prefetch_related(
+    queryset = Movie.objects.prefetch_related(
         "genres"
     ).prefetch_related(
         "actors"
