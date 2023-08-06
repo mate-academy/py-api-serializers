@@ -19,7 +19,6 @@ from cinema.serializers import (
     MovieSessionListSerializer,
     MovieSessionDetailSerializer
 )
-# actors, genres, cinema_halls, movies, movie_sessions
 
 
 class ActorViewSet(viewsets.ModelViewSet):
