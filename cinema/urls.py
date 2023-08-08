@@ -11,13 +11,13 @@ from cinema.views import (
 
 
 router = routers.DefaultRouter()
-router.register("cinema_halls", CinemaHallViewSet, basename="cinema_hall")
+router.register("cinema_halls", CinemaHallViewSet)
 router.register("actors", ActorViewSet)
 router.register("genres", GenreViewSet)
 router.register("movies", MovieViewSet)
 router.register("movie_sessions", MovieSessionViewSet)
 
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = router.urls
 
 app_name = "cinema"
