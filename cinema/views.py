@@ -1,20 +1,17 @@
 from rest_framework import viewsets
 
-from .models import Genre, Actor, CinemaHall, Movie, MovieSession
-from .serializers import (
-    GenreSerializer,
+from cinema.models import Actor, Genre, Movie, MovieSession, CinemaHall
+from cinema.serializers import (
     ActorSerializer,
+    GenreSerializer,
     CinemaHallSerializer,
+    MovieSerializer,
     MovieListSerializer,
     MovieDetailSerializer,
+    MovieSessionSerializer,
     MovieSessionListSerializer,
     MovieSessionDetailSerializer,
 )
-
-
-class GenreViewSet(viewsets.ModelViewSet):
-    queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):
@@ -22,24 +19,42 @@ class ActorViewSet(viewsets.ModelViewSet):
     serializer_class = ActorSerializer
 
 
-class CinemaHallViewSet(viewsets.ModelViewSet):
-    queryset = CinemaHall.objects.all()
-    serializer_class = CinemaHallSerializer
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.all().prefetch_related("genres", "actors")
+    serializer_class = MovieSerializer
 
     def get_serializer_class(self):
         if self.action == "list":
             return MovieListSerializer
-        return MovieDetailSerializer
+
+        if self.action == "retrieve":
+            return MovieDetailSerializer
+
+        return MovieSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset = MovieSession.objects.all().select_related(
+        "movie",
+        "cinema_hall"
+    )
+    serializer_class = MovieSessionSerializer
 
     def get_serializer_class(self):
         if self.action == "list":
             return MovieSessionListSerializer
-        return MovieSessionDetailSerializer
+
+        if self.action == "retrieve":
+            return MovieSessionDetailSerializer
+
+        return MovieSessionSerializer
+
+
+class CinemaHallViewSet(viewsets.ModelViewSet):
+    queryset = CinemaHall.objects.all()
+    serializer_class = CinemaHallSerializer
