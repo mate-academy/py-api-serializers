@@ -28,23 +28,17 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
-    serializer_model = ActorSerializer
-
-    def get_serializer_class(self):
-        return ActorSerializer
+    serializer_class = ActorSerializer
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
-    serializer_model = CinemaHallSerializer
-
-    def get_serializer_class(self):
-        return CinemaHallSerializer
+    serializer_class = CinemaHallSerializer
 
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_model = MovieSerializer
+    serializer_class = MovieSerializer
 
     def get_queryset(self):
         queryset = self.queryset
