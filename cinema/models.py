@@ -98,9 +98,10 @@ class Ticket(models.Model):
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
-            f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
+            f"{str(self.movie_session)} (row: {self.row},"
+            f" seat: {self.seat})"
         )
 
     class Meta:
