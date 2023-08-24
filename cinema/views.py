@@ -1,3 +1,5 @@
+from typing import Union, Type
+
 from rest_framework import viewsets
 
 from cinema.models import (
@@ -30,7 +32,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(
         self,
-    ) -> [MovieDetailSerializer | MovieListSerializer | MovieSerializer]:
+    ) -> Type[MovieListSerializer | MovieDetailSerializer | MovieSerializer]:
         if self.action == "list":
             return MovieListSerializer
         if self.action == "retrieve":
@@ -59,7 +61,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(
         self,
-    ) -> [
+    ) -> Type[
         MovieSessionListSerializer
         | MovieSessionDetailSerializer
         | MovieSessionSerializer
