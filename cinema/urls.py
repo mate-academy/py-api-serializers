@@ -2,9 +2,9 @@ from django.urls import path, include
 from rest_framework import routers
 
 from cinema.views import (
+    ActorViewSet,
     CinemaHallViewSet,
     GenreViewSet,
-    ActorViewSet,
     MovieViewSet,
     MovieSessionViewSet,
     OrderViewSet
