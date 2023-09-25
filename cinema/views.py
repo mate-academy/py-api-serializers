@@ -9,15 +9,15 @@ from cinema.models import (
     MovieSession
 )
 from cinema.serializers import (
-    MovieSerializers,
-    MovieListSerializers,
-    MovieRetrieveSerializers,
-    MovieSessionSerializers,
-    MovieSessionListSerializers,
-    MovieSessionRetrieveSerializers,
-    CinemaHallSerializers,
-    GenreSerializers,
-    ActorSerializers,
+    MovieSerializer,
+    MovieListSerializer,
+    MovieRetrieveSerializer,
+    MovieSessionSerializer,
+    MovieSessionListSerializer,
+    MovieSessionRetrieveSerializer,
+    CinemaHallSerializer,
+    GenreSerializer,
+    ActorSerializer,
 
 
 )
@@ -25,38 +25,38 @@ from cinema.serializers import (
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieSerializers
+    serializer_class = MovieSerializer
 
     def get_serializer_class(self):
         if self.action == "list":
-            return MovieListSerializers
+            return MovieListSerializer
         if self.action == "retrieve":
-            return MovieRetrieveSerializers
-        return MovieSerializers
+            return MovieRetrieveSerializer
+        return MovieSerializer
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
-    serializer_class = CinemaHallSerializers
+    serializer_class = CinemaHallSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
-    serializer_class = MovieSessionSerializers
+    serializer_class = MovieSessionSerializer
 
     def get_serializer_class(self):
         if self.action == "list":
-            return MovieSessionListSerializers
+            return MovieSessionListSerializer
         if self.action == "retrieve":
-            return MovieSessionRetrieveSerializers
-        return MovieSessionSerializers
+            return MovieSessionRetrieveSerializer
+        return MovieSessionSerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
-    serializer_class = GenreSerializers
+    serializer_class = GenreSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
-    serializer_class = ActorSerializers
+    serializer_class = ActorSerializer
