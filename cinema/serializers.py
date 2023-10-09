@@ -16,16 +16,24 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-	pass
+	class Meta:
+		model = Actor
+		fields = "__all__"
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
-	pass
+	class Meta:
+		model = CinemaHall
+		fields = "__all__"
 
 
 class MovieSerializer(serializers.ModelSerializer):
-	pass
+	class Meta:
+		model = Movie
+		fields = "__all__"
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-	pass
+	class Meta:
+		model = MovieSession
+		fields = "__all__"
