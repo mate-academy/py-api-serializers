@@ -19,14 +19,9 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
-
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
-
-    def get_full_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}"
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -47,13 +42,9 @@ class MovieListSerializer(MovieSerializer):
         many=True, read_only=True, slug_field="name"
     )
 
-    actors = serializers.SerializerMethodField()
-
-    def get_actors(self, obj):
-        return [
-            f"{actor.first_name} {actor.last_name}"
-            for actor in obj.actors.all()
-        ]
+    actors = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="full_name"
+    )
 
 
 class MovieRetrieveSerializer(MovieSerializer):
@@ -73,9 +64,13 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
-    movie_title = serializers.SerializerMethodField()
-    cinema_hall_name = serializers.SerializerMethodField()
-    cinema_hall_capacity = serializers.SerializerMethodField()
+    movie_title = serializers.CharField(source="movie.title", read_only=True)
+    cinema_hall_name = serializers.CharField(
+        source="cinema_hall.name", read_only=True
+    )
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity", read_only=True
+    )
 
     class Meta:
         model = MovieSession
@@ -86,15 +81,6 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
             "cinema_hall_name",
             "cinema_hall_capacity",
         )
-
-    def get_movie_title(self, obj):
-        return obj.movie.title
-
-    def get_cinema_hall_name(self, obj):
-        return obj.cinema_hall.name
-
-    def get_cinema_hall_capacity(self, obj):
-        return obj.cinema_hall.capacity
 
 
 class MovieSessionRetrieveSerializer(MovieSessionSerializer):
