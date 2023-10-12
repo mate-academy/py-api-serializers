@@ -48,7 +48,7 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MovieSessionListSerializer(MovieSessionSerializer):
+class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(
         max_length=255, source="movie.title", read_only=True
     )
