@@ -32,7 +32,7 @@ class Actor(models.Model):
 
     @property
     def full_name(self):
-        return self.__str__
+        return self.__str__()
 
 
 class Movie(models.Model):
