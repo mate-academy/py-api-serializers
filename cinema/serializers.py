@@ -60,6 +60,16 @@ class MovieSessionListSerializer(MovieSessionSerializer):
         source="cinema_hall.capacity", read_only=True
     )
 
+    class Meta:
+        model = MovieSession
+        fields = (
+            "id",
+            "show_time",
+            "movie_title",
+            "cinema_hall_name",
+            "cinema_hall_capacity",
+        )
+
 
 class MovieSessionDetailSerializer(MovieSessionSerializer):
     movie = MovieListSerializer()
