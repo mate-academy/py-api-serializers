@@ -1,15 +1,20 @@
 from rest_framework import routers
 
-from cinema.views import GenreViewSet, ActorViewSet, CinemaHallViewSet, \
-    MovieViewSet, MovieSessionViewSet
+from cinema.views import (
+    GenreViewSet,
+    ActorViewSet,
+    CinemaHallViewSet,
+    MovieViewSet,
+    MovieSessionViewSet
+)
 
 router = routers.DefaultRouter()
-router.register("genre", GenreViewSet)
-router.register("actor", ActorViewSet)
-router.register("cinema_hall", CinemaHallViewSet)
-router.register("movie", MovieViewSet)
-router.register("movie_session", MovieSessionViewSet)
+router.register("genres", GenreViewSet)
+router.register("actors", ActorViewSet)
+router.register("cinema_halls", CinemaHallViewSet)
+router.register("movies", MovieViewSet)
+router.register("movie_sessions", MovieSessionViewSet)
 
-urlpatterns = [] + router.urls
+urlpatterns = router.urls
 
 app_name = "cinema"
