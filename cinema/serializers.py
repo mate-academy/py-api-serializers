@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import (
+
+from cinema.models import (
     CinemaHall,
     Movie,
     MovieSession,

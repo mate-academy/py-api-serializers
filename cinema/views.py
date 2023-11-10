@@ -1,12 +1,14 @@
 from rest_framework import viewsets
-from .models import (
+
+from cinema.models import (
     Genre,
     CinemaHall,
     Actor,
     Movie,
     MovieSession,
 )
-from .serializers import (
+
+from cinema.serializers import (
     GenreSerializer,
     ActorSerializer,
     CinemaHallSerializer,
@@ -51,7 +53,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return MovieDetailSerializer
 
-        return MovieSerializer
+        return self.serializer_class
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
@@ -71,4 +73,4 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return MovieSessionDetailSerializer
 
-        return MovieSessionSerializer
+        return self.serializer_class
