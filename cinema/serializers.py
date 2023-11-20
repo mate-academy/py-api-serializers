@@ -31,16 +31,19 @@ class MovieDetailSerializer(serializers.ModelSerializer):
 
 
 class MovieListSerializer(MovieDetailSerializer):
-    actors = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field="full_name",
-    )
-    genres = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field="name",
-    )
+    actors = serializers.StringRelatedField(many=True, read_only=True)
+    genres = serializers.StringRelatedField(many=True, read_only=True)
+
+
+class MovieCreateSerializer(serializers.ModelSerializer):
+    genres = serializers.PrimaryKeyRelatedField(
+        queryset=Genre.objects.all(), many=True)
+    actors = serializers.PrimaryKeyRelatedField(
+        queryset=Actor.objects.all(), many=True)
+
+    class Meta:
+        model = Movie
+        fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
@@ -53,10 +56,21 @@ class MovieSessionDetailSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
-    cinema_hall_name = serializers.ReadOnlyField(source="cinema_hall.name")
-    cinema_hall_capacity = serializers.ReadOnlyField(
-        source="cinema_hall.capacity")
-    movie_title = serializers.ReadOnlyField(source="movie.title")
+    cinema_hall_name = serializers.SlugRelatedField(
+        queryset=CinemaHall.objects.all(),
+        source="cinema_hall",
+        slug_field="name"
+    )
+    cinema_hall_capacity = serializers.SlugRelatedField(
+        source="cinema_hall",
+        queryset=CinemaHall.objects.all(),
+        slug_field="capacity",
+    )
+    movie_title = serializers.SlugRelatedField(
+        source="movie",
+        queryset=Movie.objects.all(),
+        slug_field="title",
+    )
 
     class Meta:
         model = MovieSession
