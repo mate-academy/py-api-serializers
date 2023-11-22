@@ -6,3 +6,7 @@
 venv/
 .pytest_cache/
 **__pycache__/
+Pipfile
+Pipfile.lock
+pyproject.toml
+pytest.ini
