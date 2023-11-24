@@ -42,12 +42,31 @@ class CinemaHallDetailSerializer(CinemaHallSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    genres = serializers.StringRelatedField(many=True)
+    genres = serializers.SlugRelatedField(
+        many=True,
+        queryset=Genre.objects.all(),
+        slug_field="name"
+    )
     actors = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Movie
         fields = ("id", "title", "description", "duration", "genres", "actors")
+
+
+class MovieCreateSerializer(serializers.ModelSerializer):
+    genres = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Genre.objects.all()
+    )
+    actors = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Actor.objects.all()
+    )
+
+    class Meta:
+        model = Movie
+        fields = ("title", "description", "duration", "genres", "actors")
 
 
 class MovieDetailSerializer(MovieSerializer):

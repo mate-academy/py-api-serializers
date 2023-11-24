@@ -12,14 +12,15 @@ router.register(
     "genres",
     GenreViewSet,
     basename="genres"
+
 )
 router.register(
-    "actors",
-    ActorViewSet,
+    "actors"
+    , ActorViewSet,
     basename="actors"
 )
 router.register(
-    "cinema-halls",
+    "cinema_halls",
     CinemaHallViewSet,
     basename="cinema-halls"
 )
@@ -29,13 +30,13 @@ router.register(
     basename="movies"
 )
 router.register(
-    "movie-sessions",
+    "movie_sessions",
     MovieSessionViewSet,
     basename="movie-sessions"
 )
 
 urlpatterns = [
-    path("api/", include(router.urls))
+    path("", include(router.urls))
 ]
 
 app_name = "cinema"
