@@ -66,7 +66,7 @@ class MovieListSerializer(MovieSerializer):
 
 
 class MovieSessionDetailSerializer(MovieSessionSerializer):
-    movie = MovieListSerializer(many=False, read_only=True)
+    movie = MovieListSerializer(many=False)
     cinema_hall = CinemaHallSerializer(many=False, read_only=True)
 
     class Meta:

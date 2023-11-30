@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from cinema.views import (
@@ -18,7 +18,7 @@ router.register("movie_sessions", MovieSessionViewSet)
 
 
 urlpatterns = [
-
+    path("cinema/", include(router.urls))
 ]
-urlpatterns += router.urls
+
 app_name = "cinema"
