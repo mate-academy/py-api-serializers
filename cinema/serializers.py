@@ -20,9 +20,6 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class ActorFullNameSlugRelatedField(serializers.SlugRelatedField):
-    def __init__(self, slug_field=None, **kwargs) -> None:
-        super().__init__(slug_field=slug_field, **kwargs)
-
     def to_representation(self, actor: Actor) -> str:
         return f"{actor.first_name} {actor.last_name}"
 
