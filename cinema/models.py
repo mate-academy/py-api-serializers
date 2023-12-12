@@ -27,6 +27,10 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
         return self.first_name + " " + self.last_name
 
@@ -52,6 +56,10 @@ class MovieSession(models.Model):
 
     class Meta:
         ordering = ["-show_time"]
+
+    @property
+    def cinema_hall_capacity(self):
+        return self.cinema_hall.seats_in_row * self.cinema_hall.rows
 
     def __str__(self):
         return self.movie.title + " " + str(self.show_time)
