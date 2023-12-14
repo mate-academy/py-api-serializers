@@ -30,6 +30,9 @@ class Actor(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    def full_name(self):
+        return self.first_name + " " + self.last_name
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -91,10 +94,11 @@ class Ticket(models.Model):
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise ValidationError(
                     {
-                        ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                        ticket_attr_name:
+                            f"{ticket_attr_name} number "
+                            "must be in available range: "
+                            f"(1, {cinema_hall_attr_name}): "
+                            f"(1, {count_attrs})"
                     }
                 )
 
