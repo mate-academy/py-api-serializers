@@ -32,6 +32,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "rest_framework",
     "cinema",
     "user",
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -96,15 +102,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation."
-        "MinimumLengthValidator",
+                "MinimumLengthValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation."
-        "CommonPasswordValidator",
+                "CommonPasswordValidator",
     },
     {
         "NAME": "django.contrib.auth.password_validation."
-        "NumericPasswordValidator",
+                "NumericPasswordValidator",
     },
 ]
 
@@ -119,7 +125,7 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
