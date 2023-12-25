@@ -21,8 +21,6 @@ router.register("movie_session", MovieSessionViewSet)
 router.register("orders", OrderViewSet)
 router.register("tickets", TicketViewSet)
 
-urlpatterns = [
-    path("api/cinema/", include(router.urls))
-]
+urlpatterns = [path("api/cinema/", include(router.urls))]
 
 app_name = "cinema"

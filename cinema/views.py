@@ -27,12 +27,12 @@ from cinema.serializers import (
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
-    serializer_class =CinemaHallSerializer
+    serializer_class = CinemaHallSerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
-    serializer_class =GenreSerializer
+    serializer_class = GenreSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):
@@ -65,7 +65,6 @@ class MovieViewSet(viewsets.ModelViewSet):
 class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer
-
 
     def get_queryset(self):
         queryset = super().get_queryset()
