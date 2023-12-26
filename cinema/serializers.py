@@ -11,18 +11,10 @@ from cinema.models import (
 )
 
 
-class CinemaHallSerializer(serializers.ModelSerializer):
-    capacity = serializers.IntegerField(read_only=True)
-
-    class Meta:
-        model = CinemaHall
-        fields = ("id", "name", "rows", "seats_in_row", "capacity")
-
-
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = "__all__"
+        fields = ("id", "name")
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -34,6 +26,14 @@ class ActorSerializer(serializers.ModelSerializer):
 
     def get_full_name(self, instance):
         return f"{instance.first_name} {instance.last_name}"
+
+
+class CinemaHallSerializer(serializers.ModelSerializer):
+    capacity = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = CinemaHall
+        fields = ("id", "name", "rows", "seats_in_row", "capacity")
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -55,7 +55,7 @@ class MovieDetailSerializer(MovieSerializer):
 class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
-        fields = ("id", "show_time", "cinema_hall")
+        fields = ("id", "show_time", "movie", "cinema_hall")
 
 
 class MovieSessionListSerializer(MovieSessionSerializer):
@@ -80,9 +80,9 @@ class MovieSessionListSerializer(MovieSessionSerializer):
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
-    movie = MovieListSerializer(read_only=True)
-    cinema_hall = CinemaHallSerializer(read_only=True)
-    capacity = CinemaHallSerializer(read_only=True)
+    movie = MovieListSerializer(many=False, read_only=True)
+    cinema_hall = CinemaHallSerializer(many=False, read_only=True)
+    capacity = CinemaHallSerializer(many=False, read_only=True)
 
     class Meta:
         model = MovieSession
