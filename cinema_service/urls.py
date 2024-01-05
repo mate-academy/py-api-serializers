@@ -5,6 +5,5 @@ import cinema
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("__debug__/", include("debug_toolbar.urls")),
     path("api/cinema/", include("cinema.urls", namespace="cinema")),
 ]
