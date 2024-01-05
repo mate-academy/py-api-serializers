@@ -24,7 +24,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
-    def get_full_name(self, instance):
+    def get_full_name(self, instance) -> str:
         return f"{instance.first_name} {instance.last_name}"
 
 
