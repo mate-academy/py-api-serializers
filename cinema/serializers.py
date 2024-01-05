@@ -14,10 +14,14 @@ class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
-        fields = "__all__"
+        fields = ("id", "name")
 
 
 class ActorSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(
+        source="__str__",
+        read_only=True
+    )
 
     class Meta:
         model = Actor
