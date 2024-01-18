@@ -21,7 +21,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = serializers.SlugRelatedField(many=True, slug_field="name", read_only=True)
+    genres = serializers.SlugRelatedField(
+        many=True, slug_field="name", read_only=True)
     actors = serializers.StringRelatedField(many=True)
 
 
@@ -72,6 +73,7 @@ class ActorDetailSerializer(ActorSerializer):
 
     def get_full_name(self, obj):
         return f"{obj.first_name} {obj.last_name}"
+
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")

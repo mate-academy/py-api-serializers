@@ -9,7 +9,9 @@ from cinema.serializers import (MovieSerializer,
                                 TicketSerializer,
                                 MovieSessionSerializer,
                                 MovieSessionListSerializer,
-                                ActorDetailSerializer, CinemaHallDetailSerializer, GenreSerializer,
+                                ActorDetailSerializer,
+                                CinemaHallDetailSerializer,
+                                GenreSerializer,
                                 MovieSessionDetailSerializer)
 
 
@@ -44,13 +46,15 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
             return CinemaHallDetailSerializer
         return CinemaHallSerializer
 
+
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all().select_related("movie", "cinema_hall")
+    queryset = MovieSession.objects.all().select_related(
+        "movie", "cinema_hall")
     serializer = MovieSessionSerializer
 
     def get_serializer_class(self):
