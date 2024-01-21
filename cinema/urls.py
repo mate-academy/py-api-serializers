@@ -40,6 +40,4 @@ router.register(
 )
 
 
-urlpatterns = [
-    path("", include(router.urls)),
-]
+urlpatterns = router.urls
