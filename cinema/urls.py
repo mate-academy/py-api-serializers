@@ -21,6 +21,6 @@ router.register("orders", OrderViewSet)
 router.register("tickets", TicketViewSet)
 
 
-urlpatterns = [] + router.urls
+urlpatterns = router.urls
 
 app_name = "cinema"
