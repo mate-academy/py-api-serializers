@@ -22,6 +22,9 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+    # class Meta:
+    #     unique_together = ["name"]
+
 
 class Actor(models.Model):
     first_name = models.CharField(max_length=255)
@@ -29,6 +32,10 @@ class Actor(models.Model):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+    @property
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
 
 
 class Movie(models.Model):
