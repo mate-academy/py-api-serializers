@@ -54,7 +54,10 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset = MovieSession.objects.all().select_related(
+        "movie",
+        "cinema_hall"
+    )
     serializer_class = MovieSessionSerializer
 
     def get_serializer_class(self):
@@ -69,10 +72,10 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().select_related("user")
     serializer_class = OrderSerializer
 
 
 class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
+    queryset = Ticket.objects.all().select_related("movie_session", "order")
     serializer_class = TicketSerializer

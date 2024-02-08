@@ -68,6 +68,11 @@ Vary: Accept
     "id": 1,
     "title": "Harry Potter and the Philosopher's Stone",
     "genres": [
+    {
+            "id": 1,
+            "name": "drama"
+        }
+    ],
     "description": "The first movie about Harry Potter",
     "duration": 210,
         {
