@@ -38,8 +38,9 @@ router.register(
     TicketViewSet,
 )
 
-urlpatterns = router.urls
+urlpatterns = [
 
-path("", include(router.urls)),
+    path("", include(router.urls)),
+]
 
 app_name = "cinema"
