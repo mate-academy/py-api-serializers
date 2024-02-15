@@ -22,10 +22,6 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class GenreViewSerializer(GenreSerializer):
-    pass
-
-
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Movie
