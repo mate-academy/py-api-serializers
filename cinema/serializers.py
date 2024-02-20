@@ -10,12 +10,6 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Actor
-        fields = "__all__"
-
-
-class ActorCustomSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -55,7 +49,7 @@ class MovieListSerializer(MovieSerializer):
 
 class MovieRetrieveSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
-    actors = ActorCustomSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Movie
