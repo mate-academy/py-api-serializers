@@ -3,12 +3,6 @@ from rest_framework import serializers
 from cinema.models import Movie, Actor, Genre, CinemaHall, MovieSession
 
 
-class MovieSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ("id", "title", "description", "duration", "genres", "actors")
-
-
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
@@ -31,3 +25,12 @@ class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
         fields = ("id", "show_time", "movie", "cinema_hall",)
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    genres = serializers.StringRelatedField(many=True)
+    actors = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Movie
+        fields = ("id", "title", "description", "duration", "genres", "actors")
