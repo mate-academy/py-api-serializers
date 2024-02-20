@@ -4,7 +4,6 @@ from cinema.models import Movie, Actor, Genre, CinemaHall, MovieSession
 from cinema.serializers import (
     MovieSerializer,
     MovieListSerializer,
-    MovieDetailSerializer,
     ActorSerializer,
     GenreSerializer,
     CinemaHallSerializer,
@@ -17,10 +16,10 @@ class MovieViewSet(viewsets.ModelViewSet):
     serializer_class = MovieSerializer
 
     def get_serializer_class(self):
-        if self.action in ("list", "retrieve"):
+        if self.action == "list":
             return MovieListSerializer
 
-        return MovieDetailSerializer
+        return MovieSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):
