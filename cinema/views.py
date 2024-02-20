@@ -7,7 +7,8 @@ from cinema.serializers import (
     ActorSerializer,
     GenreSerializer,
     CinemaHallSerializer,
-    MovieSessionSerializer
+    MovieSessionDetailSerializer,
+    MovieSessionListSerializer
 )
 
 
@@ -38,5 +39,15 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all().select_related("cinema_hall")
-    serializer_class = MovieSessionSerializer
+    queryset = (
+        MovieSession.objects.all()
+        .select_related("cinema_hall", "movie")
+        .prefetch_related("movie__actors", "movie__genres")
+    )
+    serializer_class = MovieSessionDetailSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return MovieSessionListSerializer
+
+        return MovieSessionDetailSerializer
