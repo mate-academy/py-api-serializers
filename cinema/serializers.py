@@ -6,7 +6,7 @@ from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -38,7 +38,7 @@ class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field='name'
+        slug_field="name"
     )
     actors = serializers.StringRelatedField(
         many=True,
