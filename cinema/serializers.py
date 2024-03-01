@@ -13,7 +13,6 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = "__all__"
-        # read_only_fields = "id"
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -26,7 +25,6 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ("title", "description", "duration", "genres", "actors")
-        # read_only_fields = "id" #why with this not work?
 
 
 class MovieListSerializer(MovieSerializer):
