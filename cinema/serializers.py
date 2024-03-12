@@ -24,7 +24,7 @@ class MovieSerializer(serializers.ModelSerializer):
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = "__all__"
+        fields = ["id", "first_name", "last_name", "full_name"]
 
 
 class MovieDetailSerializer(MovieSerializer):
