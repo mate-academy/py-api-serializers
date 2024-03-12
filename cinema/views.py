@@ -4,8 +4,14 @@ from rest_framework.response import Response
 from rest_framework import status, generics, mixins, viewsets
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
-
-from cinema.models import Movie, Genre, Actor, CinemaHall, MovieSession, Order, Ticket
+from cinema.models import (
+    Movie,
+    Genre,
+    Actor,
+    CinemaHall,
+    MovieSession,
+    Order,
+    Ticket)
 from cinema.serializers import (
     MovieSerializer,
     GenreSerializer,

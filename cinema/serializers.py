@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from .models import CinemaHall, Genre, Actor, Movie, MovieSession, Order, Ticket
+from .models import (
+    CinemaHall,
+    Genre,
+    Actor,
+    Movie,
+    MovieSession,
+    Order,
+    Ticket)
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -26,7 +33,10 @@ class MovieDetailSerializer(MovieSerializer):
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
+    genres = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="name")
     actors = serializers.StringRelatedField(many=True)
 
 
@@ -45,18 +55,33 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
-    show_time = serializers.IntegerField(source="movie.duration", read_only=True)
-    movie_title = serializers.CharField(source="movie.title", read_only=True)
-    cinema_hall_name = serializers.CharField(source="cinema_hall.name", read_only=True)
-    cinema_hall_capacity = serializers.IntegerField(source="cinema_hall.capacity", read_only=True)
+    show_time = serializers.IntegerField(
+        source="movie.duration",
+        read_only=True)
+    movie_title = serializers.CharField(
+        source="movie.title",
+        read_only=True)
+    cinema_hall_name = serializers.CharField(
+        source="cinema_hall.name",
+        read_only=True)
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity",
+        read_only=True)
 
     class Meta(CinemaHallSerializer.Meta):
-        fields = ["id", "show_time", "movie_title", "cinema_hall_name", "cinema_hall_capacity"]
+        fields = [
+            "id",
+            "show_time",
+            "movie_title",
+            "cinema_hall_name",
+            "cinema_hall_capacity"]
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer()
-    show_time = serializers.IntegerField(source="movie.duration", read_only=True)
+    show_time = serializers.IntegerField(
+        source="movie.duration",
+        read_only=True)
     cinema_hall = CinemaHallSerializer()
 
     class Meta(CinemaHallSerializer.Meta):
