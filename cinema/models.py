@@ -27,8 +27,12 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.full_name
 
 
 class Movie(models.Model):
@@ -40,6 +44,7 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ["title"]
+        default_related_name = "movies"
 
     def __str__(self):
         return self.title
