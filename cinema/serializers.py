@@ -57,24 +57,21 @@ class MovieDetailSerializer(MovieSerializer):
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-    movie = MovieSerializer()
-    cinema_hall = CinemaHallSerializer()
-
     class Meta:
         model = MovieSession
         fields = ("id", "show_time", "movie", "cinema_hall")
 
 
-class MovieSessionListSerializer(MovieSessionSerializer):
-    movie_title = serializers.CharField(source="movie.title", read_only=True)
-    cinema_hall_name = serializers.CharField(
-        source="cinema_hall.name",
-        read_only=True
+class MovieSessionListSerializer(serializers.ModelSerializer):
+    movie_title = serializers.CharField(
+        source="movie.title", read_only=True
     )
-    cinema_hall_capacity = (serializers.IntegerField(
-        source="cinema_hall.capacity",
-        read_only=True
-    ))
+    cinema_hall_name = serializers.CharField(
+        source="cinema_hall.name", read_only=True
+    )
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity", read_only=True
+    )
 
     class Meta:
         model = MovieSession
@@ -85,3 +82,8 @@ class MovieSessionListSerializer(MovieSessionSerializer):
             "cinema_hall_name",
             "cinema_hall_capacity"
         )
+
+
+class MovieSessionDetailSerializer(MovieSessionSerializer):
+    movie = MovieListSerializer(read_only=True)
+    cinema_hall = CinemaHallSerializer(read_only=True)
