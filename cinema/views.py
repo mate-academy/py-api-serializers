@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from rest_framework import viewsets
 
 from .models import (
@@ -9,28 +10,32 @@ from .models import (
 )
 from .serializers import (
     MovieSerializer,
+    MovieListSerializer,
     MovieDetailSerializer,
     ActorSerializer,
     GenreSerializer,
     CinemaHallSerializer,
     MovieSessionSerializer,
+    MovieSessionListSerializer,
     MovieSessionDetailSerializer,
 )
 
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.prefetch_related("genres", "actors")
-    serializer_class = MovieSerializer
+    serializer_class = MovieListSerializer
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             return MovieDetailSerializer
+        if self.action in ("create", "update", "partial_update"):
+            return MovieSerializer
         return self.serializer_class
 
     def get_queryset(self):
-        if self.action not in ("list", "retrieve"):
-            return self.queryset
-        return self.queryset.prefetch_related("genres__movies__actors")
+        if self.action in ("list", "retrieve"):
+            return self.queryset.prefetch_related("genres__movies__actors")
+        return self.queryset
 
 
 class ActorViewSet(viewsets.ModelViewSet):
@@ -49,15 +54,20 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
-    serializer_class = MovieSessionSerializer
+    queryset = MovieSession.objects.select_related("cinema_hall", "movie")
+    serializer_class = MovieSessionListSerializer
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             return MovieSessionDetailSerializer
+        if self.action in ("create", "update", "partial_update"):
+            return MovieSessionSerializer
         return self.serializer_class
 
     def get_queryset(self):
-        if self.action not in ("list", "retrieve"):
-            return self.queryset
-        return self.queryset.select_related("cinema_hall", "movie")
+        if self.action == "retrieve":
+            return self.queryset.prefetch_related(
+                Prefetch("movie__actors"),
+                Prefetch("movie__genres"),
+            ).select_related("cinema_hall", "movie")
+        return self.queryset
