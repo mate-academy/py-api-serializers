@@ -10,14 +10,10 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
-
-    def get_full_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}"
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -33,32 +29,22 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
-class MovieListSerializer(serializers.ModelSerializer):
+class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         read_only=True,
         many=True,
         slug_field="name"
     )
-    actors = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Movie
-        fields = ("id", "title", "description", "duration", "genres", "actors")
-
-    def get_actors(self, obj):
-        return [
-            f"{actor.first_name} {actor.last_name}"
-            for actor in obj.actors.all()
-        ]
+    actors = serializers.SlugRelatedField(
+        read_only=True,
+        many=True,
+        slug_field="full_name"
+    )
 
 
-class MovieDetailSerializer(serializers.ModelSerializer):
+class MovieDetailSerializer(MovieSerializer):
     genres = GenreSerializer(read_only=True, many=True)
     actors = ActorSerializer(read_only=True, many=True)
-
-    class Meta:
-        model = Movie
-        fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
@@ -91,7 +77,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True, many=False)
-    cinema_hall = CinemaHallSerializer(read_only=True, many=False)
+    cinema_hall = CinemaHallSerializer(read_only=True)
 
     class Meta:
         model = MovieSession
