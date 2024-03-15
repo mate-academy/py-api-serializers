@@ -1,6 +1,12 @@
 from rest_framework import routers
 
-from cinema.views import GenreViewSet, ActorViewSet, MovieViewSet, CinemaHallViewSet, MovieSessionViewSet
+from cinema.views import (
+    GenreViewSet,
+    ActorViewSet,
+    MovieViewSet,
+    CinemaHallViewSet,
+    MovieSessionViewSet
+)
 
 
 router = routers.DefaultRouter()
