@@ -32,17 +32,16 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = serializers.SerializerMethodField()
-    actors = serializers.SerializerMethodField()
-
-    def get_genres(self, obj):
-        return [genre.name for genre in obj.genres.all()]
-
-    def get_actors(self, obj):
-        return [
-            actor.full_name
-            for actor in obj.actors.all()
-        ]
+    genres = serializers.SlugRelatedField(
+        slug_field="name",
+        queryset=Genre.objects.all(),
+        many=True
+    )
+    actors = serializers.SlugRelatedField(
+        slug_field="full_name",
+        queryset=Actor.objects.all(),
+        many=True
+    )
 
     class Meta:
         model = Movie
