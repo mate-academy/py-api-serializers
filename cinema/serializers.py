@@ -10,14 +10,11 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
+    full_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
-
-    def get_full_name(self, obj):
-        return f"{obj.first_name} {obj.last_name}"
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -44,10 +41,6 @@ class MovieListSerializer(MovieSerializer):
 class MovieDetailSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Movie
-        fields = ("id", "title", "description", "duration", "genres", "actors")
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
@@ -77,9 +70,5 @@ class MovieSessionListSerializer(MovieSessionSerializer):
 
 
 class MovieSessionDetailSerializer(MovieSessionSerializer):
-    movie = MovieListSerializer(many=False, read_only=True)
-    cinema_hall = CinemaHallSerializer(many=False, read_only=True)
-
-    class Meta:
-        model = MovieSession
-        fields = ("id", "show_time", "movie", "cinema_hall")
+    movie = MovieListSerializer(read_only=True)
+    cinema_hall = CinemaHallSerializer(read_only=True)
