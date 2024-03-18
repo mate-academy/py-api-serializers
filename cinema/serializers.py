@@ -78,5 +78,5 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionDetailSerializer(MovieSessionSerializer):
-    movie = MovieListSerializer(many=False)
-    cinema_hall = CinemaHallSerializer(many=False)
+    movie = MovieListSerializer()
+    cinema_hall = CinemaHallSerializer()
