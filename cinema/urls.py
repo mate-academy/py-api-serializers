@@ -1,5 +1,3 @@
-from django.urls import path, include
-
 from rest_framework import routers
 
 from .views import (
@@ -23,6 +21,4 @@ router.register(
     MovieSessionViewSet,
     basename="movies-sessions")
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = router.urls
