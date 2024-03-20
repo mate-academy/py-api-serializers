@@ -14,7 +14,8 @@ router.register("cinema_halls", CinemaHallViewSet, basename="cinema-halls")
 router.register("genres", GenreViewSet, basename="genres")
 router.register("actors", ActorViewSet, basename="actors")
 router.register("movies", MovieViewSet, basename="movies")
-router.register("movie_sessions", MovieSessionViewSet, basename="movie-sessions")
+router.register("movie_sessions",
+                MovieSessionViewSet, basename="movie-sessions")
 
 app_name = "cinema"
 
