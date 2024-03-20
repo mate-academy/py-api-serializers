@@ -43,7 +43,7 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MovieSessionListSerializer(MovieSessionSerializer):
+class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(source="movie.title")
     cinema_hall_name = serializers.CharField(source="cinema_hall.name")
     cinema_hall_capacity = serializers.IntegerField(
@@ -61,7 +61,7 @@ class MovieSessionListSerializer(MovieSessionSerializer):
         )
 
 
-class MovieSessionRetrieveSerializer(MovieSessionSerializer):
+class MovieSessionRetrieveSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True)
     cinema_hall = CinemaHallSerializer(read_only=True)
 
