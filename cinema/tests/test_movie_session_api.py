@@ -71,7 +71,9 @@ class MovieSessionApiTests(TestCase):
             response.data["movie"]["description"], "Titanic description"
         )
         self.assertEqual(response.data["movie"]["duration"], 123)
-        self.assertEqual(response.data["movie"]["genres"], ["Drama", "Comedy"])
+        self.assertEqual(
+            response.data["movie"]["genres"], ["Drama", "Comedy"]
+        )
         self.assertEqual(response.data["movie"]["actors"], ["Kate Winslet"])
         self.assertEqual(response.data["cinema_hall"]["capacity"], 140)
         self.assertEqual(response.data["cinema_hall"]["rows"], 10)
