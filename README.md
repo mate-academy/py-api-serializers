@@ -117,7 +117,7 @@ Vary: Accept
         "movie_title": "Harry Potter and the Prisoner of Azkaban",
         "cinema_hall_name": "Green",
         "cinema_hall_capacity": 150
-    },   
+    },
     {
         "id": 1,
         "show_time": "2022-06-15T12:25:00Z",
