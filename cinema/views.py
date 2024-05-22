@@ -9,7 +9,7 @@ from .serializers import (
     MovieSessionSerializer,
     MovieSessionDetailSerializer,
     MovieSessionWriteSerializer,
-    MovieWriteSerializer
+    MovieWriteSerializer,
 )
 
 
@@ -32,7 +32,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return MovieListSerializer
         if self.action == "retrieve":
             return MovieSerializer
@@ -43,7 +43,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return MovieSessionSerializer
         if self.action == "retrieve":
             return MovieSessionDetailSerializer
