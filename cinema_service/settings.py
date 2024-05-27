@@ -29,8 +29,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
