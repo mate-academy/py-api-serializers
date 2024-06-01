@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
     "cinema",
     "user",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
