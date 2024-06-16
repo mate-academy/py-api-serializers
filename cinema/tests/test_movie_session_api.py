@@ -58,6 +58,7 @@ class MovieSessionApiTests(TestCase):
                 "cinema_hall": 1,
                 "show_time": datetime.datetime.now(),
             },
+
         )
         movie_sessions = MovieSession.objects.all()
         self.assertEqual(movies.status_code, status.HTTP_201_CREATED)
