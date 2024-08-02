@@ -8,6 +8,9 @@ class CinemaHall(models.Model):
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
+    class Meta:
+        verbose_name_plural = "cinema_halls"
+
     @property
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
@@ -26,6 +29,10 @@ class Genre(models.Model):
 class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+
+    @property
+    def full_name(self) -> str:
+        return str(self)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -52,6 +59,7 @@ class MovieSession(models.Model):
 
     class Meta:
         ordering = ["-show_time"]
+        verbose_name_plural = "movie_sessions"
 
     def __str__(self):
         return self.movie.title + " " + str(self.show_time)
