@@ -1,1 +1,81 @@
-# write serializers here
+from rest_framework import serializers
+
+from cinema import models
+
+
+class CinemaHallSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CinemaHall
+        fields = ["id", "name", "rows", "seats_in_row", "capacity"]
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Genre
+        fields = ["id", "name"]
+
+
+class ActorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Actor
+        fields = ["id", "first_name", "last_name", "full_name"]
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Movie
+        fields = [
+            "id", "title", "description",
+            "duration", "genres", "actors"
+        ]
+
+
+class MovieRetrieveSerializer(MovieSerializer):
+    genres = GenreSerializer(many=True)
+    actors = ActorSerializer(many=True)
+
+
+class MovieListSerializer(MovieSerializer):
+    genres = serializers.SlugRelatedField(
+        slug_field="name",
+        read_only=True,
+        many=True
+    )
+    actors = serializers.SlugRelatedField(
+        slug_field="full_name",
+        read_only=True,
+        many=True
+    )
+
+
+class MovieSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.MovieSession
+        fields = ["id", "show_time", "movie", "cinema_hall"]
+
+
+class MovieSessionRetrieveSerializer(MovieSessionSerializer):
+    movie = MovieListSerializer()
+    cinema_hall = CinemaHallSerializer()
+
+
+class MovieSessionListSerializer(serializers.ModelSerializer):
+    movie_title = serializers.CharField(
+        source="movie.title",
+        read_only=True
+    )
+    cinema_hall_name = serializers.CharField(
+        source="cinema_hall.name",
+        read_only=True
+    )
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity",
+        read_only=True
+    )
+
+    class Meta:
+        model = models.MovieSession
+        fields = [
+            "id", "show_time", "movie_title",
+            "cinema_hall_name", "cinema_hall_capacity"
+        ]
