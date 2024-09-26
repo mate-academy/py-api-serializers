@@ -27,11 +27,16 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
         return self.first_name + " " + self.last_name
 
 
 class Movie(models.Model):
+    DESCRIPTION_PREVIEW_LEN = 50
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     duration = models.IntegerField()
