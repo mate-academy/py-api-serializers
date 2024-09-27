@@ -1,12 +1,15 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.conf import settings
 
 
 class CinemaHall(models.Model):
     name = models.CharField(max_length=255)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
+
+    class Meta:
+        verbose_name = "cinema_hall"
 
     @property
     def capacity(self) -> int:
@@ -19,7 +22,7 @@ class CinemaHall(models.Model):
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -27,8 +30,12 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    def __str__(self):
+    @property
+    def full_name(self) -> str:
         return self.first_name + " " + self.last_name
+
+    def __str__(self) -> str:
+        return self.full_name
 
 
 class Movie(models.Model):
@@ -40,8 +47,9 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ["title"]
+        verbose_name = "movie_session"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
@@ -53,7 +61,7 @@ class MovieSession(models.Model):
     class Meta:
         ordering = ["-show_time"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.movie.title + " " + str(self.show_time)
 
 
@@ -63,7 +71,7 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.created_at)
 
     class Meta:
@@ -80,7 +88,7 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    def clean(self):
+    def clean(self) -> None:
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
             (self.row, "row", "count_rows"),
             (self.seat, "seat", "count_seats_in_row"),
@@ -92,13 +100,13 @@ class Ticket(models.Model):
                 raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                                          f"must be in available range: "
+                                          f"(1, {cinema_hall_attr_name}): "
+                                          f"(1, {count_attrs})"
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
         )
