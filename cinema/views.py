@@ -41,12 +41,6 @@ class MovieViewSet(viewsets.ModelViewSet):
             return MovieRetrieveSerializer
         return MovieSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        print(type(serializer.data))
-        return Response(serializer.data)
-
     def get_queryset(self):
         queryset = self.queryset
         if self.action == ("list", "retrieve"):
