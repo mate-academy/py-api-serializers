@@ -1,10 +1,12 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.conf import settings
+
+MAX_LENGTH = 255
 
 
 class CinemaHall(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=MAX_LENGTH)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
@@ -12,58 +14,64 @@ class CinemaHall(models.Model):
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        return f"{self.name} (seats: {self.capacity})"
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=MAX_LENGTH, unique=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
 class Actor(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=MAX_LENGTH)
+    last_name = models.CharField(max_length=MAX_LENGTH)
 
-    def __str__(self):
-        return self.first_name + " " + self.last_name
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=MAX_LENGTH)
     description = models.TextField()
     duration = models.IntegerField()
-    genres = models.ManyToManyField(Genre)
-    actors = models.ManyToManyField(Actor)
+    genres = models.ManyToManyField(Genre, related_name="movies")
+    actors = models.ManyToManyField(Actor, related_name="movies")
 
     class Meta:
         ordering = ["title"]
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return f"{self.title} ({self.duration} minutes)"
 
 
 class MovieSession(models.Model):
     show_time = models.DateTimeField()
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    cinema_hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE)
+    movie = models.ForeignKey(
+        Movie, on_delete=models.CASCADE, related_name="movie_sessions"
+    )
+    cinema_hall = models.ForeignKey(
+        CinemaHall, on_delete=models.CASCADE, related_name="movie_sessions"
+    )
 
     class Meta:
         ordering = ["-show_time"]
 
-    def __str__(self):
-        return self.movie.title + " " + str(self.show_time)
+    def __str__(self) -> str:
+        return f"{self.movie.title} {str(self.show_time)}"
 
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="orders"
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.created_at)
 
     class Meta:
@@ -80,7 +88,7 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    def clean(self):
+    def clean(self) -> None:
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
             (self.row, "row", "count_rows"),
             (self.seat, "seat", "count_seats_in_row"),
@@ -91,17 +99,19 @@ class Ticket(models.Model):
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise ValidationError(
                     {
-                        ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                        ticket_attr_name: (
+                            f"{ticket_attr_name} number "
+                            "must be in available range: "
+                            f"(1, {cinema_hall_attr_name}): "
+                            f"(1, {count_attrs})"
+                        )
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
         )
 
     class Meta:
-        unique_together = ("movie_session", "row", "seat")
+        unique_together = ["movie_session", "row", "seat"]
