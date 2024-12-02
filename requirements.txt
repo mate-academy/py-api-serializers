@@ -4,3 +4,15 @@ flake8==5.0.4
 flake8-quotes==3.3.1
 flake8-variables-names==0.0.5
 pep8-naming==0.13.2
+pip~=24.3.1
+pytz~=2024.2
+pytest~=8.3.4
+sqlparse~=0.5.2
+asgiref~=3.8.1
+colorama~=0.4.6
+serializers~=0.2.4
+pyflakes~=2.5.0
+pycodestyle~=2.9.1
+pluggy~=1.5.0
+iniconfig~=2.0.0
+packaging~=24.2
