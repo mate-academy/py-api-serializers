@@ -56,6 +56,12 @@ class MovieSession(models.Model):
     def __str__(self):
         return self.movie.title + " " + str(self.show_time)
 
+    def clean(self):
+        if not self.movie:
+            raise ValidationError("Movie must be provided.")
+        if not self.cinema_hall:
+            raise ValidationError("Cinema Hall must be provided.")
+
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
