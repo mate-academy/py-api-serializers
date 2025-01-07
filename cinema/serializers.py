@@ -54,7 +54,7 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionListSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
+    movie_session_id = serializers.IntegerField(source="id", read_only=True)
     show_time = serializers.CharField(read_only=True)
     movie_title = serializers.CharField(
         source="movie.title", read_only=True
