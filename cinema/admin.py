@@ -15,5 +15,18 @@ admin.site.register(Genre)
 admin.site.register(Actor)
 admin.site.register(Movie)
 admin.site.register(MovieSession)
-admin.site.register(Order)
-admin.site.register(Ticket)
+
+
+# admin.site.register(Order)
+# admin.site.register(Ticket)
+class TicketInline(admin.TabularInline):
+    model = Ticket
+    extra = 1
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [TicketInline]
+
+    class Meta:
+        model = Order
