@@ -34,7 +34,7 @@ class Actor(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    duration = models.IntegerField()
+    duration = models.IntegerField()  # duration in minutes
     genres = models.ManyToManyField(Genre)
     actors = models.ManyToManyField(Actor)
 
@@ -54,7 +54,7 @@ class MovieSession(models.Model):
         ordering = ["-show_time"]
 
     def __str__(self):
-        return self.movie.title + " " + str(self.show_time)
+        return f"{self.movie.title} ({self.show_time})"
 
 
 class Order(models.Model):
@@ -63,11 +63,11 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
-    def __str__(self):
-        return str(self.created_at)
-
     class Meta:
         ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Order {self.id} ({self.created_at})"
 
 
 class Ticket(models.Model):
@@ -82,26 +82,20 @@ class Ticket(models.Model):
 
     def clean(self):
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
-            (self.row, "row", "count_rows"),
-            (self.seat, "seat", "count_seats_in_row"),
+            (self.row, "row", "rows"),
+            (self.seat, "seat", "seats_in_row"),
         ]:
-            count_attrs = getattr(
-                self.movie_session.cinema_hall, cinema_hall_attr_name
-            )
+            count_attrs = getattr(self.movie_session.cinema_hall, cinema_hall_attr_name)
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise ValidationError(
                     {
-                        ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
+                        ticket_attr_name: f"{ticket_attr_name} number must be in available range: "
                         f"(1, {count_attrs})"
                     }
                 )
 
     def __str__(self):
-        return (
-            f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
-        )
+        return f"Ticket for {str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
