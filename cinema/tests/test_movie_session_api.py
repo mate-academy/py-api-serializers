@@ -46,6 +46,7 @@ class MovieSessionApiTests(TestCase):
         }
         self.assertEqual(movie_sessions.status_code, status.HTTP_200_OK)
         for field in movie_session:
+            print(movie_sessions.data[0])
             self.assertEqual(
                 movie_sessions.data[0][field], movie_session[field]
             )
