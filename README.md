@@ -23,7 +23,8 @@ endpoints should be implemented:
 
 Additional requirements:
 1. For the list movie endpoint, genres and actors should be returned as lists of strings.
-`"genres"` list should contain names of the genres, and the `"actors"` list should contain full names of actors and actresses.
+`"genres"` list should contain names of the genres, 
+and the `"actors"` list should contain full names of actors and actresses.
 Example:
 ```
 GET api/cinema/movies/ 
