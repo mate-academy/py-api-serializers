@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -7,6 +6,7 @@ from cinema.models import Actor
 
 
 class ActorApiTests(TestCase):
+
     def setUp(self):
         self.client = APIClient()
         Actor.objects.create(first_name="George", last_name="Clooney")
@@ -16,9 +16,8 @@ class ActorApiTests(TestCase):
         response = self.client.get("/api/cinema/actors/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         actors_full_names = [actor["full_name"] for actor in response.data]
-        self.assertEqual(
-            sorted(actors_full_names), ["George Clooney", "Keanu Reeves"]
-        )
+        self.assertEqual(sorted(actors_full_names),
+                         ["George Clooney", "Keanu Reeves"])
 
     def test_post_actors(self):
         response = self.client.post(
@@ -59,15 +58,11 @@ class ActorApiTests(TestCase):
         )
 
     def test_delete_actor(self):
-        response = self.client.delete(
-            "/api/cinema/actors/1/",
-        )
+        response = self.client.delete("/api/cinema/actors/1/", )
         db_actors_id_1 = Actor.objects.filter(id=1)
         self.assertEqual(db_actors_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_invalid_actor(self):
-        response = self.client.delete(
-            "/api/cinema/actors/1000/",
-        )
+        response = self.client.delete("/api/cinema/actors/1000/", )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

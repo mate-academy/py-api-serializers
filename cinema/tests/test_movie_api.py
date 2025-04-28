@@ -1,20 +1,16 @@
 from django.test import TestCase
-
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 
-from cinema.models import Movie, Genre, Actor
+from cinema.models import Actor, Genre, Movie
 
 
 class MovieApiTests(TestCase):
+
     def setUp(self):
         self.client = APIClient()
-        drama = Genre.objects.create(
-            name="Drama",
-        )
-        comedy = Genre.objects.create(
-            name="Comedy",
-        )
+        drama = Genre.objects.create(name="Drama", )
+        comedy = Genre.objects.create(name="Comedy", )
         actress = Actor.objects.create(first_name="Kate", last_name="Winslet")
         movie = Movie.objects.create(
             title="Titanic",
@@ -62,11 +58,9 @@ class MovieApiTests(TestCase):
                 "title": "Superman",
                 "description": "Superman description",
                 "duration": 123,
-                "actors": [
-                    {
-                        "id": 3,
-                    }
-                ],
+                "actors": [{
+                    "id": 3,
+                }],
             },
         )
         superman_movies = Movie.objects.filter(title="Superman")
@@ -83,9 +77,8 @@ class MovieApiTests(TestCase):
         self.assertEqual(response.data["genres"][1]["name"], "Comedy")
         self.assertEqual(response.data["actors"][0]["first_name"], "Kate")
         self.assertEqual(response.data["actors"][0]["last_name"], "Winslet")
-        self.assertEqual(
-            response.data["actors"][0]["full_name"], "Kate Winslet"
-        )
+        self.assertEqual(response.data["actors"][0]["full_name"],
+                         "Kate Winslet")
 
     def test_get_invalid_movie(self):
         response = self.client.get("/api/cinema/movies/100/")
@@ -113,15 +106,11 @@ class MovieApiTests(TestCase):
         self.assertEqual(db_movie.title, "Watchman")
 
     def test_delete_movie(self):
-        response = self.client.delete(
-            "/api/cinema/movies/1/",
-        )
+        response = self.client.delete("/api/cinema/movies/1/", )
         db_movies_id_1 = Movie.objects.filter(id=1)
         self.assertEqual(db_movies_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_invalid_movie(self):
-        response = self.client.delete(
-            "/api/cinema/movies/1000/",
-        )
+        response = self.client.delete("/api/cinema/movies/1000/", )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

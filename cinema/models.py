@@ -1,6 +1,6 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.conf import settings
 
 
 class CinemaHall(models.Model):
@@ -11,6 +11,10 @@ class CinemaHall(models.Model):
     @property
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
+
+    @property
+    def is_small(self) -> bool:
+        return self.rows < 20
 
     def __str__(self):
         return self.name
@@ -28,7 +32,7 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return f"{self.first_name} {self.last_name}"
 
 
 class Movie(models.Model):
@@ -54,7 +58,7 @@ class MovieSession(models.Model):
         ordering = ["-show_time"]
 
     def __str__(self):
-        return self.movie.title + " " + str(self.show_time)
+        return f"{self.movie.title} {self.show_time}"
 
 
 class Order(models.Model):
@@ -63,11 +67,11 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
-    def __str__(self):
-        return str(self.created_at)
-
     class Meta:
         ordering = ["-created_at"]
+
+    def __str__(self):
+        return str(self.created_at)
 
 
 class Ticket(models.Model):
@@ -80,28 +84,24 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
+    class Meta:
+        unique_together = ("movie_session", "row", "seat")
+
     def clean(self):
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
-            (self.row, "row", "count_rows"),
-            (self.seat, "seat", "count_seats_in_row"),
+            (self.row, "row", "rows"),
+            (self.seat, "seat", "seats_in_row"),
         ]:
             count_attrs = getattr(
                 self.movie_session.cinema_hall, cinema_hall_attr_name
             )
             if not (1 <= ticket_attr_value <= count_attrs):
-                raise ValidationError(
-                    {
-                        ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
-                    }
-                )
+                raise ValidationError({
+                    ticket_attr_name: (
+                        f"{ticket_attr_name} number must be in available range: "
+                        f"(1, {cinema_hall_attr_name}): (1, {count_attrs})"
+                    )
+                })
 
     def __str__(self):
-        return (
-            f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
-        )
-
-    class Meta:
-        unique_together = ("movie_session", "row", "seat")
+        return f"{self.movie_session} (row: {self.row}, seat: {self.seat})"

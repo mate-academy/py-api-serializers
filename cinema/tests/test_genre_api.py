@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -7,14 +6,11 @@ from cinema.models import Genre
 
 
 class GenreApiTests(TestCase):
+
     def setUp(self):
         self.client = APIClient()
-        Genre.objects.create(
-            name="Comedy",
-        )
-        Genre.objects.create(
-            name="Drama",
-        )
+        Genre.objects.create(name="Comedy", )
+        Genre.objects.create(name="Drama", )
 
     def test_get_genres(self):
         response = self.client.get("/api/cinema/genres/")
@@ -48,15 +44,11 @@ class GenreApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_genre(self):
-        response = self.client.delete(
-            "/api/cinema/genres/1/",
-        )
+        response = self.client.delete("/api/cinema/genres/1/", )
         db_genres_id_1 = Genre.objects.filter(id=1)
         self.assertEqual(db_genres_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_invalid_genre(self):
-        response = self.client.delete(
-            "/api/cinema/genres/1000/",
-        )
+        response = self.client.delete("/api/cinema/genres/1000/", )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
