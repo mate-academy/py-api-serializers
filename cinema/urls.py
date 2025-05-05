@@ -1,1 +1,11 @@
-# write urls here
+from rest_framework.routers import DefaultRouter
+from .views import ActorViewSet, GenreViewSet, MovieViewSet, CinemaHallViewSet, MovieSessionViewSet
+
+router = DefaultRouter()
+router.register(r'actors', ActorViewSet)
+router.register(r'genres', GenreViewSet)
+router.register(r'movies', MovieViewSet)
+router.register(r'cinema_halls', CinemaHallViewSet)
+router.register(r'movie_sessions', MovieSessionViewSet)
+
+urlpatterns = router.urls
