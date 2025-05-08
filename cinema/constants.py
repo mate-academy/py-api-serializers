@@ -1,0 +1,5 @@
+FIELDS_ACTOR = ("id", "first_name", "last_name", "full_name")
+FIELDS_COMMON = ("id", "title", "description", "duration", "genres", "actors")
+FIELDS_SHOWTIME = ("id", "show_time", "movie", "cinema_hall")
+FIELDS_CINEMA_HALL = ("id", "name", "rows", "seats_in_row", "capacity")
+FIELDS_GENRE = ("id", "name")
