@@ -1,19 +1,27 @@
 from django.contrib import admin
+from .models import Genre, Actor, CinemaHall, Movie, MovieSession
 
-from .models import (
-    CinemaHall,
-    Genre,
-    Actor,
-    Movie,
-    MovieSession,
-    Order,
-    Ticket,
-)
+@admin.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
 
-admin.site.register(CinemaHall)
-admin.site.register(Genre)
-admin.site.register(Actor)
-admin.site.register(Movie)
-admin.site.register(MovieSession)
-admin.site.register(Order)
-admin.site.register(Ticket)
+@admin.register(Actor)
+class ActorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'first_name', 'last_name', 'full_name')
+    search_fields = ('first_name', 'last_name')
+
+@admin.register(CinemaHall)
+class CinemaHallAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'rows', 'seats_in_row', 'capacity')
+    list_filter = ('name',)
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'duration')
+    filter_horizontal = ('genres', 'actors')
+
+@admin.register(MovieSession)
+class MovieSessionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'movie', 'cinema_hall', 'show_time')
+    list_filter = ('movie', 'cinema_hall')
