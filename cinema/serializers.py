@@ -1,4 +1,3 @@
-from django.db.models import SlugField
 from rest_framework import serializers
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
@@ -11,10 +10,14 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
+
+    def get_full_name(self, obj) -> str:
+        return str(obj)
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -33,9 +36,7 @@ class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="name"
     )
-    actors = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="full_name"
-    )
+    actors = serializers.StringRelatedField(many=True)
 
 
 class MovieDetailSerializer(MovieSerializer):
