@@ -57,14 +57,6 @@ class MovieRetrieveSerializer(serializers.ModelSerializer):
         model = Movie
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
-    def get_actors(self, obj):
-        return [(f""
-                 f"{actor.first_name} {actor.last_name}")
-                for actor in obj.actors.all()]
-
-    def get_genres(self, obj):
-        return [genre.name for genre in obj.genres.all()]
-
 
 class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
