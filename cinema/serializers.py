@@ -51,7 +51,7 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 class MovieRetrieveSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, read_only=True)
-    actors = serializers.SerializerMethodField()
+    actors = ActorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Movie
