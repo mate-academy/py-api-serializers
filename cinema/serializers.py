@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Genre, Actor, CinemaHall, Movie, MovieSession
 
 
-class GenreSerializers(serializers.ModelSerializer):
+class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ["id", "name"]
@@ -26,12 +26,50 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    genres = GenreSerializers(many=True, read_only=True)
-    actors = ActorSerializer(many=True, read_only=True)
+    genres = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Genre.objects.all()
+    )
+    actors = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Actor.objects.all()
+    )
 
     class Meta:
         model = Movie
-        fields = ["id", "title", "description", "duration", "genres", "actors"]
+        fields = ["id",
+                  "title",
+                  "description",
+                  "duration",
+                  "genres",
+                  "actors"]
+
+    def create(self, validated_data):
+        genres_data = validated_data.pop("genres")
+        actors_data = validated_data.pop("actors")
+        movie = Movie.objects.create(**validated_data)
+        movie.genres.set(genres_data)
+        movie.actors.set(actors_data)
+        return movie
+
+    def update(self, instance, validated_data):
+        genres_data = validated_data.pop("genres", None)
+        actors_data = validated_data.pop("actors", None)
+
+        instance.title = validated_data.get("title",
+                                            instance.title)
+        instance.description = validated_data.get("description",
+                                                  instance.description)
+        instance.duration = validated_data.get("duration",
+                                               instance.duration)
+        instance.save()
+
+        if genres_data is not None:
+            instance.genres.set(genres_data)
+        if actors_data is not None:
+            instance.actors.set(actors_data)
+
+        return instance
 
 
 class MovieListSerializer(serializers.ModelSerializer):
@@ -47,7 +85,8 @@ class MovieListSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "description", "duration", "genres", "actors"]
 
     def get_actors(self, obj):
-        return [actor.full_name for actor in obj.actors.all()]
+        return [f"{actor.first_name} {actor.last_name}"
+                for actor in obj.actors.all()]
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
@@ -57,6 +96,19 @@ class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
         fields = ["id", "show_time", "movie", "cinema_hall"]
+
+    def create(self, validated_data):
+        return MovieSession.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.show_time = validated_data.get("show_time",
+                                                instance.show_time)
+        instance.movie = validated_data.get("movie",
+                                            instance.movie)
+        instance.cinema_hall = validated_data.get("cinema_hall",
+                                                  instance.cinema_hall)
+        instance.save()
+        return instance
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
@@ -68,6 +120,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
     cinema_hall_capacity = serializers.IntegerField(
         source="cinema_hall.capacity",
         read_only=True)
+    show_time = serializers.DateTimeField()
 
     class Meta:
         model = MovieSession
