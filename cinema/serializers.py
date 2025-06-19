@@ -26,27 +26,19 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    genres = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Genre.objects.all()
-    )
-    actors = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Actor.objects.all()
-    )
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Movie
-        fields = ["id",
-                  "title",
-                  "description",
-                  "duration",
-                  "genres",
-                  "actors"]
+        fields = ["id", "title", "description", "duration", "genres", "actors"]
+        extra_kwargs = {
+            "duration": {"min_value": 1, "max_value": 500}
+        }
 
     def create(self, validated_data):
-        genres_data = validated_data.pop("genres")
-        actors_data = validated_data.pop("actors")
+        genres_data = validated_data.pop("genres", [])
+        actors_data = validated_data.pop("actors", [])
         movie = Movie.objects.create(**validated_data)
         movie.genres.set(genres_data)
         movie.actors.set(actors_data)
@@ -56,8 +48,7 @@ class MovieSerializer(serializers.ModelSerializer):
         genres_data = validated_data.pop("genres", None)
         actors_data = validated_data.pop("actors", None)
 
-        instance.title = validated_data.get("title",
-                                            instance.title)
+        instance.title = validated_data.get("title", instance.title)
         instance.description = validated_data.get("description",
                                                   instance.description)
         instance.duration = validated_data.get("duration",
@@ -90,33 +81,33 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-    movie = MovieSerializer(read_only=True)
-    cinema_hall = CinemaHallSerializer(read_only=True)
+    movie_title = serializers.CharField(source="movie.title",
+                                        read_only=True)
+    movie_genres = serializers.SerializerMethodField()
+    cinema_hall_name = serializers.CharField(source="cinema_hall.name",
+                                             read_only=True)
+    cinema_hall_capacity = serializers.IntegerField(
+        source="cinema_hall.capacity",
+        read_only=True)
 
     class Meta:
         model = MovieSession
-        fields = ["id", "show_time", "movie", "cinema_hall"]
+        fields = [
+            "id", "show_time", "movie", "cinema_hall",
+            "movie_title", "movie_genres",
+            "cinema_hall_name", "cinema_hall_capacity"
+        ]
 
-    def create(self, validated_data):
-        return MovieSession.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.show_time = validated_data.get("show_time",
-                                                instance.show_time)
-        instance.movie = validated_data.get("movie",
-                                            instance.movie)
-        instance.cinema_hall = validated_data.get("cinema_hall",
-                                                  instance.cinema_hall)
-        instance.save()
-        return instance
+    def get_movie_genres(self, obj):
+        return [genre.name for genre in obj.movie.genres.all()]
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(source="movie.title",
                                         read_only=True)
-    cinema_hall_name = serializers.CharField(
-        source="cinema_hall.name",
-        read_only=True)
+    movie_genres = serializers.SerializerMethodField()
+    cinema_hall_name = serializers.CharField(source="cinema_hall.name",
+                                             read_only=True)
     cinema_hall_capacity = serializers.IntegerField(
         source="cinema_hall.capacity",
         read_only=True)
@@ -124,8 +115,10 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MovieSession
-        fields = ["id",
-                  "show_time",
-                  "movie_title",
-                  "cinema_hall_name",
-                  "cinema_hall_capacity"]
+        fields = [
+            "id", "show_time", "movie_title", "movie_genres",
+            "cinema_hall_name", "cinema_hall_capacity"
+        ]
+
+    def get_movie_genres(self, obj):
+        return [genre.name for genre in obj.movie.genres.all()]
