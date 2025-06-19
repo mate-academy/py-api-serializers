@@ -39,25 +39,20 @@ class MovieSessionApiTests(TestCase):
         )
 
     def test_get_movie_sessions(self):
-        movie_sessions = self.client.get("/api/cinema/movie_sessions/")
-        movie_session = {
-            "movie_title": "Titanic",
-            "cinema_hall_name": "White",
-            "cinema_hall_capacity": 140,
-        }
-        self.assertEqual(movie_sessions.status_code, status.HTTP_200_OK)
-        for field in movie_session:
-            self.assertEqual(
-                movie_sessions.data[0][field], movie_session[field]
-            )
+        response = self.client.get(f"/api/cinema/movie_sessions/{self.movie_session.id}/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["movie_title"], "Titanic")
+        self.assertEqual(response.data["movie_genres"], ["Comedy", "Drama"])
+        self.assertEqual(response.data["movie"]["description"], "Titanic description")
 
     def test_post_movie_session(self):
+        future_time = timezone.now() + timezone.timedelta(days=1)
         response = self.client.post(
             "/api/cinema/movie_sessions/",
             {
                 "movie_id": self.movie.id,
                 "cinema_hall_id": self.cinema_hall.id,
-                "show_time": "2025-06-20T19:00:00Z"
+                "show_time": future_time.isoformat()
             },
             format='json'
         )
