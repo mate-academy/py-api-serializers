@@ -56,22 +56,22 @@ class MovieApiTests(TestCase):
         self.assertEqual(db_movies.filter(title="Superman").count(), 1)
 
     def test_post_invalid_movies(self):
-        movies = self.client.post(
+        response = self.client.post(
             "/api/cinema/movies/",
             {
-                "title": "Superman",
+                "title": "",  # Puste pole tytułowe
                 "description": "Superman description",
-                "duration": 123,
-                "actors": [
-                    {
-                        "id": 3,
-                    }
-                ],
+                "duration": -10,  # Ujemna długość
+                "genres": [999],  # Nieistniejący gatunek
+                "actors": [999]  # Nieistniejący aktor
             },
+            format='json'
         )
-        superman_movies = Movie.objects.filter(title="Superman")
-        self.assertEqual(movies.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(superman_movies.count(), 0)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("title", response.data)
+        self.assertIn("duration", response.data)
+        self.assertIn("genres", response.data)
+        self.assertIn("actors", response.data)
 
     def test_get_movie(self):
         response = self.client.get("/api/cinema/movies/1/")
