@@ -53,25 +53,25 @@ class MovieSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if "actors" in data:
-
-            non_existent_actors = (set(data["actors"]) -
-                                   set(Actor.objects.values_list(
-                                       "id",
-                                       flat=True)))
+            non_existent_actors = \
+                (set(data["actors"]) - set(Actor.objects.values_list(
+                    "id",
+                    flat=True)))
             if non_existent_actors:
                 raise serializers.ValidationError(
                     {"actors":
-                         f"Actors with IDs {non_existent_actors} do not exist."}
+                     f"Actors with IDs {non_existent_actors} do not exist."}
                 )
 
         if "genres" in data:
-
-            non_existent_genres = (
-                    set(data["genres"]) -
-                    set(Genre.objects.values_list("id", flat=True)))
+            non_existent_genres = \
+                (set(data["genres"]) - set(Genre.objects.values_list(
+                    "id",
+                    flat=True)))
             if non_existent_genres:
                 raise serializers.ValidationError(
-                    {"genres": f"Genres with IDs {non_existent_genres} do not exist."}
+                    {"genres":
+                     f"Genres with IDs {non_existent_genres} do not exist."}
                 )
 
         if "duration" in data and data["duration"] <= 0:
