@@ -4,7 +4,7 @@ from rest_framework import viewsets
 
 from cinema.models import Actor, Movie, Genre, CinemaHall, MovieSession
 from cinema.serializers import ActorSerializer, GenreSerializer, CinemaHallSerializer, MovieSerializer, \
-    MovieSessionSerializer, MovieListSerializer
+    MovieSessionSerializer, MovieListSerializer, MovieSessionListSerializer, MovieSessionRetrieveSerializer
 
 
 class ActorViewSet(viewsets.ModelViewSet):
@@ -27,23 +27,31 @@ class MovieViewSet(viewsets.ModelViewSet):
     serializer_class = MovieSerializer
 
     def get_queryset(self):
-        if self.action == 'list':
-
-            return Movie.objects.all().prefetch_related('actors', 'genres')
-        # fallback for retrieve/create/update/destroy
+        if self.action in ('list', 'retrieve'):
+            return Movie.objects.all() \
+                .prefetch_related('actors', 'genres')
         return super().get_queryset()
 
     def get_serializer_class(self):
-        if self.action == 'list':
-            return MovieListSerializer
-        return MovieSerializer
+        return MovieListSerializer if self.action == 'list' else MovieSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
+    serializer_class = MovieSessionListSerializer
     queryset = MovieSession.objects.all().select_related()
-    serializer_class = MovieSessionSerializer
 
+    def get_queryset(self):
+        base_qs = MovieSession.objects.all()
+        if self.action in ('list', 'retrieve'):
+            return base_qs.select_related('movie', 'cinema_hall')
+        return base_qs  # or super().get_queryset()
 
+    def get_serializer_class(self):
+        if self.action == "list":
+            return MovieSessionListSerializer
+        if self.action == "retrieve":
+            return MovieSessionRetrieveSerializer
+        return MovieSessionSerializer
 
 
 
