@@ -51,9 +51,18 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
+
+    capacity = serializers.ReadOnlyField()
+
     class Meta:
         model = CinemaHall
-        fields = ('id','name','rows','seats_in_row', 'capacity')
+        fields = (
+            'id',
+            'name',
+            'rows',
+            'seats_in_row',
+            'capacity',
+        )
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):

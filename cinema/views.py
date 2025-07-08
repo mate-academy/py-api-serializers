@@ -8,17 +8,17 @@ from cinema.serializers import ActorSerializer, GenreSerializer, CinemaHallSeria
 
 
 class ActorViewSet(viewsets.ModelViewSet):
-    queryset = Actor.objects.all().select_related()
+    queryset = Actor.objects.all()
     serializer_class = ActorSerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
-    queryset = Genre.objects.all().select_related()
+    queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
-    queryset = CinemaHall.objects.all().select_related()
+    queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
 
 
