@@ -70,6 +70,7 @@ class MovieApiTests(TestCase):
             },
         )
         superman_movies = Movie.objects.filter(title="Superman")
+        print(movies.data)
         self.assertEqual(movies.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(superman_movies.count(), 0)
 
