@@ -15,12 +15,18 @@ class CinemaHall(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "cinema_halls"
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "genres"
 
 
 class Actor(models.Model):
@@ -29,6 +35,9 @@ class Actor(models.Model):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+    class Meta:
+        verbose_name_plural = "actors"
 
 
 class Movie(models.Model):
@@ -40,6 +49,7 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ["title"]
+        verbose_name_plural = "movies"
 
     def __str__(self):
         return self.title
@@ -52,9 +62,11 @@ class MovieSession(models.Model):
 
     class Meta:
         ordering = ["-show_time"]
+        verbose_name_plural = "movie_sessions"
 
     def __str__(self):
         return self.movie.title + " " + str(self.show_time)
+
 
 
 class Order(models.Model):
@@ -68,15 +80,12 @@ class Order(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        verbose_name_plural = "orders"
 
 
 class Ticket(models.Model):
-    movie_session = models.ForeignKey(
-        MovieSession, on_delete=models.CASCADE, related_name="tickets"
-    )
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="tickets"
-    )
+    movie_session = models.ForeignKey(MovieSession, on_delete=models.CASCADE, related_name="tickets")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="tickets")
     row = models.IntegerField()
     seat = models.IntegerField()
 
@@ -105,3 +114,4 @@ class Ticket(models.Model):
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
+        verbose_name_plural = "tickets"
