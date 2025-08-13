@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from rest_framework.relations import SlugRelatedField
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
@@ -11,9 +12,14 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
+
+    def get_full_name(self, obj: Actor) -> str:
+        return obj.full_name
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -38,16 +44,17 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = (serializers.SlugRelatedField(
+    genres = serializers.SlugRelatedField(
         many=True,
         read_only=True,
         slug_field="name")
-    )
-    actors = (serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field="full_name")
-    )
+    actors = serializers.SerializerMethodField()
+
+    def get_actors(self, obj) -> list[str]:
+        return [
+            f"{actor.first_name} {actor.last_name}"
+            for actor in obj.actors.all()
+        ]
 
 
 class MovieRetrieveSerializer(MovieSerializer):
@@ -62,7 +69,7 @@ class MovieRetrieveSerializer(MovieSerializer):
 class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
-        fields = "__all__"
+        fields = ("id", "show_time", "movie", "cinema_hall")
 
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
