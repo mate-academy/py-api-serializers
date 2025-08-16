@@ -69,6 +69,19 @@ class MovieDetailSerializer(serializers.ModelSerializer):
         )
 
 
+class MovieCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = (
+            "id",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors"
+        )
+
+
 class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(
         source="movie.title",
@@ -98,6 +111,17 @@ class MovieSessionDetailSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True)
     cinema_hall = CinemaHallSerializer(read_only=True)
 
+    class Meta:
+        model = MovieSession
+        fields = (
+            "id",
+            "show_time",
+            "movie",
+            "cinema_hall"
+        )
+
+
+class MovieSessionCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
         fields = (
