@@ -1,26 +1,18 @@
+from typing import Type
+from rest_framework import serializers as drf_serializers
 from rest_framework import viewsets
 
-from cinema.models import (
-    CinemaHall,
-    Genre,
-    Actor,
-    Movie,
-    MovieSession,
-    Order,
-    Ticket,
-)
+from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
 from cinema.serializers import (
     CinemaHallSerializer,
     GenreSerializer,
     ActorSerializer,
     MovieSerializer,
-    MovieSessionSerializer,
-    OrderSerializer,
-    TicketSerializer,
     MovieListSerializer,
     MovieRetrieveSerializer,
-    MovieListSessionSerializer,
-    MovieRetrieveSessionSerializer,
+    MovieSessionSerializer,
+    MovieSessionListSerializer,
+    MovieSessionRetrieveSerializer,
 )
 
 
@@ -40,54 +32,28 @@ class ActorViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.prefetch_related("genres", "actors")
 
-    def get_queryset(self):
-        queryset = self.queryset
-        if self.action in (
-            "list",
-            "retrieve",
-        ):
-            return queryset.prefetch_related("genres", "actors")
-
-        return queryset
-
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[drf_serializers.BaseSerializer]:
         if self.action == "list":
             return MovieListSerializer
-        elif self.action == "retrieve":
+        if self.action == "retrieve":
             return MovieRetrieveSerializer
-
         return MovieSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset = MovieSession.objects.select_related("movie", "cinema_hall")
 
     def get_queryset(self):
-        queryset = self.queryset
-        if self.action in (
-            "list",
-            "retrieve",
-        ):
-            return queryset.select_related("movie", "cinema_hall")
+        qs = self.queryset
+        if self.action == "retrieve":
+            qs = qs.prefetch_related("movie__genres", "movie__actors")
+        return qs
 
-        return queryset
-
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[drf_serializers.BaseSerializer]:
         if self.action == "list":
-            return MovieListSessionSerializer
-        elif self.action == "retrieve":
-            return MovieRetrieveSessionSerializer
-
+            return MovieSessionListSerializer
+        if self.action == "retrieve":
+            return MovieSessionRetrieveSerializer
         return MovieSessionSerializer
-
-
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
