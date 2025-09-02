@@ -15,21 +15,23 @@ In this task you will implement serializers and views for the following models:
 
 For every `<entity>` from `actors`, `genres`, `cinema_halls`, `movies`, `movie_sessions` such
 endpoints should be implemented:
-* `GET api/cinema/<entity>/` - should return a list of the all entity items
-* `POST api/cinema/<entity>/` - should create a new entity based on passed data
-* `GET api/cinema/<entity>/<pk>/` - should return an entity with given id
-* `PUT api/cinema/<entity>/<pk>/` - should update the entity with given id based on passed data
-* `DELETE api/cinema/<entity>/<pk>/` - should delete the entity with given id
+
+- `GET api/cinema/<entity>/` - should return a list of the all entity items
+- `POST api/cinema/<entity>/` - should create a new entity based on passed data
+- `GET api/cinema/<entity>/<pk>/` - should return an entity with given id
+- `PUT api/cinema/<entity>/<pk>/` - should update the entity with given id based on passed data
+- `DELETE api/cinema/<entity>/<pk>/` - should delete the entity with given id
 
 Additional requirements:
-1. For the list movie endpoint, genres and actors should be returned as lists of strings.
-`"genres"` list should contain names of the genres, and the `"actors"` list should contain full names of actors and actresses.
-Example:
-```
-GET api/cinema/movies/ 
-```
 
-```
+1. For the list movie endpoint, genres and actors should be returned as lists of strings.
+   `"genres"` list should contain names of the genres, and the `"actors"` list should contain full names of actors and actresses.
+
+Example:
+
+GET api/cinema/movies/
+
+```json
 HTTP 200 OK
 Allow: GET, POST, HEAD, OPTIONS
 Content-Type: application/json
@@ -50,15 +52,17 @@ Vary: Accept
         ]
     }
 ]
-```
-2. At the same time movie detail endpoint should provide complete information about the genres and actors.
+````
+
+1. At the same time movie detail endpoint should provide complete information about the genres and actors.
 
 Example:
-```
+
+```http
 GET /api/cinema/movies/1/
 ```
 
-```
+```json
 HTTP 200 OK
 Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
 Content-Type: application/json
@@ -92,19 +96,20 @@ Vary: Accept
 }
 ```
 
-3. For `movies_session` list endpoint you should return the following information:
-    * `"id"` - the id of the movie session;
-    * `"show_time"` - the start time of the session
-    * `"movie_title"` - the title of the movie
-    * `"cinema_hall_name"` - the name of the cinema hall for the session
-    * `"cinema_hall_capacity"` - the capacity of the cinema hall for the session
+1. For `movies_session` list endpoint you should return the following information:
+   - `"id"` - the id of the movie session;
+   - `"show_time"` - the start time of the session
+   - `"movie_title"` - the title of the movie
+   - `"cinema_hall_name"` - the name of the cinema hall for the session
+   - `"cinema_hall_capacity"` - the capacity of the cinema hall for the session
 
 Example:
-```
+
+```http
 GET /api/cinema/movie_sessions/
 ```
 
-```
+```json
 HTTP 200 OK
 Allow: GET, POST, HEAD, OPTIONS
 Content-Type: application/json
@@ -128,14 +133,15 @@ Vary: Accept
 ]
 ```
 
-4. At the same time for the movie session detail endpoint, complete information about the movie should be provided.
+1. At the same time for the movie session detail endpoint, complete information about the movie should be provided.
 
 Example:
-```
+
+```http
 GET /api/cinema/movie_sessions/1/
 ```
 
-```
+```json
 HTTP 200 OK
 Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
 Content-Type: application/json
@@ -167,9 +173,8 @@ Vary: Accept
 }
 ```
 
-
 Hint: Use `ModelViewSet` to create views.
 
 Run tests through the terminal using `pytest`
 
-### Note: Check your code using this [checklist](checklist.md) before pushing your solution.
+## Note: Check your code using this [checklist](checklist.md) before pushing your solution

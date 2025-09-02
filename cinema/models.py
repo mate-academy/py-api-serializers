@@ -12,14 +12,14 @@ class CinemaHall(models.Model):
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -27,7 +27,7 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.first_name + " " + self.last_name
 
 
@@ -41,7 +41,7 @@ class Movie(models.Model):
     class Meta:
         ordering = ["title"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
@@ -53,17 +53,18 @@ class MovieSession(models.Model):
     class Meta:
         ordering = ["-show_time"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.movie.title + " " + str(self.show_time)
 
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.created_at)
 
     class Meta:
@@ -72,36 +73,43 @@ class Order(models.Model):
 
 class Ticket(models.Model):
     movie_session = models.ForeignKey(
-        MovieSession, on_delete=models.CASCADE, related_name="tickets"
+        MovieSession,
+        on_delete=models.CASCADE,
+        related_name="tickets",
     )
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="tickets"
+        Order,
+        on_delete=models.CASCADE,
+        related_name="tickets",
     )
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    def clean(self):
+    def clean(self) -> None:
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
             (self.row, "row", "count_rows"),
             (self.seat, "seat", "count_seats_in_row"),
         ]:
             count_attrs = getattr(
-                self.movie_session.cinema_hall, cinema_hall_attr_name
+                self.movie_session.cinema_hall,
+                cinema_hall_attr_name,
             )
             if not (1 <= ticket_attr_value <= count_attrs):
-                raise ValidationError(
-                    {
-                        ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
-                    }
+                error_msg = (
+                    f"{ticket_attr_name} number must be in available range: "
+                    f"(1, {cinema_hall_attr_name}): (1, {count_attrs})"
                 )
+                raise ValidationError({ticket_attr_name: error_msg})
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
-            f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
+            f"{str(self.movie_session)} "
+            f"(row: {self.row}, seat: {self.seat})"
         )
 
     class Meta:
-        unique_together = ("movie_session", "row", "seat")
+        unique_together = (
+            "movie_session",
+            "row",
+            "seat",
+        )

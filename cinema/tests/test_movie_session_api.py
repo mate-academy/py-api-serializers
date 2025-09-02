@@ -45,9 +45,11 @@ class MovieSessionApiTests(TestCase):
             "cinema_hall_capacity": 140,
         }
         self.assertEqual(movie_sessions.status_code, status.HTTP_200_OK)
+        response_data = movie_sessions.json()
         for field in movie_session:
             self.assertEqual(
-                movie_sessions.data[0][field], movie_session[field]
+                response_data[0][field],
+                movie_session[field],
             )
 
     def test_post_movie_session(self):
@@ -66,14 +68,16 @@ class MovieSessionApiTests(TestCase):
     def test_get_movie_session(self):
         response = self.client.get("/api/cinema/movie_sessions/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["movie"]["title"], "Titanic")
+        response_data = response.json()
+        self.assertEqual(response_data["movie"]["title"], "Titanic")
         self.assertEqual(
-            response.data["movie"]["description"], "Titanic description"
+            response_data["movie"]["description"],
+            "Titanic description",
         )
-        self.assertEqual(response.data["movie"]["duration"], 123)
-        self.assertEqual(response.data["movie"]["genres"], ["Drama", "Comedy"])
-        self.assertEqual(response.data["movie"]["actors"], ["Kate Winslet"])
-        self.assertEqual(response.data["cinema_hall"]["capacity"], 140)
-        self.assertEqual(response.data["cinema_hall"]["rows"], 10)
-        self.assertEqual(response.data["cinema_hall"]["seats_in_row"], 14)
-        self.assertEqual(response.data["cinema_hall"]["name"], "White")
+        self.assertEqual(response_data["movie"]["duration"], 123)
+        self.assertEqual(response_data["movie"]["genres"], ["Drama", "Comedy"])
+        self.assertEqual(response_data["movie"]["actors"], ["Kate Winslet"])
+        self.assertEqual(response_data["cinema_hall"]["capacity"], 140)
+        self.assertEqual(response_data["cinema_hall"]["rows"], 10)
+        self.assertEqual(response_data["cinema_hall"]["seats_in_row"], 14)
+        self.assertEqual(response_data["cinema_hall"]["name"], "White")

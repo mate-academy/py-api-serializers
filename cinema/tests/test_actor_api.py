@@ -15,9 +15,10 @@ class ActorApiTests(TestCase):
     def test_get_actors(self):
         response = self.client.get("/api/cinema/actors/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        actors_full_names = [actor["full_name"] for actor in response.data]
+        actors_full_names = [actor["full_name"] for actor in response.json()]
         self.assertEqual(
-            sorted(actors_full_names), ["George Clooney", "Keanu Reeves"]
+            sorted(actors_full_names),
+            ["George Clooney", "Keanu Reeves"],
         )
 
     def test_post_actors(self):

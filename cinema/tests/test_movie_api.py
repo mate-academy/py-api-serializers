@@ -34,10 +34,13 @@ class MovieApiTests(TestCase):
             "genres": ["Drama", "Comedy"],
             "actors": ["Kate Winslet"],
         }
-        print(movies.data)
+
         self.assertEqual(movies.status_code, status.HTTP_200_OK)
         for field in titanic:
-            self.assertEqual(movies.data[0][field], titanic[field])
+            self.assertEqual(
+                movies.json()[0][field],
+                titanic[field]
+            )
 
     def test_post_movies(self):
         movies = self.client.post(
@@ -76,15 +79,16 @@ class MovieApiTests(TestCase):
     def test_get_movie(self):
         response = self.client.get("/api/cinema/movies/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["title"], "Titanic")
-        self.assertEqual(response.data["description"], "Titanic description")
-        self.assertEqual(response.data["duration"], 123)
-        self.assertEqual(response.data["genres"][0]["name"], "Drama")
-        self.assertEqual(response.data["genres"][1]["name"], "Comedy")
-        self.assertEqual(response.data["actors"][0]["first_name"], "Kate")
-        self.assertEqual(response.data["actors"][0]["last_name"], "Winslet")
+        self.assertEqual(response.json()["title"], "Titanic")
+        self.assertEqual(response.json()["description"], "Titanic description")
+        self.assertEqual(response.json()["duration"], 123)
+        self.assertEqual(response.json()["genres"][0]["name"], "Drama")
+        self.assertEqual(response.json()["genres"][1]["name"], "Comedy")
+        self.assertEqual(response.json()["actors"][0]["first_name"], "Kate")
+        self.assertEqual(response.json()["actors"][0]["last_name"], "Winslet")
         self.assertEqual(
-            response.data["actors"][0]["full_name"], "Kate Winslet"
+            response.json()["actors"][0]["full_name"],
+            "Kate Winslet",
         )
 
     def test_get_invalid_movie(self):

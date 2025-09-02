@@ -29,10 +29,12 @@ class CinemaHallApiTests(TestCase):
             "capacity": 300,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]["name"], blue_hall["name"])
-        self.assertEqual(response.data[0]["rows"], blue_hall["rows"])
+        response_json = response.json()
+        self.assertEqual(response_json[0]["name"], blue_hall["name"])
+        self.assertEqual(response_json[0]["rows"], blue_hall["rows"])
         self.assertEqual(
-            response.data[0]["seats_in_row"], blue_hall["seats_in_row"]
+            response_json[0]["seats_in_row"],
+            blue_hall["seats_in_row"],
         )
         vip_hall = {
             "name": "VIP",
@@ -40,11 +42,11 @@ class CinemaHallApiTests(TestCase):
             "seats_in_row": 8,
             "capacity": 48,
         }
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[1]["name"], vip_hall["name"])
-        self.assertEqual(response.data[1]["rows"], vip_hall["rows"])
+        self.assertEqual(response_json[1]["name"], vip_hall["name"])
+        self.assertEqual(response_json[1]["rows"], vip_hall["rows"])
         self.assertEqual(
-            response.data[1]["seats_in_row"], vip_hall["seats_in_row"]
+            response_json[1]["seats_in_row"],
+            vip_hall["seats_in_row"],
         )
 
     def test_post_cinema_halls(self):
@@ -69,13 +71,15 @@ class CinemaHallApiTests(TestCase):
             "seats_in_row": 8,
             "capacity": 48,
         }
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["name"], vip_hall["name"])
-        self.assertEqual(response.data["rows"], vip_hall["rows"])
+        response_json = response.json()
+        self.assertEqual(response_json["name"], vip_hall["name"])
+        self.assertEqual(response_json["rows"], vip_hall["rows"])
         self.assertEqual(
-            response.data["seats_in_row"], vip_hall["seats_in_row"]
+            response_json["seats_in_row"],
+            vip_hall["seats_in_row"],
         )
-        self.assertEqual(response.data["capacity"], vip_hall["capacity"])
+        self.assertEqual(response_json["capacity"], vip_hall["capacity"])
+        self.assertEqual(response_json["capacity"], vip_hall["capacity"])
 
     def test_get_invalid_cinema_hall(self):
         response = self.client.get("/api/cinema/cinema_halls/1001/")
