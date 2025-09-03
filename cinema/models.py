@@ -94,7 +94,12 @@ class Ticket(models.Model):
 
         if not (1 <= self.seat <= cinema_hall.seats_in_row):
             raise ValidationError(
-                {"seat": f"Seat number must be in range 1 to {cinema_hall.seats_in_row}"}
+                {
+                    "seat": (
+                        f"Seat number must be in range 1 to "
+                        f"{cinema_hall.seats_in_row}"
+                    )
+                }
             )
 
     def __str__(self) -> str:

@@ -7,7 +7,9 @@ router = DefaultRouter()
 router.register(r"movies", views.MovieViewSet, basename="movie")
 router.register(r"actors", views.ActorViewSet, basename="actor")
 router.register(r"genres", views.GenreViewSet, basename="genre")
-router.register(r"moviesessions", views.MovieSessionViewSet, basename="moviesession")
+router.register(r"moviesessions", views.MovieSessionViewSet,
+                basename="moviesession"
+                )
 
 urlpatterns = [
     path("admin/", admin.site.urls),
