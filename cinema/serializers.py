@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from typing import List
 from cinema.models import (
     Genre,
     Actor,
@@ -23,7 +23,7 @@ class ActorSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name", "last_name", "full_name"]
         read_only_fields = ["id"]
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj: Actor) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -35,7 +35,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "rows", "seats_in_row", "capacity"]
         read_only_fields = ["id"]
 
-    def get_capacity(self, obj):
+    def get_capacity(self, obj: CinemaHall) -> int:
         return obj.capacity
 
 
@@ -71,7 +71,7 @@ class MovieListSerializer(serializers.ModelSerializer):
             "actors"
         ]
 
-    def get_actors(self, obj):
+    def get_actors(self, obj: Movie) -> List[str]:
         return [
             f"{actor.first_name} {actor.last_name}"
             for actor in obj.actors.all()
