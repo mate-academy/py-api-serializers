@@ -39,12 +39,12 @@ class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True,
         slug_field="name",
-        queryset=Genre.objects.all()
+        read_only=True
     )
     actors = serializers.SlugRelatedField(
         many=True,
         slug_field="full_name",
-        queryset=Actor.objects.all()
+        read_only=True
     )
 
 
@@ -63,17 +63,17 @@ class MovieSessionListSerializer(MovieSessionSerializer):
     movie_title = serializers.SlugRelatedField(
         source="movie",
         slug_field="title",
-        queryset=Movie.objects.all()
+        read_only=True
     )
     cinema_hall_name = serializers.SlugRelatedField(
         source="cinema_hall",
         slug_field="name",
-        queryset=CinemaHall.objects.all()
+        read_only=True
     )
     cinema_hall_capacity = serializers.SlugRelatedField(
         source="cinema_hall",
         slug_field="capacity",
-        queryset=CinemaHall.objects.all()
+        read_only=True
     )
 
     class Meta(MovieSessionSerializer.Meta):
