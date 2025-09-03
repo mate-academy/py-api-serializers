@@ -23,7 +23,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
-    def get_full_name(self, actor):
+    def get_full_name(self, actor) -> str:
         return f"{actor.first_name} {actor.last_name}"
 
 
@@ -56,7 +56,7 @@ class MovieListSerializer(MovieSerializer):
     )
     actors = serializers.SerializerMethodField()
 
-    def get_actors(self, obj):
+    def get_actors(self, obj) -> list[str]:
         return [
             f"{actor.first_name} {actor.last_name}"
             for actor in obj.actors.all()
@@ -109,7 +109,7 @@ class MovieShortSerializer(serializers.ModelSerializer):
         model = Movie
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
-    def get_actors(self, obj):
+    def get_actors(self, obj) -> list[str]:
         return [
             f"{actor.first_name} {actor.last_name}"
             for actor in obj.actors.all()
