@@ -102,6 +102,7 @@ class MovieSessionDetailSerializer(MovieSessionSerializer):
             "id",
             "movie",
             "cinema_hall",
+            "show_time"
         )
 
 
