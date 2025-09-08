@@ -10,14 +10,11 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
+    full_name = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
-
-    def get_full_name(self, obj):
-        return obj.first_name + " " + obj.last_name
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
