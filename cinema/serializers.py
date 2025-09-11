@@ -15,8 +15,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
-
-    def get_full_name(self, obj):
+    def get_full_name(self, obj) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -27,8 +26,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
         model = CinemaHall
         fields = ("id", "name", "rows", "seats_in_row", "capacity")
 
-
-    def get_capacity(self, obj):
+    def get_capacity(self, obj) -> str:
         return obj.rows * obj.seats_in_row
 
 
@@ -49,10 +47,10 @@ class MovieListSerializer(serializers.ModelSerializer):
         model = Movie
         fields = ("id", "title", "description", "duration", "genres", "actors")
 
-    def get_genres(self, obj):
+    def get_genres(self, obj) -> list:
         return [g.name for g in obj.genres.all()]
 
-    def get_actors(self, obj):
+    def get_actors(self, obj) -> list:
         return [f"{a.first_name} {a.last_name}" for a in obj.actors.all()]
 
 
@@ -74,8 +72,6 @@ class MovieSessionWriteSerializer(serializers.ModelSerializer):
         fields = ("id", "show_time", "movie", "cinema_hall")
 
 
-
-
 class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.SerializerMethodField()
     cinema_hall_name = serializers.SerializerMethodField()
@@ -85,13 +81,13 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
         model = MovieSession
         fields = ("id", "show_time", "movie_title", "cinema_hall_name", "cinema_hall_capacity")
 
-    def get_movie_title(self, obj):
+    def get_movie_title(self, obj) -> str:
         return obj.movie.title
 
-    def get_cinema_hall_name(self, obj):
+    def get_cinema_hall_name(self, obj) -> str:
         return obj.cinema_hall.name
 
-    def get_cinema_hall_capacity(self, obj):
+    def get_cinema_hall_capacity(self, obj) -> str:
         return obj.cinema_hall.rows * obj.cinema_hall.seats_in_row
 
 

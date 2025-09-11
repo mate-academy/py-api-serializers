@@ -1,16 +1,19 @@
-from rest_framework import viewsets
+from typing import Type
+from django.db.models import QuerySet
+from rest_framework import viewsets, serializers
 from rest_framework.permissions import AllowAny
-from .models import Genre, Actor, CinemaHall, Movie, MovieSession
-from .serializers import (
+
+from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
+from cinema.serializers import (
     GenreSerializer,
     ActorSerializer,
     CinemaHallSerializer,
-    MovieWriteSerializer,
     MovieListSerializer,
     MovieDetailSerializer,
-    MovieSessionWriteSerializer,
+    MovieWriteSerializer,
     MovieSessionListSerializer,
     MovieSessionDetailSerializer,
+    MovieSessionWriteSerializer,
 )
 
 
@@ -33,24 +36,43 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
+    serializer_class = MovieWriteSerializer
     permission_classes = (AllowAny,)
 
-    def get_serializer_class(self):
+    def get_queryset(self) -> QuerySet:
+        return Movie.objects.prefetch_related("actors", "genres")
+
+    def get_serializer_class(self) -> Type[serializers.BaseSerializer]:
         if self.action == "list":
             return MovieListSerializer
-        if self.action in ("retrieve",):
+        if self.action == "retrieve":
             return MovieDetailSerializer
         return MovieWriteSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all().order_by("-show_time")
+    serializer_class = MovieSessionWriteSerializer
     permission_classes = (AllowAny,)
 
-    def get_serializer_class(self):
+    def get_queryset(self) -> QuerySet:
+        if self.action == "list":
+            return (
+                MovieSession.objects
+                .select_related("movie", "cinema_hall")
+                .order_by("-show_time")
+            )
+        if self.action == "retrieve":
+            return (
+                MovieSession.objects
+                .select_related("movie", "cinema_hall")
+                .prefetch_related("movie__actors", "movie__genres")
+                .order_by("-show_time")
+            )
+        return MovieSession.objects.all().order_by("-show_time")
+
+    def get_serializer_class(self) -> Type[serializers.BaseSerializer]:
         if self.action == "list":
             return MovieSessionListSerializer
-        if self.action in ("retrieve",):
+        if self.action == "retrieve":
             return MovieSessionDetailSerializer
         return MovieSessionWriteSerializer
