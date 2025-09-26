@@ -1,9 +1,8 @@
 from django.test import TestCase
-
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 
-from cinema.models import Movie, Genre, Actor
+from cinema.models import Actor, Genre, Movie
 
 
 class MovieApiTests(TestCase):
@@ -83,9 +82,7 @@ class MovieApiTests(TestCase):
         self.assertEqual(response.data["genres"][1]["name"], "Comedy")
         self.assertEqual(response.data["actors"][0]["first_name"], "Kate")
         self.assertEqual(response.data["actors"][0]["last_name"], "Winslet")
-        self.assertEqual(
-            response.data["actors"][0]["full_name"], "Kate Winslet"
-        )
+        self.assertEqual(response.data["actors"][0]["full_name"], "Kate Winslet")
 
     def test_get_invalid_movie(self):
         response = self.client.get("/api/cinema/movies/100/")
