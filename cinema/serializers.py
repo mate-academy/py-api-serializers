@@ -30,7 +30,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "rows", "seats_in_row", "capacity"]
         read_only_fields = ["id"]
 
-    def get_capacity(self, obj):
+    def get_capacity(self, obj) -> int:
         return obj.rows * obj.seats_in_row
 
 
@@ -47,7 +47,7 @@ class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
     actors = serializers.SerializerMethodField()
 
-    def get_actors(self, obj):
+    def get_actors(self, obj) -> list[str]:
         return [f"{actor.first_name} {actor.last_name}" for actor in obj.actors.all()]
 
 
@@ -66,13 +66,13 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(source="movie.title", read_only=True)
     cinema_hall_name = serializers.CharField(source="cinema_hall.name", read_only=True)
-    cinema_hall_capacity = serializers.IntegerField(source="cinema_hall.capacity", read_only=True)
+    cinema_hall_capacity = serializers.SerializerMethodField()
 
     class Meta:
         model = MovieSession
         fields = ["id", "show_time", "movie_title", "cinema_hall_name", "cinema_hall_capacity"]
 
-    def get_cinema_hall_capacity(self, obj):
+    def get_cinema_hall_capacity(self, obj) -> int:
         return obj.cinema_hall.rows * obj.cinema_hall.seats_in_row
 
 
