@@ -16,7 +16,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ["id", "first_name", "last_name", "full_name"]
 
-    def get_full_name(self, obj) -> str:
+    def get_full_name(self, obj: Actor) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -29,7 +29,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
         model = CinemaHall
         fields = ["id", "name", "rows", "seats_in_row", "capacity"]
 
-    def get_capacity(self, obj) -> int:
+    def get_capacity(self, obj: CinemaHall) -> int:
         if hasattr(obj, "capacity"):
             return obj.capacity
         return obj.rows * obj.seats_in_row
@@ -49,7 +49,7 @@ class MovieListSerializer(MovieSerializer):
     )
     actors = serializers.SerializerMethodField()
 
-    def get_actors(self, obj) -> list[str]:
+    def get_actors(self, obj: Movie) -> list[str]:
         return [
             f"{actor.first_name} {actor.last_name}"
             for actor in obj.actors.all()
@@ -88,7 +88,7 @@ class MovieSessionListSerializer(MovieSessionSerializer):
             "cinema_hall_capacity"
         ]
 
-    def get_cinema_hall_capacity(self, obj):
+    def get_cinema_hall_capacity(self, obj: MovieSession) -> int:
         hall = obj.cinema_hall
         if hasattr(hall, "capacity"):  # use model property if defined
             return hall.capacity
