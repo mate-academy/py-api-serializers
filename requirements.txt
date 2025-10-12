@@ -1,4 +1,4 @@
-django==4.0.4
+django==4.2
 djangorestframework==3.16.1
 flake8==7.3.0
 flake8-quotes==3.3.1
