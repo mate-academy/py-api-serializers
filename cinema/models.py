@@ -30,6 +30,10 @@ class Actor(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    @property
+    def full_name(self) -> str:
+        return self.first_name + " " + self.last_name
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -82,8 +86,8 @@ class Ticket(models.Model):
 
     def clean(self):
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
-            (self.row, "row", "count_rows"),
-            (self.seat, "seat", "count_seats_in_row"),
+            (self.row, "row", "rows"),
+            (self.seat, "seat", "seats_in_row"),
         ]:
             count_attrs = getattr(
                 self.movie_session.cinema_hall, cinema_hall_attr_name
@@ -92,9 +96,9 @@ class Ticket(models.Model):
                 raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                        f"must be between 1 and {count_attrs} "
+                        f"based on cinema hall's {cinema_hall_attr_name} "
+                        f"setting."
                     }
                 )
 
