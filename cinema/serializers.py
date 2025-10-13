@@ -16,7 +16,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(read_only=True, source="full_name")
+    full_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Actor
@@ -29,7 +29,7 @@ class ActorSerializer(serializers.ModelSerializer):
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
-    capacity = serializers.CharField(read_only=True, source="capacity")
+    capacity = serializers.CharField(read_only=True)
 
     class Meta:
         model = CinemaHall
