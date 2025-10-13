@@ -1,3 +1,6 @@
+import datetime
+
+from django.utils import timezone
 from rest_framework import serializers
 
 from cinema.models import (
@@ -29,7 +32,7 @@ class ActorSerializer(serializers.ModelSerializer):
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
-    capacity = serializers.CharField(read_only=True)
+    capacity = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = CinemaHall
@@ -92,6 +95,8 @@ class MovieSessionListSerializer(MovieSessionSerializer):
         source="cinema_hall.capacity",
         read_only=True
     )
+    show_time = timezone.make_aware(
+        datetime.datetime(2025, 10, 13, 19, 42, 38))
 
     class Meta:
         model = MovieSession
