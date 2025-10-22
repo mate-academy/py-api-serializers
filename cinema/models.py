@@ -35,8 +35,8 @@ class Movie(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     duration = models.IntegerField()
-    genres = models.ManyToManyField(Genre)
-    actors = models.ManyToManyField(Actor)
+    genres = models.ManyToManyField(Genre, related_name="genres_movies")
+    actors = models.ManyToManyField(Actor, related_name="actor_movies")
 
     class Meta:
         ordering = ["title"]
@@ -47,8 +47,14 @@ class Movie(models.Model):
 
 class MovieSession(models.Model):
     show_time = models.DateTimeField()
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    cinema_hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE)
+    movie = models.ForeignKey(
+        Movie, on_delete=models.CASCADE,
+        related_name="movie_sessions"
+    )
+    cinema_hall = models.ForeignKey(
+        CinemaHall, on_delete=models.CASCADE,
+        related_name="cinema_hall_movie_sessions"
+    )
 
     class Meta:
         ordering = ["-show_time"]
@@ -99,9 +105,8 @@ class Ticket(models.Model):
                 )
 
     def __str__(self):
-        return (
-            f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
-        )
+        return (f"{str(self.movie_session)} "
+                f"(row: {self.row}, seat: {self.seat})")
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
