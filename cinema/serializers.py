@@ -11,19 +11,18 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class ActorSerializer(serializers.ModelSerializer):
     full_name = serializers.ReadOnlyField(read_only=True)
+
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
 
-
 class CinemaHallSerializer(serializers.ModelSerializer):
     capacity = serializers.ReadOnlyField()
-    
+
     class Meta:
         model = CinemaHall
         fields = ("id", "name", "rows", "seats_in_row", "capacity")
-
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -34,23 +33,28 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class MovieListSerializer(MovieSerializer):
-    genres = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
-    actors = serializers.SlugRelatedField(many=True, read_only=True, slug_field="full_name")
+    genres = serializers.SlugRelatedField(many=True,
+                                          read_only=True, slug_field="name")
+    actors = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="full_name"
+    )
+
 
 class MovieRetrieveSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
+
 
 class MovieSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovieSession
         fields = ("id", "show_time", "movie", "cinema_hall")
 
+
 class MovieSessionListSerializer(MovieSessionSerializer):
     movie_title = serializers.CharField(source="movie.title", read_only=True)
-    cinema_hall_name = serializers.CharField(
-        source="cinema_hall.name", read_only=True
-    )
+    cinema_hall_name = serializers.CharField(source="cinema_hall.name",
+                                             read_only=True)
     cinema_hall_capacity = serializers.IntegerField(
         source="cinema_hall.capacity", read_only=True
     )
@@ -61,7 +65,7 @@ class MovieSessionListSerializer(MovieSessionSerializer):
             "show_time",
             "movie_title",
             "cinema_hall_name",
-            "cinema_hall_capacity"
+            "cinema_hall_capacity",
         )
 
 
