@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from cinema.models import MovieSession
-from cinema.serializers.movie import MovieDetailSerializer
+from cinema.serializers.movie import MovieListSerializer  # Changed from MovieDetailSerializer
 from cinema.serializers.cinema_hall import CinemaHallSerializer
 
 
@@ -30,7 +30,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
-    movie = MovieDetailSerializer(read_only=True)
+    movie = MovieListSerializer(read_only=True)  # Changed from MovieDetailSerializer
     cinema_hall = CinemaHallSerializer(read_only=True)
 
     class Meta:

@@ -14,9 +14,9 @@ class MovieListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ["id", "title", "genres", "actors"]
+        fields = ["id", "title", "description", "duration", "genres", "actors"]
 
-    def get_actors(self, obj):
+    def get_actors(self, obj: Movie) -> list[str]:
         return [
             f"{actor.first_name} {actor.last_name}"
             for actor in obj.actors.all()
@@ -29,4 +29,4 @@ class MovieDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ["id", "title", "description", "genres", "actors"]
+        fields = ["id", "title", "description", "duration", "genres", "actors"]
