@@ -47,7 +47,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
-    queryset = Ticket.objects.all()
+    queryset = Ticket.objects.select_related(
+        "order", "movie_session"
+    )
 
 
 class MovieViewSet(viewsets.ModelViewSet):
