@@ -51,11 +51,13 @@ class MovieSessionApiTests(TestCase):
             )
 
     def test_post_movie_session(self):
+        movie = Movie.objects.create(title="Test Movie", duration=120)
+        hall = CinemaHall.objects.create(name="Main Hall", rows=10, seats_in_row=14)
         movies = self.client.post(
             "/api/cinema/movie_sessions/",
             {
-                "movie": 1,
-                "cinema_hall": 1,
+                "movie_id": movie.id,
+                "cinema_hall_id": hall.id,
                 "show_time": datetime.datetime.now(),
             },
         )

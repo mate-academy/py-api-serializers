@@ -46,8 +46,8 @@ class MovieApiTests(TestCase):
                 "title": "Superman",
                 "description": "Superman description",
                 "duration": 123,
-                "actors": [1],
-                "genres": [1, 2],
+                "actors_ids": [1],
+                "genres_ids": [1, 2],
             },
         )
         db_movies = Movie.objects.all()
@@ -62,7 +62,7 @@ class MovieApiTests(TestCase):
                 "title": "Superman",
                 "description": "Superman description",
                 "duration": 123,
-                "actors": [
+                "actors_ids": [
                     {
                         "id": 3,
                     }
@@ -98,8 +98,8 @@ class MovieApiTests(TestCase):
                 "title": "Watchman",
                 "description": "Watchman description",
                 "duration": 321,
-                "genres": [1, 2],
-                "actors": [1],
+                "genres_ids": [1, 2],
+                "actors_ids": [1],
             },
         )
         db_movie = Movie.objects.get(id=1)
