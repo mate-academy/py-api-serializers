@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from rest_framework import serializers
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
 
@@ -27,6 +28,26 @@ class CinemaHallSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "capacity"]
 
 
+class MovieSerializer(serializers.ModelSerializer):
+    duration = serializers.IntegerField(
+        validators=[MinValueValidator(1)]
+    )
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Movie
+        fields = [
+            "id",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors"
+        ]
+        read_only_fields = ["id"]
+
+
 class MovieListSerializer(serializers.ModelSerializer):
     genres = serializers.SlugRelatedField(
         many=True,
@@ -54,23 +75,6 @@ class MovieListSerializer(serializers.ModelSerializer):
         return result
 
 
-class MovieSerializer(serializers.ModelSerializer):
-    genres = GenreSerializer(many=True, read_only=True)
-    actors = ActorSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Movie
-        fields = [
-            "id",
-            "title",
-            "description",
-            "duration",
-            "genres",
-            "actors"
-        ]
-        read_only_fields = ["id"]
-
-
 class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(source="movie.title", read_only=True)
     cinema_hall_name = serializers.CharField(
@@ -95,7 +99,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
 class MovieSessionSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True)
-    cinema_hall = CinemaHallSerializer(read_only=True)
+    cinema_hall = CinemaHallSerializer()
 
     class Meta:
         model = MovieSession
