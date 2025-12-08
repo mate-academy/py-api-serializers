@@ -15,7 +15,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ["id", "first_name", "last_name", "full_name"]
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -47,7 +47,7 @@ class MovieListSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id"]
 
-    def get_actors(self, obj):
+    def get_actors(self, obj) -> list[str]:
         result = []
         for actor in obj.actors.all():
             result.append(f"{actor.first_name} {actor.last_name}")
