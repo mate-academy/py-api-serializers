@@ -29,6 +29,26 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    # duration = serializers.IntegerField(
+    #     validators=[MinValueValidator(1)]
+    # )
+    # genres = GenreSerializer(many=True, read_only=True)
+    # actors = ActorSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Movie
+        fields = [
+            "id",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors"
+        ]
+        read_only_fields = ["id"]
+
+
+class MovieDetailSerializer(serializers.ModelSerializer):
     duration = serializers.IntegerField(
         validators=[MinValueValidator(1)]
     )
@@ -97,9 +117,19 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
         ]
 
 
-class MovieSessionSerializer(serializers.ModelSerializer):
+class MovieSessionDetailListSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True)
-    cinema_hall = CinemaHallSerializer()
+    cinema_hall = CinemaHallSerializer(read_only=True)
+
+    class Meta:
+        model = MovieSession
+        fields = ["id", "show_time", "movie", "cinema_hall"]
+        read_only_fields = ["id"]
+
+
+class MovieSessionSerializer(serializers.ModelSerializer):
+    # movie = MovieListSerializer(read_only=True)
+    # cinema_hall = CinemaHallSerializer()
 
     class Meta:
         model = MovieSession
