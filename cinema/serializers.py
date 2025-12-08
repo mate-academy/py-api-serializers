@@ -37,7 +37,14 @@ class MovieListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ["id", "title", "description", "duration", "genres", "actors"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors"
+        ]
         read_only_fields = ["id"]
 
     def get_actors(self, obj):
@@ -46,14 +53,23 @@ class MovieListSerializer(serializers.ModelSerializer):
             result.append(f"{actor.first_name} {actor.last_name}")
         return result
 
+
 class MovieSerializer(serializers.ModelSerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Movie
-        fields = ["id", "title", "description", "duration", "genres", "actors"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors"
+        ]
         read_only_fields = ["id"]
+
 
 class MovieSessionListSerializer(serializers.ModelSerializer):
     movie_title = serializers.CharField(source="movie.title", read_only=True)
@@ -70,6 +86,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
         model = MovieSession
         fields = ["id", "show_time", "movie_title",
                           "cinema_hall_name", "cinema_hall_capacity"]
+
 
 class MovieSessionSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True)
