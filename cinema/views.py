@@ -1,5 +1,6 @@
 from django.db.models import QuerySet
 from rest_framework import viewsets
+from rest_framework import serializers
 
 from cinema.models import (
     CinemaHall,
@@ -50,7 +51,7 @@ class MovieViewSet(viewsets.ModelViewSet):
             )
         return self.queryset
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> type[serializers.Serializer]:
         if self.action == "list":
             return MovieListSerializer
         elif self.action == "retrieve":
@@ -68,7 +69,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
             )
         return self.queryset
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> type[serializers.Serializer]:
         if self.action == "list":
             return MovieSessionListSerializer
         elif self.action == "retrieve":
