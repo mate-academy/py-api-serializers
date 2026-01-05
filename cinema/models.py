@@ -12,14 +12,17 @@ class CinemaHall(models.Model):
     def capacity(self) -> int:
         return self.rows * self.seats_in_row
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
 class Genre(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
-    def __str__(self):
+    class Meta:
+        verbose_name_plural = "genres"
+
+    def __str__(self) -> str:
         return self.name
 
 
@@ -27,7 +30,10 @@ class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    def __str__(self):
+    class Meta:
+        verbose_name_plural = "actors"
+
+    def __str__(self) -> str:
         return self.first_name + " " + self.last_name
 
 
@@ -40,20 +46,22 @@ class Movie(models.Model):
 
     class Meta:
         ordering = ["title"]
+        verbose_name_plural = "movies"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
 class MovieSession(models.Model):
     show_time = models.DateTimeField()
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    cinema_hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie_sessions")
+    cinema_hall = models.ForeignKey(CinemaHall, on_delete=models.CASCADE, related_name="movie_sessions")
 
     class Meta:
         ordering = ["-show_time"]
+        verbose_name_plural = "movie_sessions"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.movie.title + " " + str(self.show_time)
 
 
@@ -63,11 +71,12 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.created_at)
 
     class Meta:
         ordering = ["-created_at"]
+        verbose_name_plural = "orders"
 
 
 class Ticket(models.Model):
@@ -80,10 +89,10 @@ class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
 
-    def clean(self):
+    def clean(self) -> None:
         for ticket_attr_value, ticket_attr_name, cinema_hall_attr_name in [
-            (self.row, "row", "count_rows"),
-            (self.seat, "seat", "count_seats_in_row"),
+            (self.row, "row", "rows"),
+            (self.seat, "seat", "seats_in_row"),
         ]:
             count_attrs = getattr(
                 self.movie_session.cinema_hall, cinema_hall_attr_name
@@ -93,15 +102,15 @@ class Ticket(models.Model):
                     {
                         ticket_attr_name: f"{ticket_attr_name} number "
                         f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
                         f"(1, {count_attrs})"
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
         )
 
     class Meta:
         unique_together = ("movie_session", "row", "seat")
+        verbose_name_plural = "tickets"
