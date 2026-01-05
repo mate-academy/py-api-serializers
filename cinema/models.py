@@ -22,7 +22,7 @@ class Genre(models.Model):
     class Meta:
         verbose_name_plural = "genres"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -33,7 +33,7 @@ class Actor(models.Model):
     class Meta:
         verbose_name_plural = "actors"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.first_name + " " + self.last_name
 
 
@@ -48,7 +48,7 @@ class Movie(models.Model):
         ordering = ["title"]
         verbose_name_plural = "movies"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
@@ -61,7 +61,7 @@ class MovieSession(models.Model):
         ordering = ["-show_time"]
         verbose_name_plural = "movie_sessions"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.movie.title + " " + str(self.show_time)
 
 
@@ -71,7 +71,7 @@ class Order(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.created_at)
 
     class Meta:
@@ -107,7 +107,7 @@ class Ticket(models.Model):
                     }
                 )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{str(self.movie_session)} (row: {self.row}, seat: {self.seat})"
         )
