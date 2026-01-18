@@ -1,19 +1,6 @@
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.conf import settings
-
-
-class CinemaHall(models.Model):
-    name = models.CharField(max_length=255)
-    rows = models.IntegerField()
-    seats_in_row = models.IntegerField()
-
-    @property
-    def capacity(self) -> int:
-        return self.rows * self.seats_in_row
-
-    def __str__(self):
-        return self.name
 
 
 class Genre(models.Model):
@@ -24,26 +11,45 @@ class Genre(models.Model):
 
 
 class Actor(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return f"{self.first_name} {self.last_name}"
+
+
+class CinemaHall(models.Model):
+    name = models.CharField(max_length=100)
+    rows = models.IntegerField()
+    seats_in_row = models.IntegerField()
+
+    @property
+    def capacity(self):
+        return self.rows * self.seats_in_row
+
+    def __str__(self):
+        return f"CinemaHall: {self.name} (rows: {self.rows}, seats_in_row: {self.seats_in_row})"
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     description = models.TextField()
+    genres = models.ManyToManyField(
+        Genre,
+        related_name="movies",
+    )
+    actors = models.ManyToManyField(
+        Actor,
+        related_name="movies",
+        blank=True,
+    )
     duration = models.IntegerField()
-    genres = models.ManyToManyField(Genre)
-    actors = models.ManyToManyField(Actor)
 
     class Meta:
-        ordering = ["title"]
+        verbose_name_plural = "movies"
 
     def __str__(self):
-        return self.title
-
+        return f"Movie: {self.title} - {self.duration} ({self.description})"
 
 class MovieSession(models.Model):
     show_time = models.DateTimeField()
@@ -60,7 +66,7 @@ class MovieSession(models.Model):
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders",
     )
 
     def __str__(self):
@@ -72,10 +78,12 @@ class Order(models.Model):
 
 class Ticket(models.Model):
     movie_session = models.ForeignKey(
-        MovieSession, on_delete=models.CASCADE, related_name="tickets"
+        MovieSession,
+        on_delete=models.CASCADE,
+        related_name="tickets",
     )
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="tickets"
+        Order, on_delete=models.CASCADE, related_name="tickets",
     )
     row = models.IntegerField()
     seat = models.IntegerField()
@@ -92,9 +100,9 @@ class Ticket(models.Model):
                 raise ValidationError(
                     {
                         ticket_attr_name: f"{ticket_attr_name} number "
-                        f"must be in available range: "
-                        f"(1, {cinema_hall_attr_name}): "
-                        f"(1, {count_attrs})"
+                                          f"must be in available range: "
+                                          f"(1, {cinema_hall_attr_name}): "
+                                          f"(1, {count_attrs})"
                     }
                 )
 

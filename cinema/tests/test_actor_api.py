@@ -1,73 +1,130 @@
 from django.test import TestCase
 
-from rest_framework import status
 from rest_framework.test import APIClient
+from rest_framework import status
 
-from cinema.models import Actor
+from cinema.models import CinemaHall
 
 
-class ActorApiTests(TestCase):
+class CinemaHallApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        Actor.objects.create(first_name="George", last_name="Clooney")
-        Actor.objects.create(first_name="Keanu", last_name="Reeves")
-
-    def test_get_actors(self):
-        response = self.client.get("/api/cinema/actors/")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        actors_full_names = [actor["full_name"] for actor in response.data]
-        self.assertEqual(
-            sorted(actors_full_names), ["George Clooney", "Keanu Reeves"]
+        CinemaHall.objects.create(
+            name="Blue",
+            rows=15,
+            seats_in_row=20,
+        )
+        CinemaHall.objects.create(
+            name="VIP",
+            rows=6,
+            seats_in_row=8,
         )
 
-    def test_post_actors(self):
+    def test_get_cinema_halls(self):
+        response = self.client.get("/api/cinema/cinema_halls/")
+        blue_hall = {
+            "name": "Blue",
+            "rows": 15,
+            "seats_in_row": 20,
+            "capacity": 300,
+        }
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]["name"], blue_hall["name"])
+        self.assertEqual(response.data[0]["rows"], blue_hall["rows"])
+        self.assertEqual(
+            response.data[0]["seats_in_row"], blue_hall["seats_in_row"]
+        )
+        vip_hall = {
+            "name": "VIP",
+            "rows": 6,
+            "seats_in_row": 8,
+            "capacity": 48,
+        }
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[1]["name"], vip_hall["name"])
+        self.assertEqual(response.data[1]["rows"], vip_hall["rows"])
+        self.assertEqual(
+            response.data[1]["seats_in_row"], vip_hall["seats_in_row"]
+        )
+
+    def test_post_cinema_halls(self):
         response = self.client.post(
-            "/api/cinema/actors/",
+            "/api/cinema/cinema_halls/",
             {
-                "first_name": "Scarlett",
-                "last_name": "Johansson",
+                "name": "Yellow",
+                "rows": 14,
+                "seats_in_row": 15,
             },
         )
-        db_actors = Actor.objects.all()
+        db_cinema_halls = CinemaHall.objects.all()
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(db_actors.count(), 3)
-        self.assertEqual(db_actors.filter(first_name="Scarlett").count(), 1)
+        self.assertEqual(db_cinema_halls.count(), 3)
+        self.assertEqual(db_cinema_halls.filter(name="Yellow").count(), 1)
 
-    def test_get_invalid_actor(self):
-        response = self.client.get("/api/cinema/actors/1001/")
+    def test_get_cinema_hall(self):
+        response = self.client.get("/api/cinema/cinema_halls/2/")
+        vip_hall = {
+            "name": "VIP",
+            "rows": 6,
+            "seats_in_row": 8,
+            "capacity": 48,
+        }
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["name"], vip_hall["name"])
+        self.assertEqual(response.data["rows"], vip_hall["rows"])
+        self.assertEqual(
+            response.data["seats_in_row"], vip_hall["seats_in_row"]
+        )
+        self.assertEqual(response.data["capacity"], vip_hall["capacity"])
+
+    def test_get_invalid_cinema_hall(self):
+        response = self.client.get("/api/cinema/cinema_halls/1001/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_actor(self):
+    def test_put_cinema_hall(self):
         response = self.client.put(
-            "/api/cinema/actors/1/",
+            "/api/cinema/cinema_halls/1/",
             {
-                "first_name": "Scarlett",
-                "last_name": "Johansson",
+                "name": "Yellow",
+                "rows": 14,
+                "seats_in_row": 15,
             },
         )
-        actor_pk_1 = Actor.objects.get(pk=1)
+        cinema_hall_pk_1 = CinemaHall.objects.get(pk=1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
             [
-                actor_pk_1.first_name,
-                actor_pk_1.last_name,
+                cinema_hall_pk_1.name,
+                cinema_hall_pk_1.rows,
+                cinema_hall_pk_1.seats_in_row,
             ],
             [
-                "Scarlett",
-                "Johansson",
+                "Yellow",
+                14,
+                15,
             ],
         )
 
-    def test_delete_actor(self):
-        response = self.client.delete(
-            "/api/cinema/actors/1/",
+    def test_patch_cinema_hall(self):
+        response = self.client.patch(
+            "/api/cinema/cinema_halls/1/",
+            {
+                "name": "Green",
+            },
         )
-        db_actors_id_1 = Actor.objects.filter(id=1)
-        self.assertEqual(db_actors_id_1.count(), 0)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(CinemaHall.objects.get(id=1).name, "Green")
+
+    def test_delete_cinema_hall(self):
+        response = self.client.delete(
+            "/api/cinema/cinema_halls/1/",
+        )
+        db_cinema_halls_id_1 = CinemaHall.objects.filter(id=1)
+        self.assertEqual(db_cinema_halls_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def test_delete_invalid_actor(self):
+    def test_delete_invalid_cinema_hall(self):
         response = self.client.delete(
-            "/api/cinema/actors/1000/",
+            "/api/cinema/cinema_halls/1000/",
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
