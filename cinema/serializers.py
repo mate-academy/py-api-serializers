@@ -71,7 +71,7 @@ class MovieSessionListSerializer(serializers.ModelSerializer):
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
     # Requisito: movie e cinema_hall com informações completas
-    movie = MovieListSerializer(read_only=True)  # Usamos MovieListSerializer aqui, mas para atender ao requisito
+    movie = MovieDetailSerializer(read_only=True)  # Usamos MovieListSerializer aqui, mas para atender ao requisito
     # do detalhe do filme na sessão, seria melhor usar o MovieDetailSerializer
     # se for o caso, mas vamos seguir o exemplo que mostra strings nos m2m
 

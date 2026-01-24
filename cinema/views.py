@@ -31,7 +31,7 @@ class ActorViewSet(viewsets.ModelViewSet):
 
 # View para Movie (diferentes serializers para list e detail)
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.prefetch_related('actors', 'genres')
     permission_classes = [AllowAny]
 
     def get_serializer_class(self):
@@ -41,7 +41,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 # View para MovieSession (diferentes serializers para list e detail)
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset = MovieSession.objects.select_related('movie', 'cinema_hall')
     permission_classes = [AllowAny]
 
     def get_serializer_class(self):
