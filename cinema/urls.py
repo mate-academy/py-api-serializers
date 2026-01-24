@@ -6,19 +6,19 @@ from .views import (
     ActorViewSet,
     MovieViewSet,
     MovieSessionViewSet,
-    OrderViewSet,
-    TicketViewSet
 )
 
 router = DefaultRouter()
-router.register(r'cinema_halls', CinemaHallViewSet)
-router.register(r'cinema/genres', GenreViewSet)
-router.register(r'cinema/actors', ActorViewSet)
-router.register(r'cinema/movies', MovieViewSet)
-router.register(r'cinema/movie_sessions', MovieSessionViewSet)
-router.register(r'cinema/orders', OrderViewSet)
-router.register(r'cinema/tickets', TicketViewSet)
+router.register(r"cinema_halls", CinemaHallViewSet)
+router.register(r"genres", GenreViewSet)
+router.register(r"actors", ActorViewSet)
+router.register(r"movies", MovieViewSet)
+router.register(r"movie_sessions", MovieSessionViewSet)
 
 urlpatterns = [
-    path('cinema/', include(router.urls)),
+    path("", include(router.urls)),
 ]
+
+# OBSERVAÇÃO: Se você estiver usando este arquivo como cinema/urls.py e seu
+# urls.py principal usa path("api/cinema/", include("cinema.urls")),
+# as rotas ficarão no formato correto: api/cinema/movies/
