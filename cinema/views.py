@@ -1,3 +1,5 @@
+from typing import Type
+from rest_framework.generics import QuerySet
 from rest_framework.viewsets import ModelViewSet
 
 from cinema.models import (
@@ -38,15 +40,15 @@ class CinemaHallViewSet(ModelViewSet):
 class MovieViewSet(ModelViewSet):
     queryset = Movie.objects.all()
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Movie]:
         queryset = self.queryset
 
         if self.action == "list":
-            queryset.prefetch_related("genres", "actors")
+            queryset = queryset.prefetch_related("genres", "actors")
 
         return queryset
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[MovieSerializer]:
         if self.action == "list":
             return MovieListSerializer
 
@@ -57,12 +59,12 @@ class MovieViewSet(ModelViewSet):
 
 
 class MovieSessionViewSet(ModelViewSet):
-    queryset = MovieSession.objects.all().select_related(
+    queryset = MovieSession.objects.select_related(
         "movie",
         "cinema_hall",
     )
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[MovieSessionSerializer]:
         if self.action == "list":
             return MovieSessionListSerializer
 
