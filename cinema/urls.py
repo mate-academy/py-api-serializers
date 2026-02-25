@@ -1,7 +1,13 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from cinema.views import CinemaHallViewSet, GenreViewSet, ActorViewSet, MovieViewSet, MovieSessionViewSet
+from cinema.views import (
+    CinemaHallViewSet,
+    GenreViewSet,
+    ActorViewSet,
+    MovieViewSet,
+    MovieSessionViewSet,
+)
 
 app_name = "cinema"
 
@@ -13,7 +19,4 @@ router.register("actors", ActorViewSet, basename="actor")
 router.register("movies", MovieViewSet, basename="movie")
 router.register("movie_sessions", MovieSessionViewSet, basename="movie_session")
 
-urlpatterns = [
-    path("", include(router.urls))
-
-]
+urlpatterns = [path("", include(router.urls))]
