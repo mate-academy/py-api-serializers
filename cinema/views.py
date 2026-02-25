@@ -4,8 +4,10 @@ from rest_framework import viewsets
 from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
 from cinema.serializers import (
     CinemaHallSerializer,
+    CinemaHallListSerializer,
     GenreSerializer,
     ActorSerializer,
+    ActorSerializerList,
     MovieSerializer,
     MovieSerializerList,
     MovieRetrieveSerializer,
@@ -19,6 +21,11 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
     queryset = CinemaHall.objects.all()
     serializer_class = CinemaHallSerializer
 
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return CinemaHallListSerializer
+        return CinemaHallSerializer
+
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
@@ -28,6 +35,11 @@ class GenreViewSet(viewsets.ModelViewSet):
 class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return ActorSerializerList
+        return ActorSerializer
 
 
 class MovieViewSet(viewsets.ModelViewSet):

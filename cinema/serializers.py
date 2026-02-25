@@ -31,7 +31,7 @@ class ActorSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name", "last_name"]
 
 
-class ActorDetailSerializer(serializers.ModelSerializer):
+class ActorSerializerList(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -59,7 +59,7 @@ class MovieSerializerList(MovieSerializer):
 
 class MovieRetrieveSerializer(MovieSerializer):
     genres = GenreSerializer(many=True, read_only=True)
-    actors = ActorDetailSerializer(many=True, read_only=True)
+    actors = ActorSerializerList(many=True, read_only=True)
 
     class Meta:
         model = Movie
