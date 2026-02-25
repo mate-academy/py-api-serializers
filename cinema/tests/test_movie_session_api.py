@@ -9,7 +9,7 @@ from cinema.models import Movie, Genre, Actor, MovieSession, CinemaHall
 
 
 class MovieSessionApiTests(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         self.client = APIClient()
         drama = Genre.objects.create(
             name="Drama",
@@ -37,7 +37,7 @@ class MovieSessionApiTests(TestCase):
             show_time=datetime.datetime.now(),
         )
 
-    def test_get_movie_sessions(self) -> None:
+    def test_get_movie_sessions(self):
         movie_sessions = self.client.get("/api/cinema/movie_sessions/")
         movie_session = {
             "movie_title": "Titanic",
@@ -46,9 +46,11 @@ class MovieSessionApiTests(TestCase):
         }
         self.assertEqual(movie_sessions.status_code, status.HTTP_200_OK)
         for field in movie_session:
-            self.assertEqual(movie_sessions.data[0][field], movie_session[field])
+            self.assertEqual(
+                movie_sessions.data[0][field], movie_session[field]
+            )
 
-    def test_post_movie_session(self) -> None:
+    def test_post_movie_session(self):
         movies = self.client.post(
             "/api/cinema/movie_sessions/",
             {
@@ -61,11 +63,13 @@ class MovieSessionApiTests(TestCase):
         self.assertEqual(movies.status_code, status.HTTP_201_CREATED)
         self.assertEqual(movie_sessions.count(), 2)
 
-    def test_get_movie_session(self) -> None:
+    def test_get_movie_session(self):
         response = self.client.get("/api/cinema/movie_sessions/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["movie"]["title"], "Titanic")
-        self.assertEqual(response.data["movie"]["description"], "Titanic description")
+        self.assertEqual(
+            response.data["movie"]["description"], "Titanic description"
+        )
         self.assertEqual(response.data["movie"]["duration"], 123)
         self.assertEqual(response.data["movie"]["genres"], ["Drama", "Comedy"])
         self.assertEqual(response.data["movie"]["actors"], ["Kate Winslet"])
