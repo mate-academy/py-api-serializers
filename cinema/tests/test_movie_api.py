@@ -7,7 +7,7 @@ from cinema.models import Movie, Genre, Actor
 
 
 class MovieApiTests(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.client = APIClient()
         drama = Genre.objects.create(
             name="Drama",
@@ -25,7 +25,7 @@ class MovieApiTests(TestCase):
         movie.genres.add(comedy)
         movie.actors.add(actress)
 
-    def test_get_movies(self):
+    def test_get_movies(self) -> None:
         movies = self.client.get("/api/cinema/movies/")
         titanic = {
             "title": "Titanic",
@@ -39,7 +39,7 @@ class MovieApiTests(TestCase):
         for field in titanic:
             self.assertEqual(movies.data[0][field], titanic[field])
 
-    def test_post_movies(self):
+    def test_post_movies(self) -> None:
         movies = self.client.post(
             "/api/cinema/movies/",
             {
@@ -55,7 +55,7 @@ class MovieApiTests(TestCase):
         self.assertEqual(db_movies.count(), 2)
         self.assertEqual(db_movies.filter(title="Superman").count(), 1)
 
-    def test_post_invalid_movies(self):
+    def test_post_invalid_movies(self) -> None:
         movies = self.client.post(
             "/api/cinema/movies/",
             {
@@ -73,7 +73,7 @@ class MovieApiTests(TestCase):
         self.assertEqual(movies.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(superman_movies.count(), 0)
 
-    def test_get_movie(self):
+    def test_get_movie(self) -> None:
         response = self.client.get("/api/cinema/movies/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], "Titanic")
@@ -85,11 +85,11 @@ class MovieApiTests(TestCase):
         self.assertEqual(response.data["actors"][0]["last_name"], "Winslet")
         self.assertEqual(response.data["actors"][0]["full_name"], "Kate Winslet")
 
-    def test_get_invalid_movie(self):
+    def test_get_invalid_movie(self) -> None:
         response = self.client.get("/api/cinema/movies/100/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_movie(self):
+    def test_put_movie(self) -> None:
         self.client.put(
             "/api/cinema/movies/1/",
             {
@@ -110,7 +110,7 @@ class MovieApiTests(TestCase):
         )
         self.assertEqual(db_movie.title, "Watchman")
 
-    def test_delete_movie(self):
+    def test_delete_movie(self) -> None:
         response = self.client.delete(
             "/api/cinema/movies/1/",
         )
@@ -118,7 +118,7 @@ class MovieApiTests(TestCase):
         self.assertEqual(db_movies_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def test_delete_invalid_movie(self):
+    def test_delete_invalid_movie(self) -> None:
         response = self.client.delete(
             "/api/cinema/movies/1000/",
         )

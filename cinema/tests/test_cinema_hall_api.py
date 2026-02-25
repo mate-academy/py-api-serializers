@@ -7,7 +7,7 @@ from cinema.models import CinemaHall
 
 
 class CinemaHallApiTests(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.client = APIClient()
         CinemaHall.objects.create(
             name="Blue",
@@ -20,7 +20,7 @@ class CinemaHallApiTests(TestCase):
             seats_in_row=8,
         )
 
-    def test_get_cinema_halls(self):
+    def test_get_cinema_halls(self) -> None:
         response = self.client.get("/api/cinema/cinema_halls/")
         blue_hall = {
             "name": "Blue",
@@ -43,7 +43,7 @@ class CinemaHallApiTests(TestCase):
         self.assertEqual(response.data[1]["rows"], vip_hall["rows"])
         self.assertEqual(response.data[1]["seats_in_row"], vip_hall["seats_in_row"])
 
-    def test_post_cinema_halls(self):
+    def test_post_cinema_halls(self) -> None:
         response = self.client.post(
             "/api/cinema/cinema_halls/",
             {
@@ -57,7 +57,7 @@ class CinemaHallApiTests(TestCase):
         self.assertEqual(db_cinema_halls.count(), 3)
         self.assertEqual(db_cinema_halls.filter(name="Yellow").count(), 1)
 
-    def test_get_cinema_hall(self):
+    def test_get_cinema_hall(self) -> None:
         response = self.client.get("/api/cinema/cinema_halls/2/")
         vip_hall = {
             "name": "VIP",
@@ -71,11 +71,11 @@ class CinemaHallApiTests(TestCase):
         self.assertEqual(response.data["seats_in_row"], vip_hall["seats_in_row"])
         self.assertEqual(response.data["capacity"], vip_hall["capacity"])
 
-    def test_get_invalid_cinema_hall(self):
+    def test_get_invalid_cinema_hall(self) -> None:
         response = self.client.get("/api/cinema/cinema_halls/1001/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_cinema_hall(self):
+    def test_put_cinema_hall(self) -> None:
         response = self.client.put(
             "/api/cinema/cinema_halls/1/",
             {
@@ -99,7 +99,7 @@ class CinemaHallApiTests(TestCase):
             ],
         )
 
-    def test_patch_cinema_hall(self):
+    def test_patch_cinema_hall(self) -> None:
         response = self.client.patch(
             "/api/cinema/cinema_halls/1/",
             {
@@ -109,7 +109,7 @@ class CinemaHallApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(CinemaHall.objects.get(id=1).name, "Green")
 
-    def test_delete_cinema_hall(self):
+    def test_delete_cinema_hall(self) -> None:
         response = self.client.delete(
             "/api/cinema/cinema_halls/1/",
         )
@@ -117,7 +117,7 @@ class CinemaHallApiTests(TestCase):
         self.assertEqual(db_cinema_halls_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def test_delete_invalid_cinema_hall(self):
+    def test_delete_invalid_cinema_hall(self) -> None:
         response = self.client.delete(
             "/api/cinema/cinema_halls/1000/",
         )

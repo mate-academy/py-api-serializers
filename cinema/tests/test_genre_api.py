@@ -7,7 +7,7 @@ from cinema.models import Genre
 
 
 class GenreApiTests(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.client = APIClient()
         Genre.objects.create(
             name="Comedy",
@@ -16,13 +16,13 @@ class GenreApiTests(TestCase):
             name="Drama",
         )
 
-    def test_get_genres(self):
+    def test_get_genres(self) -> None:
         response = self.client.get("/api/cinema/genres/")
         genres = [genre["name"] for genre in response.data]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(sorted(genres), ["Comedy", "Drama"])
 
-    def test_post_genres(self):
+    def test_post_genres(self) -> None:
         response = self.client.post(
             "/api/cinema/genres/",
             {
@@ -34,11 +34,11 @@ class GenreApiTests(TestCase):
         self.assertEqual(db_genres.count(), 3)
         self.assertEqual(db_genres.filter(name="Sci-fi").count(), 1)
 
-    def test_get_invalid_genre(self):
+    def test_get_invalid_genre(self) -> None:
         response = self.client.get("/api/cinema/genres/1001/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_genre(self):
+    def test_put_genre(self) -> None:
         response = self.client.put(
             "/api/cinema/genres/1/",
             {
@@ -47,7 +47,7 @@ class GenreApiTests(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_delete_genre(self):
+    def test_delete_genre(self) -> None:
         response = self.client.delete(
             "/api/cinema/genres/1/",
         )
@@ -55,7 +55,7 @@ class GenreApiTests(TestCase):
         self.assertEqual(db_genres_id_1.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def test_delete_invalid_genre(self):
+    def test_delete_invalid_genre(self) -> None:
         response = self.client.delete(
             "/api/cinema/genres/1000/",
         )

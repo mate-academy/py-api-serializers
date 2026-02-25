@@ -9,7 +9,7 @@ from cinema.models import Movie, Genre, Actor, MovieSession, CinemaHall
 
 
 class MovieSessionApiTests(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.client = APIClient()
         drama = Genre.objects.create(
             name="Drama",
@@ -37,7 +37,7 @@ class MovieSessionApiTests(TestCase):
             show_time=datetime.datetime.now(),
         )
 
-    def test_get_movie_sessions(self):
+    def test_get_movie_sessions(self) -> None:
         movie_sessions = self.client.get("/api/cinema/movie_sessions/")
         movie_session = {
             "movie_title": "Titanic",
@@ -48,7 +48,7 @@ class MovieSessionApiTests(TestCase):
         for field in movie_session:
             self.assertEqual(movie_sessions.data[0][field], movie_session[field])
 
-    def test_post_movie_session(self):
+    def test_post_movie_session(self) -> None:
         movies = self.client.post(
             "/api/cinema/movie_sessions/",
             {
@@ -61,7 +61,7 @@ class MovieSessionApiTests(TestCase):
         self.assertEqual(movies.status_code, status.HTTP_201_CREATED)
         self.assertEqual(movie_sessions.count(), 2)
 
-    def test_get_movie_session(self):
+    def test_get_movie_session(self) -> None:
         response = self.client.get("/api/cinema/movie_sessions/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["movie"]["title"], "Titanic")
