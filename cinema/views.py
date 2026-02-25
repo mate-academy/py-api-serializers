@@ -1,8 +1,8 @@
 # write views here
 from rest_framework import viewsets
 
-from cinema.models import CinemaHall, Genre, Actor, Movie
-from cinema.serializers import CinemaHallSerializer, GenreSerializer, ActorSerializer, MovieSerializer
+from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
+from cinema.serializers import CinemaHallSerializer, GenreSerializer, ActorSerializer, MovieSerializer, MovieSessionSerializer
 
 
 class CinemaHallViewSet(viewsets.ModelViewSet):
@@ -23,3 +23,8 @@ class ActorViewSet(viewsets.ModelViewSet):
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+
+class MovieSessionViewSet(viewsets.ModelViewSet):
+    queryset = MovieSession.objects.all()
+    serializer_class = MovieSessionSerializer
