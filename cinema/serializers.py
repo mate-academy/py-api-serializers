@@ -10,7 +10,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
         model = CinemaHall
         fields = ["name", "rows", "seats_in_row"]
 
-# class GenreSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Genre
-#         fields = ["name"]
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ["name"]
