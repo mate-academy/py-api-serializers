@@ -73,7 +73,6 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
             )
         return self.queryset
 
-
     def get_serializer_class(self) -> Type[Serializer]:
         if self.action == "list":
             return MovieSessionListSerializer
