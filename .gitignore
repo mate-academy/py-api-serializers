@@ -6,3 +6,6 @@
 venv/
 .pytest_cache/
 **__pycache__/
+.venv/
+db.sqlite3
+.python-version
