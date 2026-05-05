@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from rest_framework import serializers
 
 from cinema.models import (
@@ -95,6 +96,9 @@ class CinemaHallSerializer(serializers.ModelSerializer):
             "capacity"
         )
 
+    def get_queryset(self) -> QuerySet[CinemaHall]:
+        return self.queryset
+
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,6 +107,9 @@ class GenreSerializer(serializers.ModelSerializer):
             "id",
             "name"
         )
+
+    def get_queryset(self) -> QuerySet[Genre]:
+        return self.queryset
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -115,6 +122,9 @@ class ActorSerializer(serializers.ModelSerializer):
             "full_name"
         )
 
+    def get_queryset(self) -> QuerySet[Actor]:
+        return self.queryset
+
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -124,6 +134,9 @@ class OrderSerializer(serializers.ModelSerializer):
             "created_at",
             "user"
         )
+
+    def get_queryset(self) -> QuerySet[Order]:
+        return self.queryset
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -136,6 +149,9 @@ class TicketSerializer(serializers.ModelSerializer):
             "row",
             "seat"
         )
+
+    def get_queryset(self) -> QuerySet[Ticket]:
+        return self.queryset
 
 
 class MovieDetailSerializer(MovieSerializer):
