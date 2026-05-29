@@ -1,3 +1,5 @@
+from typing import List
+
 from rest_framework import serializers
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
@@ -44,7 +46,7 @@ class MovieListSerializer(serializers.ModelSerializer):
             "actors"
         ]
 
-    def get_actors(self, obj):
+    def get_actors(self, obj: Movie) -> List[str]:
         return [actor.full_name for actor in obj.actors.all()]
 
 
