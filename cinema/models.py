@@ -42,7 +42,6 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre)
     actors = models.ManyToManyField(Actor)
 
-
     class Meta:
         ordering = ["title"]
 
