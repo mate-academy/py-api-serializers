@@ -8,7 +8,7 @@ from cinema.serializers import (
     MovieSessionSerializer,
     GenreSerializer,
     ActorSerializer,
-    CinemaHallSerializer,
+    CinemaHallSerializer, MovieSessionListSerializer, MovieSessionDetailSerializer,
 )
 
 
