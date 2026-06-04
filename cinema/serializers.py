@@ -14,6 +14,7 @@ class ActorSerializer(serializers.ModelSerializer):
         source="__str__",
         read_only=True
     )
+
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
@@ -21,6 +22,7 @@ class ActorSerializer(serializers.ModelSerializer):
 
 class CinemaHallSerializer(serializers.ModelSerializer):
     capacity = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = CinemaHall
         fields = ("id", "name", "rows", "seats_in_row", "capacity", )
