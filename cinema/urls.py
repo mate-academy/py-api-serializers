@@ -13,7 +13,6 @@ from cinema.views import (
 router = routers.DefaultRouter()
 
 router.register("movies", MovieViewSet)
-router.register("sessions", MovieSessionViewSet)
 router.register("movie_sessions", MovieSessionViewSet)
 router.register("orders", OrderViewSet)
 router.register("tickets", TicketViewSet)
