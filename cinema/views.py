@@ -31,7 +31,6 @@ class CinemaHallViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    # Оптимізовано: прибрано .all() та об'єднано зв'язки в один prefetch_related
     queryset = Movie.objects.prefetch_related("genres", "actors")
 
     def get_serializer_class(self) -> Type[Serializer]:
@@ -43,7 +42,6 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    # Оптимізовано: select_related для Foreign Key, prefetch_related для ManyToMany всередині movie
     queryset = MovieSession.objects.select_related("cinema_hall").prefetch_related(
         "movie__genres", "movie__actors"
     )
