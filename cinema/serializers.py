@@ -1,11 +1,10 @@
 from rest_framework import serializers
 
-from cinema.models import (
+from .models import (
     Genre,
     Actor,
     CinemaHall,
     Movie,
-    MovieSession,
 )
 
 
@@ -16,9 +15,19 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Actor
-        fields = ("id", "first_name", "last_name")
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+            "full_name",
+        )
+
+    def get_full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -74,12 +83,17 @@ class MovieListSerializer(MovieSerializer):
         ]
 
 
-class MovieSessionSerializer(serializers.ModelSerializer):
+class MovieSerializer(serializers.ModelSerializer):
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+
     class Meta:
-        model = MovieSession
+        model = Movie
         fields = (
             "id",
-            "show_time",
-            "movie",
-            "cinema_hall",
+            "title",
+            "description",
+            "duration",
+            "genres",
+            "actors",
         )
