@@ -3,9 +3,9 @@ from rest_framework import viewsets
 from django.db.models import F, Count
 from rest_framework.permissions import IsAuthenticated
 
-from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
+from .models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 
-from cinema.serializers import (
+from .serializers import (
     GenreSerializer,
     ActorSerializer,
     CinemaHallSerializer,
