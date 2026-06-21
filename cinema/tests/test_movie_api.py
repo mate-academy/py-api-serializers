@@ -34,7 +34,6 @@ class MovieApiTests(TestCase):
             "genres": ["Drama", "Comedy"],
             "actors": ["Kate Winslet"],
         }
-        print(movies.data)
         self.assertEqual(movies.status_code, status.HTTP_200_OK)
         for field in titanic:
             self.assertEqual(movies.data[0][field], titanic[field])
