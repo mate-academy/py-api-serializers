@@ -48,7 +48,7 @@ class MovieSerializer(serializers.ModelSerializer):
         )
 
     def get_actors(self, obj: Movie) -> list[str]:
-        return [str(actor) for actor in obj.actors.all()]
+        return [str(actor) for actor in obj.actors.get_queryset()]
 
 
 class MovieDetailSerializer(serializers.ModelSerializer):
