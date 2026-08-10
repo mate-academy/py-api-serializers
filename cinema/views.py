@@ -1,19 +1,25 @@
 from django.db.models import QuerySet
+
 from rest_framework.viewsets import ModelViewSet
-from cinema.models import (Genre,
-                           CinemaHall,
-                           Actor,
-                           Movie,
-                           MovieSession)
-from cinema.serializers import (GenreSerializer,
-                                CinemaHallSerializer,
-                                ActorSerializer,
-                                MovieSerializer,
-                                MovieListSerializer,
-                                MovieDetailSerializer,
-                                MovieSessionSerializer,
-                                MovieSessionListSerializer,
-                                MovieSessionDetailSerializer)
+
+from cinema.models import (
+    Genre,
+    CinemaHall,
+    Actor,
+    Movie,
+    MovieSession,
+)
+from cinema.serializers import (
+    GenreSerializer,
+    CinemaHallSerializer,
+    ActorSerializer,
+    MovieSerializer,
+    MovieListSerializer,
+    MovieDetailSerializer,
+    MovieSessionSerializer,
+    MovieSessionListSerializer,
+    MovieSessionDetailSerializer,
+)
 
 
 class GenreViewSet(ModelViewSet):
