@@ -1,4 +1,4 @@
-Django==6.1
+Django==5.2.17
 djangorestframework==3.18.0
 flake8==7.3.0
 flake8-quotes==3.4.0
