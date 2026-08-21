@@ -44,6 +44,10 @@ class MovieListSerializer(MovieSerializer):
             actor.__str__() for actor in obj.actors.all()
         ]
 
+    class Meta:
+        model = Movie
+        fields = ["id", "title", "description", "duration", "genres", "actors"]
+
 
 class MovieRetrieveSerializer(MovieSerializer):
     genres = GenreSerializer(many=True)
