@@ -9,10 +9,10 @@ from cinema.views import (
 )
 
 router = routers.DefaultRouter()
-routers.register("movies", MovieViewSet)
-routers.register("genres", GenreViewSet)
-routers.register("cinema_halls", CinemaHallViewSet)
-routers.register("actors", ActorViewSet)
+router.register("movies", MovieViewSet)
+router.register("genres", GenreViewSet)
+router.register("cinema_halls", CinemaHallViewSet)
+router.register("actors", ActorViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
