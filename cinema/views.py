@@ -5,7 +5,7 @@ from cinema.serializers import (
     CinemaHallSerializer,
     ActorSerializer,
     GenreSerializer,
-    MovieSerializer
+    MovieSerializer, MovieSessionSerializer
 )
 
 
@@ -31,4 +31,4 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+    serializer_class = MovieSessionSerializer
