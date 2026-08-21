@@ -44,10 +44,6 @@ class MovieListSerializer(MovieSerializer):
         slug_field="full_name"
     )
 
-    class Meta:
-        model = Movie
-        fields = ["id", "title", "description", "duration", "genres", "actors"]
-
 
 class MovieRetrieveSerializer(MovieSerializer):
     genres = GenreSerializer(many=True)
