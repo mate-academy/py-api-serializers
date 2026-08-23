@@ -158,9 +158,12 @@ class MovieSessionWriteSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
+    # MovieListSerializer provides genres and actors as name strings,
+    # matching the expected movie representation in movie session details.
     movie = MovieListSerializer(
         read_only=True,
     )
+
     cinema_hall = CinemaHallSerializer(
         read_only=True,
     )
