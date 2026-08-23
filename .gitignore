@@ -4,5 +4,8 @@
 .env
 .DS_Store
 venv/
+.venv/
+.venv-py313-backup/
 .pytest_cache/
 **__pycache__/
+db.sqlite3
