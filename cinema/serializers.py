@@ -10,8 +10,6 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class ActorSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(source="__str__", read_only=True)
-
     class Meta:
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
@@ -33,7 +31,7 @@ class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True, read_only=True, slug_field="name")
     actors = serializers.SlugRelatedField(
-        many=True, read_only=True, slug_field="__str__")
+        many=True, read_only=True, slug_field="full_name")
 
 
 class MovieRetrieveSerializer(MovieSerializer):
