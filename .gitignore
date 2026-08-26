@@ -4,7 +4,7 @@
 .env
 .DS_Store
 venv/
-.venv
+.venv/
 .pytest_cache/
 **__pycache__/
 db.sqlite3
