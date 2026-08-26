@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cinema', '0002_initial'),
+        ("cinema", "0002_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='movie',
-            name='duration',
+            model_name="movie",
+            name="duration",
             field=models.IntegerField(default=123),
             preserve_default=False,
         ),
