@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 AUTH_USER_MODEL = "user.User"
 
 # Internationalization
