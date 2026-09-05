@@ -2,8 +2,6 @@ from django.contrib.auth import get_user_model
 from cinema.models import (CinemaHall, Genre, Actor, Movie, MovieSession,
                            Order, Ticket)
 from rest_framework import serializers
-
-
 User = get_user_model()
 
 
@@ -34,7 +32,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ["id", "first_name", "last_name", "full_name"]
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -43,9 +41,9 @@ class ActorRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Actor
-        fields = ["first_name", "last_name", "full_name"]
+        fields = ["id", "first_name", "last_name", "full_name"]
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -65,10 +63,10 @@ class MovieListSerializer(MovieSerializer):
         model = Movie
         fields = ["id", "title", "description", "duration", "genres", "actors"]
 
-    def get_genres(self, obj):
+    def get_genres(self, obj) -> list[str]:
         return [genre.name for genre in obj.genres.all()]
 
-    def get_actors(self, obj):
+    def get_actors(self, obj) -> list[str]:
         return [f"{actor.first_name} {actor.last_name}"
                 for actor in obj.actors.all()]
 
