@@ -1,11 +1,10 @@
 import datetime
 
 from django.test import TestCase
-
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 
-from cinema.models import Movie, Genre, Actor, MovieSession, CinemaHall
+from cinema.models import Actor, CinemaHall, Genre, Movie, MovieSession
 
 
 class MovieSessionApiTests(TestCase):
@@ -46,9 +45,7 @@ class MovieSessionApiTests(TestCase):
         }
         self.assertEqual(movie_sessions.status_code, status.HTTP_200_OK)
         for field in movie_session:
-            self.assertEqual(
-                movie_sessions.data[0][field], movie_session[field]
-            )
+            self.assertEqual(movie_sessions.data[0][field], movie_session[field])
 
     def test_post_movie_session(self):
         movies = self.client.post(
@@ -67,9 +64,7 @@ class MovieSessionApiTests(TestCase):
         response = self.client.get("/api/cinema/movie_sessions/1/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["movie"]["title"], "Titanic")
-        self.assertEqual(
-            response.data["movie"]["description"], "Titanic description"
-        )
+        self.assertEqual(response.data["movie"]["description"], "Titanic description")
         self.assertEqual(response.data["movie"]["duration"], 123)
         self.assertEqual(response.data["movie"]["genres"], ["Drama", "Comedy"])
         self.assertEqual(response.data["movie"]["actors"], ["Kate Winslet"])
