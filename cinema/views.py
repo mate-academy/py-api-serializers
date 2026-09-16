@@ -1,4 +1,8 @@
+from typing import Type
+
+from django.db.models import QuerySet
 from rest_framework import viewsets
+from rest_framework.serializers import BaseSerializer
 
 from cinema.models import Movie, MovieSession, Genre, Actor, CinemaHall
 from cinema.serializers import (
@@ -15,43 +19,41 @@ from cinema.serializers import (
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
+    queryset: QuerySet[Movie] = Movie.objects.all()
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[BaseSerializer]:
         if self.action == "list":
             return MovieListSerializer
         elif self.action == "retrieve":
             return MovieDetailSerializer
         return MovieSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Movie]:
         queryset = self.queryset
         if self.action in ("list", "retrieve"):
             queryset = (
                 queryset
-                .prefetch_related("actors")
-                .prefetch_related("genres")
+                .prefetch_related("actors", "genres")
             )
         return queryset
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset: QuerySet[MovieSession] = MovieSession.objects.all()
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[BaseSerializer]:
         if self.action == "list":
             return MovieSessionListSerializer
         elif self.action == "retrieve":
             return MovieSessionDetailSerializer
         return MovieSessionSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[MovieSession]:
         queryset = self.queryset
         if self.action in ("list", "retrieve"):
             queryset = (
                 queryset
-                .select_related("movie")
-                .prefetch_related("cinema_hall")
+                .select_related("movie", "cinema_hall")
             )
         return queryset
 
