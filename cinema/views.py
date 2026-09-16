@@ -19,7 +19,7 @@ from cinema.serializers import (
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset: QuerySet[Movie] = Movie.objects.all()
+    queryset: QuerySet[Movie] = Movie.objects
 
     def get_serializer_class(self) -> Type[BaseSerializer]:
         if self.action == "list":
@@ -39,7 +39,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset: QuerySet[MovieSession] = MovieSession.objects.all()
+    queryset: QuerySet[MovieSession] = MovieSession.objects
 
     def get_serializer_class(self) -> Type[BaseSerializer]:
         if self.action == "list":
