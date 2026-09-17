@@ -6,8 +6,6 @@ from cinema.models import (
     Actor,
     Movie,
     MovieSession,
-    Order,
-    Ticket,
 )
 
 
@@ -48,15 +46,13 @@ class ActorSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    genres = serializers.SlugRelatedField(
-        many=True,
-        slug_field="name",
+    genres = serializers.PrimaryKeyRelatedField(
         queryset=Genre.objects.all(),
-    )
-    actors = serializers.SlugRelatedField(
         many=True,
-        slug_field="full_name",
+    )
+    actors = serializers.PrimaryKeyRelatedField(
         queryset=Actor.objects.all(),
+        many=True,
     )
 
     class Meta:
@@ -71,29 +67,17 @@ class MovieSerializer(serializers.ModelSerializer):
         )
 
 
-class MovieListSerializer(serializers.ModelSerializer):
+class MovieListSerializer(MovieSerializer):
     genres = serializers.SlugRelatedField(
         many=True,
         read_only=True,
         slug_field="name",
     )
-
     actors = serializers.SlugRelatedField(
         many=True,
         read_only=True,
         slug_field="full_name",
     )
-
-    class Meta:
-        model = Movie
-        fields = (
-            "id",
-            "title",
-            "description",
-            "duration",
-            "genres",
-            "actors",
-        )
 
 
 class MovieRetrieveSerializer(MovieSerializer):
@@ -106,27 +90,8 @@ class MovieRetrieveSerializer(MovieSerializer):
         read_only=True,
     )
 
-    class Meta(MovieSerializer.Meta):
-        fields = (
-            "id",
-            "title",
-            "description",
-            "duration",
-            "genres",
-            "actors",
-        )
-
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-    movie = serializers.SlugRelatedField(
-        slug_field="title",
-        queryset=Movie.objects.all(),
-    )
-    cinema_hall = serializers.SlugRelatedField(
-        slug_field="name",
-        queryset=CinemaHall.objects.all(),
-    )
-
     class Meta:
         model = MovieSession
         fields = (
@@ -168,31 +133,3 @@ class MovieSessionRetrieveSerializer(MovieSessionSerializer):
     cinema_hall = CinemaHallSerializer(
         read_only=True,
     )
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = (
-            "id",
-            "created_at",
-            "user",
-        )
-
-
-class OrderListSerializer(OrderSerializer):
-    user = serializers.SlugRelatedField(
-        slug_field="username",
-        read_only=True,
-    )
-
-
-class TicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ticket
-        fields = (
-            "movie_session",
-            "order",
-            "row",
-            "seat",
-        )
