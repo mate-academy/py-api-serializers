@@ -1,6 +1,5 @@
-import datetime
-
 from django.test import TestCase
+from django.utils import timezone
 
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -34,7 +33,7 @@ class MovieSessionApiTests(TestCase):
         self.movie_session = MovieSession.objects.create(
             movie=self.movie,
             cinema_hall=self.cinema_hall,
-            show_time=datetime.datetime.now(),
+            show_time=timezone.now(),
         )
 
     def test_get_movie_sessions(self):
@@ -56,7 +55,7 @@ class MovieSessionApiTests(TestCase):
             {
                 "movie": 1,
                 "cinema_hall": 1,
-                "show_time": datetime.datetime.now(),
+                "show_time": timezone.now(),
             },
         )
         movie_sessions = MovieSession.objects.all()
