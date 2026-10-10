@@ -1,4 +1,3 @@
-from django.conf.locale import sr
 from rest_framework import serializers
 
 from cinema.models import (
@@ -90,7 +89,7 @@ class MovieSessionListSerializer(MovieSessionSerializer):
 
 
 class MovieSessionDetailSerializer(serializers.ModelSerializer):
-    movie = MovieListSerializer()
+    movie = MovieDetailSerializer()
     cinema_hall = CinemaHallSerializer()
 
     class Meta:
