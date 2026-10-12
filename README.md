@@ -38,7 +38,7 @@ Vary: Accept
 [
     {
         "id": 1,
-        "title": "Harry Potter and the Philosopher's Stone",
+        "title": "Harry Potter and the Philosopher"s Stone",
         "description": "The first movie about Harry Potter",
         "duration": 210,
         "genres": [
@@ -66,7 +66,7 @@ Vary: Accept
 
 {
     "id": 1,
-    "title": "Harry Potter and the Philosopher's Stone",
+    "title": "Harry Potter and the Philosopher"s Stone",
     "description": "The first movie about Harry Potter",
     "duration": 210,
     "genres": [
@@ -121,7 +121,7 @@ Vary: Accept
     {
         "id": 1,
         "show_time": "2022-06-15T12:25:00Z",
-        "movie_title": "Harry Potter and the Philosopher's Stone",
+        "movie_title": "Harry Potter and the Philosopher"s Stone",
         "cinema_hall_name": "Black",
         "cinema_hall_capacity": 300
     }
@@ -146,7 +146,7 @@ Vary: Accept
     "show_time": "2022-06-15T12:25:00Z",
     "movie": {
         "id": 1,
-        "title": "Harry Potter and the Philosopher's Stone",
+        "title": "Harry Potter and the Philosopher"s Stone",
         "description": "The first movie about Harry Potter",
         "duration": 210,
         "genres": [
