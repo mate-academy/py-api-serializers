@@ -6,3 +6,6 @@
 venv/
 .pytest_cache/
 **__pycache__/
+venv311/
+db.sqlite3
+/79
