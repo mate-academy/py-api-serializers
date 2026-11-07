@@ -29,7 +29,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CinemaHall
-        fields = "__all__"
+        fields = ["id", "name", "rows", "seats_in_row", "capacity"]
 
 class MovieSerializer(serializers.ModelSerializer):
 
@@ -105,3 +105,16 @@ class MovieSessionListSerializer(MovieSessionSerializer):
           "cinema_hall_name",
           "cinema_hall_capacity"
         ]
+
+class MovieSessionDetailSerializer(MovieSessionSerializer):
+    movie = MovieListSerializer(read_only=True)
+    cinema_hall = CinemaHallSerializer(read_only=True)
+
+    class Meta:
+      model = MovieSession
+      fields = [
+        "id",
+        "show_time",
+        "movie",
+        "cinema_hall",
+      ]
