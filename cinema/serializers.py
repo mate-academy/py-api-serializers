@@ -1,3 +1,5 @@
+from typing import Any
+
 from rest_framework import serializers
 
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession
@@ -16,7 +18,7 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ("id", "first_name", "last_name", "full_name")
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj: Any):
         return f"{obj.first_name} {obj.last_name}"
 
 
