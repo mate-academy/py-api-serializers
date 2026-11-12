@@ -3,16 +3,17 @@ from rest_framework.routers import DefaultRouter
 
 from cinema.views import (
     GenreViewSet,
-    ActorViewSet, CinemaHallViewSet
+    ActorViewSet, CinemaHallViewSet, MovieViewSet
 )
 
 
 router = DefaultRouter()
 
 
-router.register("genre", GenreViewSet)
-router.register("actor", ActorViewSet)
+router.register("genres", GenreViewSet)
+router.register("actors", ActorViewSet)
 router.register("cinema_halls", CinemaHallViewSet)
+router.register("movies", MovieViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
