@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from django.db.models import QuerySet
+from rest_framework import serializers, viewsets
 
 from cinema.models import (
     Genre,
@@ -33,10 +34,9 @@ class ActorViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+    queryset = Movie.objects.all().prefetch_related("genres", "actors")
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> type[serializers.Serializer]:
         if self.action == "list":
             return MovieListSerializer
         elif self.action == "retrieve":
@@ -44,17 +44,13 @@ class MovieViewSet(viewsets.ModelViewSet):
         else:
             return MovieSerializer
 
-    def get_queryset(self):
-        queryset = self.queryset
-        if self.action in ("list", "retrieve"):
-            return queryset.prefetch_related("genres", "actors")
-        return queryset
-
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset = MovieSession.objects.all().select_related(
+        "movie", "cinema_hall"
+    )
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> type[serializers.Serializer]:
         if self.action == "list":
             return MovieSessionListSerializer
         elif self.action == "retrieve":
@@ -62,16 +58,10 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
         else:
             return MovieSessionSerializer
 
-    def get_queryset(self):
-        queryset = self.queryset
-        if self.action == "list":
-            return queryset.select_related(
-                "movie", "cinema_hall"
-            )
-        elif self.action == "retrieve":
-            return queryset.select_related(
-                "movie", "cinema_hall"
-            ).prefetch_related(
+    def get_queryset(self) -> QuerySet:
+        queryset = super().get_queryset()
+        if self.action == "retrieve":
+            return queryset.prefetch_related(
                 "movie__genres", "movie__actors"
             )
         return queryset

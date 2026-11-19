@@ -42,7 +42,7 @@ class ActorSerializer(serializers.ModelSerializer):
             "full_name",
         )
 
-    def get_full_name(self, obj):
+    def get_full_name(self, obj: Actor) -> str:
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -70,8 +70,8 @@ class MovieListSerializer(MovieSerializer):
 
 
 class MovieRetrieveSerializer(MovieSerializer):
-    genres = GenreSerializer(many=True)
-    actors = ActorSerializer(many=True)
+    genres = GenreSerializer(many=True, read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
